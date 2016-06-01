@@ -1,10 +1,14 @@
 package com.a82down.app;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.a82down.app.base.BaseActivity;
+import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.request.RegisterReq;
+import com.a82down.app.utils.LogFactory;
 import com.a82down.app.utils.UiUtils;
 
 import org.xutils.view.annotation.ContentView;
@@ -26,17 +30,36 @@ public class MainActivity extends BaseActivity {
     @ViewInject(R.id.btn_register)
     private Button btnRegister;
 
-    @Event(value = {R.id.btn_login,R.id.btn_register})
-   private void getEvent(View view){
 
-       switch (view.getId()){
-           case R.id.btn_login:
-               UiUtils.showTipToast(false,"login");
-               break;
-           case R.id.btn_register:
+    @Event(value = {R.id.btn_login, R.id.btn_register})
+    private void getEvent(View view) {
 
-                UiUtils.showTipToast(true,"register");
-               break;
-       }
-   }
+        switch (view.getId()) {
+            case R.id.btn_login:
+                UiUtils.showTipToast(false, "login");
+                break;
+            case R.id.btn_register:
+                String userName = etUser.getText().toString();
+                String password = etPass.getText().toString();
+                register(userName,password);
+                break;
+        }
+    }
+
+    private void register(String userName, String password) {
+        RegisterReq registerReq = new RegisterReq(userName, password);
+        registerReq.sendRequest(new MyCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                if (!TextUtils.isEmpty(result)){
+                    LogFactory.e(result);
+                }
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
 }

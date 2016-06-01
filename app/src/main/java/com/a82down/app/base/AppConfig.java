@@ -28,8 +28,14 @@ public class AppConfig {
      * APP默认数据库版本号
      */
     public static final int DEFAULT_DB_VERSION = 1;
-
+    /**
+     * APP默认编码格式
+     */
     public static final String DEFAULT_CHARSET = "UTF-8";
+    /**
+     * 是否debug调试
+     */
+    public static boolean DEBUG = true;
 
     public static final String DOWNLOAD_APK_NAME = "82down.apk";
 }
