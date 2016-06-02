@@ -13,7 +13,7 @@ public class UrlConfig {
     /***
      * 服务器地址
      * **/
-    public static String BASE_URL = "http://192.168.206.22/82down/app/";
+    public static String BASE_URL = "http://192.168.98.108/82down/app/";
 //    public static String BASE_URL = "http://123.57.86.113/82down/app/";
 
     //注册登录相关

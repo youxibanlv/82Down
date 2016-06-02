@@ -2,6 +2,8 @@ package com.a82down.app.http.request;
 
 import com.a82down.app.http.BaseRequest;
 
+import org.xutils.common.util.MD5;
+
 /**
  * Created by xiaowuyue on 16/6/1.
  */
@@ -20,7 +22,7 @@ public class RegisterReq extends BaseRequest {
         String pass;
         public RequestParams(String name,String password){
             userName = name;
-            pass = password;
+            pass = MD5.md5(password);
         }
     }
 }
