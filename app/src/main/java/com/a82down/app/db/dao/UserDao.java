@@ -30,7 +30,7 @@ public class UserDao {
         if (user!= null){
             DbManager dbManager = MyApplication.getAppDb();
             try {
-                dbManager.save(user);
+                dbManager.saveOrUpdate(user);
             } catch (DbException e) {
                 e.printStackTrace();
             }

@@ -53,12 +53,11 @@ public class BaseRequest {
             StringBody sb = new StringBody(requestData, AppConfig.DEFAULT_CHARSET);
             rp = new RequestParams(url,null,null,null);
             rp.setRequestBody(sb);
-            LogFactory.e(rp.toString());
+            LogFactory.e("request:"+requestData);
             x.http().request(HttpMethod.POST,rp,callback);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
 
     }
 }

@@ -5,15 +5,14 @@ import com.a82down.app.http.BaseRequest;
 import org.xutils.common.util.MD5;
 
 /**
- * Created by xiaowuyue on 16/6/1.
+ * Created by xiaowuyue on 16/6/3.
  */
-public class RegisterReq extends BaseRequest {
-
+public class LoginReq extends BaseRequest {
     RequestParams requestParams;
 
-    public RegisterReq(String name,String password){
+    public LoginReq(String name,String password){
         cmdType = "userService";
-        methodName = "register";
+        methodName = "login";
         requestParams = new RequestParams(name,password);
     }
 

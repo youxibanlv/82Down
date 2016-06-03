@@ -8,11 +8,13 @@ import android.widget.EditText;
 import com.a82down.app.base.BaseActivity;
 import com.a82down.app.db.dao.UserDao;
 import com.a82down.app.db.table.User;
+import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
 import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.request.LoginReq;
 import com.a82down.app.http.request.RegisterReq;
+import com.a82down.app.http.response.LoginRsp;
 import com.a82down.app.http.response.RegisterRsp;
-import com.a82down.app.utils.LogFactory;
 import com.a82down.app.utils.UiUtils;
 
 import org.xutils.view.annotation.ContentView;
@@ -39,17 +41,45 @@ public class MainActivity extends BaseActivity {
 
     @Event(value = {R.id.btn_login, R.id.btn_register})
     private void getEvent(View view) {
-
+        String userName = etUser.getText().toString();
+        String password = etPass.getText().toString();
         switch (view.getId()) {
             case R.id.btn_login:
-                UiUtils.showTipToast(false, "login");
+                login(userName, password);
                 break;
             case R.id.btn_register:
-                String userName = etUser.getText().toString();
-                String password = etPass.getText().toString();
                 register(userName, password);
                 break;
         }
+    }
+
+    private void login(String userName, String password) {
+        LoginReq loginReq = new LoginReq(userName,password);
+        loginReq.sendRequest(new MyCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                if (!TextUtils.isEmpty(result)){
+                    Gson gson = new Gson();
+                    LoginRsp rsp = (LoginRsp) BaseResponse.getRsp(result,LoginRsp.class);
+                    if (rsp!= null){
+                        if (rsp.result == Constance.HTTP_SUCCESS){
+                            User user = gson.fromJson(gson.toJson(rsp.resultData), User.class);
+                            if (user != null) {
+                                UserDao.saveUser(user);
+                                UiUtils.showTipToast(true, getString(R.string.register_success));
+                            }
+                        }else{
+                            UiUtils.showTipToast(false, rsp.failReason);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     private void register(String userName, String password) {
@@ -58,18 +88,16 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)) {
-                    LogFactory.e(result);
                     Gson gson = new Gson();
-                    RegisterRsp rsp = gson.fromJson(result, RegisterRsp.class);
+                    RegisterRsp rsp = (RegisterRsp) BaseResponse.getRsp(result,RegisterRsp.class);
                     if (rsp != null) {
                         if (rsp.result == Constance.HTTP_SUCCESS) {
                             User user = gson.fromJson(gson.toJson(rsp.resultData), User.class);
                             if (user != null) {
                                 UserDao.saveUser(user);
-                                LogFactory.e(user.toString());
                                 UiUtils.showTipToast(true, getString(R.string.register_success));
                             }
-                        }else {
+                        } else {
                             UiUtils.showTipToast(false, rsp.failReason);
                         }
                     }
