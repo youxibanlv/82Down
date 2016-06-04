@@ -31,7 +31,7 @@ public class BaseActivity extends AppCompatActivity {
         context = this;
     }
 
-    private void showProgressDialogCloseDelay(String msg,long time){
+    public void showProgressDialogCloseDelay(String msg,long time){
         dialogHandler.removeCallbacks(closeProgressRunnable);
         if (progressDialog == null){
             progressDialog = ProgressDialog.show(this,"",msg);
@@ -45,6 +45,35 @@ public class BaseActivity extends AppCompatActivity {
         }
 
     }
+
+    // 取消进度条
+    public void dismissProgressDialog() {
+        if (dialogHandler != null) {
+            dialogHandler.removeCallbacks(closeProgressRunnable);
+        }
+        if (dialogHandler != null) {
+            dialogHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (null != progressDialog && progressDialog.isShowing()) {
+                        try {
+                            progressDialog.dismiss();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    public boolean dialogIsDisplay() {
+        if (progressDialog != null) {
+            return progressDialog.isShowing();
+        }
+        return false;
+    }
+
 
     public class CloseProgressRunnable implements Runnable {
         @Override
