@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">My82down</string>
     <string name="register_success">注册成功</string>
+    <string name="login">登 录</string>
+    <string name="forget_pass">忘记密码</string>
+    <string name="register">注册</string>
 </resources>
