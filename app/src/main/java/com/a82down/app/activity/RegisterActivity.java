@@ -26,7 +26,7 @@ import org.xutils.view.annotation.ViewInject;
 import gson.Gson;
 
 /**
- * Created by xiaowuyue on 16/6/4.
+ * Created by strike on 16/6/4.
  */
 @ContentView(R.layout.activity_register)
 public class RegisterActivity extends BaseActivity {
@@ -106,9 +106,11 @@ public class RegisterActivity extends BaseActivity {
 
     private void register(String userName, String password) {
         RegisterReq registerReq = new RegisterReq(userName, password);
+        showProgressDialogCloseDelay("正在注册，请稍后...",Constance.DEFAULT_TIMEOUT);
         registerReq.sendRequest(new MyCallBack() {
             @Override
             public void onSuccess(String result) {
+                dismissProgressDialog();
                 if (!TextUtils.isEmpty(result)) {
                     Gson gson = new Gson();
                     RegisterRsp rsp = (RegisterRsp) BaseResponse.getRsp(result, RegisterRsp.class);
@@ -128,7 +130,7 @@ public class RegisterActivity extends BaseActivity {
 
             @Override
             public void onFinished() {
-
+                dismissProgressDialog();
             }
         });
     }

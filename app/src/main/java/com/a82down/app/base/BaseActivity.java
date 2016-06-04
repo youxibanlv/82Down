@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import org.xutils.x;
 
 /**
- * Created by xiaowuyue on 16/5/31.
+ * Created by strike on 16/5/31.
  */
 public class BaseActivity extends AppCompatActivity {
 

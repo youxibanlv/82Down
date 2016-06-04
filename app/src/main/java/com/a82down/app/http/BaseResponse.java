@@ -7,7 +7,7 @@ import com.a82down.app.utils.LogFactory;
 import gson.Gson;
 
 /**
- * Created by xiaowuyue on 16/5/31.
+ * Created by strike on 16/5/31.
  */
 public class BaseResponse {
     public int result;

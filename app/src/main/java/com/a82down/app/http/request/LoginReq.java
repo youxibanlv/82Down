@@ -5,7 +5,7 @@ import com.a82down.app.http.BaseRequest;
 import org.xutils.common.util.MD5;
 
 /**
- * Created by xiaowuyue on 16/6/3.
+ * Created by strike on 16/6/3.
  */
 public class LoginReq extends BaseRequest {
     RequestParams requestParams;

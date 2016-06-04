@@ -9,7 +9,7 @@ import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 
 /**
- * Created by xiaowuyue on 16/6/2.
+ * Created by strike on 16/6/2.
  */
 public class UserDao {
 

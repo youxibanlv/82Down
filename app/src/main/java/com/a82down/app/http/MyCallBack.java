@@ -3,7 +3,7 @@ package com.a82down.app.http;
 import org.xutils.common.Callback;
 
 /**
- * Created by xiaowuyue on 16/6/1.
+ * Created by strike on 16/6/1.
  */
 public abstract class MyCallBack implements Callback.CommonCallback<String> {
 

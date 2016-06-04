@@ -28,7 +28,7 @@ import org.xutils.view.annotation.ViewInject;
 import gson.Gson;
 
 /**
- * Created by xiaowuyue on 16/6/3.
+ * Created by strike on 16/6/3.
  */
 @ContentView(R.layout.activity_login)
 public class LoginActivity extends BaseActivity {
@@ -77,7 +77,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFinished() {
-
+                dismissProgressDialog();
             }
         });
     }

@@ -13,7 +13,7 @@ import com.a82down.app.R;
 import com.a82down.app.base.AppContext;
 
 /**
- * Created by xiaowuyue on 16/5/31.
+ * Created by strike on 16/5/31.
  */
 public class UiUtils {
 

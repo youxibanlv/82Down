@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by xiaowuyue on 16/5/31.
+ * Created by strike on 16/5/31.
  */
 public class UrlConfig {
 

@@ -3,7 +3,7 @@ package com.a82down.app.base;
 import android.content.Context;
 
 /**
- * Created by xiaowuyue on 16/5/31.
+ * Created by strike on 16/5/31.
  */
 public class AppContext {
 

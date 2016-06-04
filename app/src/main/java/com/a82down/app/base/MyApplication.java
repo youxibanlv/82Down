@@ -8,7 +8,7 @@ import org.xutils.DbManager;
 import org.xutils.x;
 
 /**
- * Created by xiaowuyue on 16/5/31.
+ * Created by strike on 16/5/31.
  */
 public class MyApplication extends Application {
 

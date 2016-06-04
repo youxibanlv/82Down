@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException;
 import gson.Gson;
 
 /**
- * Created by xiaowuyue on 16/5/31.
+ * Created by strike on 16/5/31.
  */
 public class BaseRequest {
 

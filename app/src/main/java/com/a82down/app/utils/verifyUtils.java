@@ -3,7 +3,7 @@ package com.a82down.app.utils;
 import java.util.regex.Pattern;
 
 /**
- * Created by xiaowuyue on 16/6/4.
+ * Created by strike on 16/6/4.
  */
 public class VerifyUtils {
 

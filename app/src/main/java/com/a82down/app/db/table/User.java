@@ -4,7 +4,7 @@ import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
 /**
- * Created by xiaowuyue on 16/6/2.
+ * Created by strike on 16/6/2.
  */
 @Table(name = "appcms_user")
 public class User {
