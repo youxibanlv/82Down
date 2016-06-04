@@ -1,13 +1,13 @@
 package com.a82down.app.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.a82down.app.R;
 import com.a82down.app.base.BaseActivity;
@@ -39,23 +39,12 @@ public class LoginActivity extends BaseActivity {
     @ViewInject(R.id.edt_password)
     private EditText edtPassword;
 
-    @ViewInject(R.id.btn_login)
-    private Button btnLogin;
+    @ViewInject(R.id.ivpwd_showhide)
+    private ImageView ivpwdShowhide;
 
-    @ViewInject(R.id.btn_qq)
-    private ImageView btnQq;
+    private boolean isShowPass = false;//是明文显示密码
 
-    @ViewInject(R.id.btn_weixin)
-    private ImageView btnWeixin;
-
-    @ViewInject(R.id.btn_weibo)
-    private ImageView btnWibo;
-
-    @ViewInject(R.id.tv_forgot_pass)
-    private TextView forgotPass;
-
-    @ViewInject(R.id.tv_register)
-    private TextView register;
+    private int inputType = InputType.TYPE_NUMBER_VARIATION_PASSWORD;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,7 +82,7 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    @Event(value = {R.id.btn_login,R.id.btn_qq,R.id.btn_weixin,R.id.btn_weibo,R.id.tv_forgot_pass,R.id.tv_register})
+    @Event(value = {R.id.btn_login,R.id.btn_qq,R.id.btn_weixin,R.id.btn_weibo,R.id.tv_forgot_pass,R.id.tv_register,R.id.ivpwd_showhide})
     private void getEvent(View view){
         switch (view.getId()){
             case R.id.btn_login:
@@ -109,11 +98,23 @@ public class LoginActivity extends BaseActivity {
                 }
                 login(userName,password);
                 break;
+            case R.id.ivpwd_showhide:
+                if (isShowPass){
+                    isShowPass = false;
+                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
+                }else{
+                    isShowPass = true;
+                    inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+                }
+                ivpwdShowhide.setImageResource(isShowPass ? R.mipmap.pwd_show : R.mipmap.pwd_hide);
+                edtPassword.setInputType(inputType);
+                edtPassword.setSelection(edtPassword.getText().toString().length());//光标聚焦到行尾
+                break;
             case R.id.tv_forgot_pass:
 
                 break;
             case R.id.tv_register:
-
+                this.startActivity(new Intent(this,RegisterActivity.class));
                 break;
             case R.id.btn_qq:
 

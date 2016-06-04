@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/wdp20"
     android:paddingRight="@dimen/wdp20"
-    android:paddingBottom="@dimen/wdp15"
-    android:paddingTop="@dimen/wdp15"
+    android:paddingBottom="@dimen/wdp5"
+    android:paddingTop="@dimen/wdp5"
     android:background="@mipmap/toast_error">
 
     <TextView

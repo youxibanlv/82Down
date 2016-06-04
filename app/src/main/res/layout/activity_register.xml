@@ -26,40 +26,66 @@
             android:padding="@dimen/wdp16"
             android:singleLine="true"
             android:textSize="@dimen/wdp28" />
-        <EditText
-            android:id="@+id/edt_password"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/wdp70"
-            android:layout_marginTop="@dimen/wdp35"
-            android:hint="@string/enter_pass"
-            android:textColorHint="@color/white"
-            android:background="@mipmap/bg_btn"
-            android:textColor="@color/white"
-            android:drawableLeft="@mipmap/icon_pass"
-            android:drawablePadding="@dimen/wdp18"
-            android:inputType="textPassword"
-            android:maxLength="32"
-            android:padding="@dimen/wdp16"
-            android:singleLine="true"
-            android:textSize="@dimen/wdp28" />
-        <EditText
-            android:id="@+id/edt_confirm_password"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/wdp70"
-            android:layout_marginTop="@dimen/wdp35"
-            android:hint="@string/enter_pass_again"
-            android:textColorHint="@color/white"
-            android:background="@mipmap/bg_btn"
-            android:textColor="@color/white"
-            android:drawableLeft="@mipmap/icon_pass"
-            android:drawablePadding="@dimen/wdp18"
-            android:inputType="textPassword"
-            android:maxLength="32"
-            android:padding="@dimen/wdp16"
-            android:singleLine="true"
-            android:textSize="@dimen/wdp28" />
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/wdp70"
+                android:layout_marginTop="@dimen/wdp35"
+                android:hint="@string/enter_pass"
+                android:textColorHint="@color/white"
+                android:background="@mipmap/bg_btn"
+                android:textColor="@color/white"
+                android:drawableLeft="@mipmap/icon_pass"
+                android:drawablePadding="@dimen/wdp18"
+                android:inputType="textPassword"
+                android:maxLength="32"
+                android:padding="@dimen/wdp16"
+                android:singleLine="true"
+                android:textSize="@dimen/wdp28" />
+            <ImageView
+                android:id="@+id/ivpwd_showhide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/edt_password"
+                android:layout_alignRight="@id/edt_password"
+                android:layout_alignTop="@id/edt_password"
+                android:padding="@dimen/wdp16"
+                android:src="@mipmap/pwd_hide" />
+        </RelativeLayout>
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <EditText
+               android:id="@+id/edt_confirm_password"
+               android:layout_width="match_parent"
+               android:layout_height="@dimen/wdp70"
+               android:layout_marginTop="@dimen/wdp35"
+               android:hint="@string/enter_pass_again"
+               android:textColorHint="@color/white"
+               android:background="@mipmap/bg_btn"
+               android:textColor="@color/white"
+               android:drawableLeft="@mipmap/icon_pass"
+               android:drawablePadding="@dimen/wdp18"
+               android:inputType="textPassword"
+               android:maxLength="32"
+               android:padding="@dimen/wdp16"
+               android:singleLine="true"
+               android:textSize="@dimen/wdp28" />
+           <ImageView
+               android:id="@+id/ivpwd_showhide_confirm"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignBottom="@id/edt_confirm_password"
+               android:layout_alignRight="@id/edt_confirm_password"
+               android:layout_alignTop="@id/edt_confirm_password"
+               android:padding="@dimen/wdp16"
+               android:src="@mipmap/pwd_hide" />
+       </RelativeLayout>
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="@dimen/wdp70"
             android:layout_marginTop="@dimen/wdp35"
@@ -81,11 +107,13 @@
                 android:layout_marginLeft="@dimen/wdp10"
                 />
             <TextView
-                android:id="@+id/tv_register"
+                android:id="@+id/tv_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textSize="@dimen/wdp30"
+                android:paddingLeft="@dimen/wdp20"
+                android:paddingRight="@dimen/wdp10"
                 android:layout_marginLeft="@dimen/wdp10"
                 android:text="@string/login"/>
         </LinearLayout>

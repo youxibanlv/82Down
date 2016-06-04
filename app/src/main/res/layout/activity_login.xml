@@ -26,22 +26,35 @@
             android:padding="@dimen/wdp16"
             android:singleLine="true"
             android:textSize="@dimen/wdp28" />
-        <EditText
-            android:id="@+id/edt_password"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/wdp70"
-            android:layout_marginTop="@dimen/wdp35"
-            android:background="@mipmap/bg_btn"
-            android:hint="@string/enter_pass"
-            android:textColorHint="@color/white"
-            android:textColor="@color/white"
-            android:drawableLeft="@mipmap/icon_pass"
-            android:drawablePadding="@dimen/wdp18"
-            android:inputType="textPassword"
-            android:maxLength="32"
-            android:padding="@dimen/wdp16"
-            android:singleLine="true"
-            android:textSize="@dimen/wdp28" />
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/wdp70"
+                android:layout_marginTop="@dimen/wdp35"
+                android:background="@mipmap/bg_btn"
+                android:hint="@string/enter_pass"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:drawableLeft="@mipmap/icon_pass"
+                android:drawablePadding="@dimen/wdp18"
+                android:inputType="textPassword"
+                android:maxLength="32"
+                android:padding="@dimen/wdp16"
+                android:singleLine="true"
+                android:textSize="@dimen/wdp28" />
+            <ImageView
+                android:id="@+id/ivpwd_showhide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/edt_password"
+                android:layout_alignRight="@id/edt_password"
+                android:layout_alignTop="@id/edt_password"
+                android:padding="@dimen/wdp16"
+                android:src="@mipmap/pwd_hide" />
+        </RelativeLayout>
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
@@ -68,6 +81,8 @@
                 android:id="@+id/tv_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/wdp20"
+                android:paddingRight="@dimen/wdp10"
                 android:textColor="@color/white"
                 android:textSize="@dimen/wdp30"
                 android:layout_marginLeft="@dimen/wdp10"

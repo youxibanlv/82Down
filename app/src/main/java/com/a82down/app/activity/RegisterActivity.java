@@ -1,9 +1,29 @@
 package com.a82down.app.activity;
 
+import android.content.Intent;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+
 import com.a82down.app.R;
 import com.a82down.app.base.BaseActivity;
+import com.a82down.app.db.dao.UserDao;
+import com.a82down.app.db.table.User;
+import com.a82down.app.http.BaseResponse;
+import com.a82down.app.http.Constance;
+import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.request.RegisterReq;
+import com.a82down.app.http.response.RegisterRsp;
+import com.a82down.app.utils.UiUtils;
+import com.a82down.app.utils.VerifyUtils;
 
 import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+
+import gson.Gson;
 
 /**
  * Created by xiaowuyue on 16/6/4.
@@ -11,5 +31,106 @@ import org.xutils.view.annotation.ContentView;
 @ContentView(R.layout.activity_register)
 public class RegisterActivity extends BaseActivity {
 
+    @ViewInject(R.id.edt_username)
+    private EditText edtUsername;
+
+    @ViewInject(R.id.edt_password)
+    private EditText edtPassword;
+
+    @ViewInject(R.id.edt_confirm_password)
+    private EditText confirmPassword;
+
+    @ViewInject(R.id.ivpwd_showhide)
+    private ImageView ivpwdShowhide;
+
+    @ViewInject(R.id.ivpwd_showhide_confirm)
+    private ImageView ivpwdShowhideConfirm;
+
+    private boolean isShowPass = false;//是明文显示密码
+    private boolean isShowPassConfirm = false;
+    private int inputType = InputType.TYPE_NUMBER_VARIATION_PASSWORD;
+    private int inputTypeConfirm = InputType.TYPE_NUMBER_VARIATION_PASSWORD;
+
+
+    @Event(value = {R.id.btn_register, R.id.tv_login,R.id.ivpwd_showhide,R.id.ivpwd_showhide_confirm})
+    private void getEvent(View view) {
+        switch (view.getId()) {
+            case R.id.btn_register:
+                String userName = edtUsername.getText().toString();
+                String password = edtPassword.getText().toString();
+                String confirmPass = confirmPassword.getText().toString();
+                if (!VerifyUtils.checkUserName(userName)) {
+                    UiUtils.showTipToast(false, getString(R.string.format_error_username));
+                    return;
+                }
+                if (!VerifyUtils.checkPassword(password) || !VerifyUtils.checkPassword(confirmPass)) {
+                    UiUtils.showTipToast(false, getString(R.string.format_error_password));
+                    return;
+                }
+                if (!password.equals(confirmPass)) {
+                    UiUtils.showTipToast(false, getString(R.string.confirm_error_pass));
+                    return;
+                }
+                register(userName,password);
+
+                break;
+            case R.id.ivpwd_showhide:
+                if (isShowPass){
+                    isShowPass = false;
+                    inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
+                }else{
+                    isShowPass = true;
+                    inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+                }
+                ivpwdShowhide.setImageResource(isShowPass ? R.mipmap.pwd_show : R.mipmap.pwd_hide);
+                edtPassword.setInputType(inputType);
+                edtPassword.setSelection(edtPassword.getText().toString().length());//光标聚焦到行尾
+                break;
+            case R.id.ivpwd_showhide_confirm:
+                if (isShowPassConfirm){
+                    isShowPassConfirm = false;
+                    inputTypeConfirm = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
+                }else{
+                    isShowPassConfirm = true;
+                    inputTypeConfirm = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+                }
+                ivpwdShowhideConfirm.setImageResource(isShowPassConfirm ? R.mipmap.pwd_show : R.mipmap.pwd_hide);
+                confirmPassword.setInputType(inputTypeConfirm);
+                confirmPassword.setSelection(confirmPassword.getText().toString().length());//光标聚焦到行尾
+                break;
+            case R.id.tv_login:
+                startActivity(new Intent(this, LoginActivity.class));
+                break;
+        }
+    }
+
+    private void register(String userName, String password) {
+        RegisterReq registerReq = new RegisterReq(userName, password);
+        registerReq.sendRequest(new MyCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                if (!TextUtils.isEmpty(result)) {
+                    Gson gson = new Gson();
+                    RegisterRsp rsp = (RegisterRsp) BaseResponse.getRsp(result, RegisterRsp.class);
+                    if (rsp != null) {
+                        if (rsp.result == Constance.HTTP_SUCCESS) {
+                            User user = gson.fromJson(gson.toJson(rsp.resultData), User.class);
+                            if (user != null) {
+                                UserDao.saveUser(user);
+                                UiUtils.showTipToast(true, getString(R.string.register_success));
+                            }
+                        } else {
+                            UiUtils.showTipToast(false, rsp.failReason);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
 
 }
