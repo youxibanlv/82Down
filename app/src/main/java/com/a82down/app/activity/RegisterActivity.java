@@ -99,7 +99,9 @@ public class RegisterActivity extends BaseActivity {
                 confirmPassword.setSelection(confirmPassword.getText().toString().length());//光标聚焦到行尾
                 break;
             case R.id.tv_login:
-                startActivity(new Intent(this, LoginActivity.class));
+                Intent intent = new Intent(this,LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
         }
     }

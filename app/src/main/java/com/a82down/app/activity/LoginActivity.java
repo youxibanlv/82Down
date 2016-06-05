@@ -114,7 +114,9 @@ public class LoginActivity extends BaseActivity {
 
                 break;
             case R.id.tv_register:
-                this.startActivity(new Intent(this,RegisterActivity.class));
+                Intent intent = new Intent(this,RegisterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             case R.id.btn_qq:
 

@@ -1,113 +1,98 @@
 package com.a82down.app;
 
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 
 import com.a82down.app.base.BaseActivity;
-import com.a82down.app.db.dao.UserDao;
-import com.a82down.app.db.table.User;
-import com.a82down.app.http.BaseResponse;
-import com.a82down.app.http.Constance;
-import com.a82down.app.http.MyCallBack;
-import com.a82down.app.http.request.LoginReq;
-import com.a82down.app.http.request.RegisterReq;
-import com.a82down.app.http.response.LoginRsp;
-import com.a82down.app.http.response.RegisterRsp;
-import com.a82down.app.utils.UiUtils;
+import com.a82down.app.base.BaseFragment;
+import com.a82down.app.view.IconTabPageIndicator;
+import com.a82down.app.view.TabAdapter;
 
 import org.xutils.view.annotation.ContentView;
-import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
-import gson.Gson;
+import java.util.ArrayList;
+import java.util.List;
 
 @ContentView(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
 
-    @ViewInject(R.id.et_user)
-    private EditText etUser;
+    /**
+     * The instance.
+     */
+    public static MainActivity instance;
 
-    @ViewInject(R.id.et_pass)
-    private EditText etPass;
+    /**
+     * The Constant TAG.
+     */
+    private static final String TAG = MainActivity.class.getSimpleName();
 
-    @ViewInject(R.id.btn_login)
-    private Button btnLogin;
+    @ViewInject(R.id.indicator)
+    private IconTabPageIndicator mIndicator;
 
-    @ViewInject(R.id.btn_register)
-    private Button btnRegister;
+    @ViewInject(R.id.view_pager)
+    private ViewPager mViewPager;
+
+    private long mExitTime;
+
+    private TabAdapter mAdapter;
 
 
-    @Event(value = {R.id.btn_login, R.id.btn_register})
-    private void getEvent(View view) {
-        String userName = etUser.getText().toString();
-        String password = etPass.getText().toString();
-        switch (view.getId()) {
-            case R.id.btn_login:
-                login(userName, password);
-                break;
-            case R.id.btn_register:
-                register(userName, password);
-                break;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        instance = this;
+
+        List<BaseFragment> fragments = initFragments();
+        mAdapter = new TabAdapter(fragments, getSupportFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(3);//三页都进行预加载，避免每次都多次切换进行重新创建
+        mIndicator.setViewPager(mViewPager);
+    }
+
+    public void setCurrentFragment(int position) {
+        mViewPager.setCurrentItem(position);
+        BaseFragment baseFragment = (BaseFragment) mAdapter.instantiateItem(mViewPager, position);
+        baseFragment.freshView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mViewPager != null) {
+            int curItem = mViewPager.getCurrentItem();
+            if (mAdapter != null && mAdapter.getCount() > curItem) {
+                BaseFragment baseFragment = (BaseFragment) mAdapter.instantiateItem(mViewPager, curItem);
+                baseFragment.freshView();
+            }
         }
     }
 
-    private void login(String userName, String password) {
-        LoginReq loginReq = new LoginReq(userName,password);
-        loginReq.sendRequest(new MyCallBack() {
-            @Override
-            public void onSuccess(String result) {
-                if (!TextUtils.isEmpty(result)){
-                    Gson gson = new Gson();
-                    LoginRsp rsp = (LoginRsp) BaseResponse.getRsp(result,LoginRsp.class);
-                    if (rsp!= null){
-                        if (rsp.result == Constance.HTTP_SUCCESS){
-                            User user = gson.fromJson(gson.toJson(rsp.resultData), User.class);
-                            if (user != null) {
-                                UserDao.saveUser(user);
-                                UiUtils.showTipToast(true, getString(R.string.register_success));
-                            }
-                        }else{
-                            UiUtils.showTipToast(false, rsp.failReason);
-                        }
-                    }
-                }
-            }
+    private List<BaseFragment> initFragments() {
+        List<BaseFragment> fragments = new ArrayList<BaseFragment>();
 
-            @Override
-            public void onFinished() {
 
-            }
-        });
+
+        return fragments;
     }
 
-    private void register(String userName, String password) {
-        RegisterReq registerReq = new RegisterReq(userName, password);
-        registerReq.sendRequest(new MyCallBack() {
-            @Override
-            public void onSuccess(String result) {
-                if (!TextUtils.isEmpty(result)) {
-                    Gson gson = new Gson();
-                    RegisterRsp rsp = (RegisterRsp) BaseResponse.getRsp(result,RegisterRsp.class);
-                    if (rsp != null) {
-                        if (rsp.result == Constance.HTTP_SUCCESS) {
-                            User user = gson.fromJson(gson.toJson(rsp.resultData), User.class);
-                            if (user != null) {
-                                UserDao.saveUser(user);
-                                UiUtils.showTipToast(true, getString(R.string.register_success));
-                            }
-                        } else {
-                            UiUtils.showTipToast(false, rsp.failReason);
-                        }
-                    }
-                }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - mExitTime > 2000) {
+//                showTipToast(true, getString(R.string.click_to_close));
+                mExitTime = System.currentTimeMillis();
+            } else {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+                android.os.Process.killProcess(android.os.Process.myPid());
             }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
