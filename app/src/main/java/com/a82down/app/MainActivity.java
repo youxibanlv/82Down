@@ -7,6 +7,11 @@ import android.view.KeyEvent;
 
 import com.a82down.app.base.BaseActivity;
 import com.a82down.app.base.BaseFragment;
+import com.a82down.app.fragment.AppFragment;
+import com.a82down.app.fragment.ArticleFragment;
+import com.a82down.app.fragment.GameFragment;
+import com.a82down.app.fragment.RecommendFragment;
+import com.a82down.app.utils.UiUtils;
 import com.a82down.app.view.IconTabPageIndicator;
 import com.a82down.app.view.TabAdapter;
 
@@ -48,7 +53,7 @@ public class MainActivity extends BaseActivity {
         List<BaseFragment> fragments = initFragments();
         mAdapter = new TabAdapter(fragments, getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(3);//三页都进行预加载，避免每次都多次切换进行重新创建
+        mViewPager.setOffscreenPageLimit(fragments.size());//三页都进行预加载，避免每次都多次切换进行重新创建
         mIndicator.setViewPager(mViewPager);
     }
 
@@ -72,8 +77,25 @@ public class MainActivity extends BaseActivity {
 
     private List<BaseFragment> initFragments() {
         List<BaseFragment> fragments = new ArrayList<BaseFragment>();
+        BaseFragment recommend = new RecommendFragment();
+        recommend.setTitle("推荐");
+        recommend.setIconId(R.drawable.recommend_icon_selector);
+        fragments.add(recommend);
 
+        BaseFragment game = new GameFragment();
+        game.setTitle("游戏");
+        game.setIconId(R.drawable.recommend_icon_selector);
+        fragments.add(game);
 
+        BaseFragment app = new AppFragment();
+        app.setTitle("应用");
+        app.setIconId(R.drawable.recommend_icon_selector);
+        fragments.add(app);
+
+        BaseFragment article = new ArticleFragment();
+        article.setTitle("软文");
+        article.setIconId(R.drawable.recommend_icon_selector);
+        fragments.add(article);
 
         return fragments;
     }
@@ -82,7 +104,7 @@ public class MainActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (System.currentTimeMillis() - mExitTime > 2000) {
-//                showTipToast(true, getString(R.string.click_to_close));
+                UiUtils.showTipToast(true,getString(R.string.press_to_exit));
                 mExitTime = System.currentTimeMillis();
             } else {
                 Intent intent = new Intent(Intent.ACTION_MAIN);

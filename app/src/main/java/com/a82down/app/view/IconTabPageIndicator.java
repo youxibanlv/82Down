@@ -33,7 +33,7 @@ public class IconTabPageIndicator extends LinearLayout implements PageIndicator 
     private ViewPager.OnPageChangeListener mListener;
     private int mSelectedTabIndex;
     private OnTabReselectedListener mTabReselectedListener;
-    private final OnClickListener mTabClickListener = new OnClickListener() {
+    private final View.OnClickListener mTabClickListener = new View.OnClickListener() {
         public void onClick(View view) {
             TabView tabView = (TabView) view;
             final int oldSelected = mViewPager.getCurrentItem();
@@ -64,8 +64,8 @@ public class IconTabPageIndicator extends LinearLayout implements PageIndicator 
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        final boolean lockedExpanded = widthMode == MeasureSpec.EXACTLY;
+        final int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
+        final boolean lockedExpanded = widthMode == View.MeasureSpec.EXACTLY;
 
         final int childCount = mTabLayout.getChildCount();
 
@@ -126,7 +126,7 @@ public class IconTabPageIndicator extends LinearLayout implements PageIndicator 
             tabView.setIcon(iconResId);
         }
 
-        mTabLayout.addView(tabView, new LayoutParams(0, MATCH_PARENT, 1));
+        mTabLayout.addView(tabView, new LinearLayout.LayoutParams(0, MATCH_PARENT, 1));
     }
 
     @Override

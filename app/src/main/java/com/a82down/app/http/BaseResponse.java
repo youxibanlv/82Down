@@ -27,9 +27,9 @@ public class BaseResponse {
                 if (rsp == null){
                     rsp = new BaseResponse();
                 }
+                LogFactory.e("response :"+ result);
             }
         }
-        LogFactory.e("response :"+ result);
         return rsp;
     }
 }
