@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/wdp60"
+    android:background="@color/light_black"
+    android:orientation="vertical">
+    <com.a82down.app.view.RoundImageView
+        android:id="@+id/rv_user_icon"
+        android:layout_width="@dimen/wdp45"
+        android:layout_height="@dimen/wdp45"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/wdp20"
+        android:src="@mipmap/user_icon"/>
+    <ImageView
+        android:id="@+id/iv_manager"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/wdp45"
+        android:layout_marginRight="@dimen/wdp20"
+        android:src="@mipmap/icon_manager"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"/>
+    <EditText
+        android:id="@+id/edt_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/wdp45"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/iv_manager"
+        android:layout_toRightOf="@id/rv_user_icon"
+        android:layout_marginLeft="@dimen/wdp20"
+        android:layout_marginRight="@dimen/wdp20"
+        android:background="@mipmap/bg_search"
+        android:drawableRight="@mipmap/icon_search"
+        android:paddingRight="@dimen/wdp25"
+        android:paddingLeft="@dimen/wdp20"
+        android:hint="热搜词"
+        android:textColorHint="@android:color/holo_orange_light"
+        android:textSize="@dimen/wdp24"
+        />
+
+   <!-- <EditText
+        android:id="@+id/edt_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/wdp45"
+        android:layout_toRightOf="@id/rv_user_icon"
+        android:layout_toLeftOf="@id/iv_manager"
+        android:layout_marginLeft="@dimen/wdp25"
+        android:layout_centerVertical="true"
+        android:hint="热搜词"
+        android:textColorHint="@color/white"
+        android:textSize="@dimen/wdp24"
+        android:paddingLeft="@dimen/wdp15"
+        android:textColor="@color/white"
+        android:drawableRight="@mipmap/icon_search"
+        android:paddingRight="@dimen/wdp30"
+        android:layout_margin="@dimen/wdp25"
+        android:background="@mipmap/bg_search"/>-->
+
+</RelativeLayout>

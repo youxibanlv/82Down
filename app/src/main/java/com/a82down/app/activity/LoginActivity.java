@@ -63,7 +63,7 @@ public class LoginActivity extends BaseActivity {
                     LoginRsp rsp = (LoginRsp) BaseResponse.getRsp(result,LoginRsp.class);
                     if (rsp!= null){
                         if (rsp.result == Constance.HTTP_SUCCESS){
-                            User user = gson.fromJson(gson.toJson(rsp.resultData), User.class);
+                             User user = gson.fromJson(gson.toJson(rsp.resultData), User.class);
                             if (user != null) {
                                 UserDao.saveUser(user);
                                 UiUtils.showTipToast(true, getString(R.string.login_success));

@@ -13,17 +13,19 @@ public class UrlConfig {
     /***
      * 服务器地址
      * **/
-//    public static String BASE_URL = "http://192.168.98.108/82down/app/";//baidudu
+    public static String BASE_URL = "http://192.168.98.108/82down/app/";//baidudu
 //    public static String BASE_URL = "http://192.168.206.22/82down/app/";//公司
-    public static String BASE_URL = "http://123.57.86.113/app/";//外网
+//    public static String BASE_URL = "http://123.57.86.113/app/";//外网
 
-    //注册登录相关
-    public static String GET_VERIFY_CODE = BASE_URL+"userService.php";
-
+    //用户相关
+    public static String USER_SERVICE = BASE_URL+"userService.php";
+    //应用香港
+    public static String APP_SERVICE = BASE_URL+"appService.php";
 
 
     static {
-        URL_MAP.put("userService",GET_VERIFY_CODE);
+        URL_MAP.put("userService",USER_SERVICE);
+        URL_MAP.put("appService",APP_SERVICE);
     }
 
 

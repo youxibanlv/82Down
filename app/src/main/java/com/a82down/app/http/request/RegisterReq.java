@@ -9,18 +9,18 @@ import org.xutils.common.util.MD5;
  */
 public class RegisterReq extends BaseRequest {
 
-    RequestParams requestParams;
+    RequestParam requestParams;
 
     public RegisterReq(String name,String password){
         cmdType = "userService";
         methodName = "register";
-        requestParams = new RequestParams(name,password);
+        requestParams = new RequestParam(name,password);
     }
 
-    class RequestParams{
+    class RequestParam{
         String username;
         String password;
-        public RequestParams(String name,String pass){
+        public RequestParam(String name,String pass){
             username = name;
             password = MD5.md5(pass);
         }
