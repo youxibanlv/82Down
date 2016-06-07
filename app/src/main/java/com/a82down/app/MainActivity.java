@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity {
     @ViewInject(R.id.view_pager)
     private ViewPager mViewPager;
 
+
     private long mExitTime;
 
     private TabAdapter mAdapter;

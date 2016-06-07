@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.a82down.app.MainActivity;
 import com.a82down.app.R;
 import com.a82down.app.base.BaseActivity;
 import com.a82down.app.db.dao.UserDao;
@@ -14,7 +15,9 @@ import com.a82down.app.db.table.User;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
 import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.request.LoginReq;
 import com.a82down.app.http.request.RegisterReq;
+import com.a82down.app.http.response.LoginRsp;
 import com.a82down.app.http.response.RegisterRsp;
 import com.a82down.app.utils.UiUtils;
 import com.a82down.app.utils.VerifyUtils;
@@ -106,7 +109,7 @@ public class RegisterActivity extends BaseActivity {
         }
     }
 
-    private void register(String userName, String password) {
+    private void register(final String userName, final String password) {
         RegisterReq registerReq = new RegisterReq(userName, password);
         showProgressDialogCloseDelay("正在注册，请稍后...",Constance.DEFAULT_TIMEOUT);
         registerReq.sendRequest(new MyCallBack() {
@@ -122,8 +125,41 @@ public class RegisterActivity extends BaseActivity {
                             if (user != null) {
                                 UserDao.saveUser(user);
                                 UiUtils.showTipToast(true, getString(R.string.register_success));
+                                login(userName,password);
                             }
                         } else {
+                            UiUtils.showTipToast(false, rsp.failReason);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
+    }
+
+    private void login(String userName, String password) {
+        LoginReq loginReq = new LoginReq(userName,password);
+        showProgressDialogCloseDelay("登录中，请稍后...",Constance.DEFAULT_TIMEOUT);
+        loginReq.sendRequest(new MyCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                dismissProgressDialog();
+                if (!TextUtils.isEmpty(result)){
+                    Gson gson = new Gson();
+                    LoginRsp rsp = (LoginRsp) BaseResponse.getRsp(result,LoginRsp.class);
+                    if (rsp!= null){
+                        if (rsp.result == Constance.HTTP_SUCCESS){
+                            User user = gson.fromJson(gson.toJson(rsp.resultData), User.class);
+                            if (user != null) {
+                                UserDao.saveUser(user);
+                                UiUtils.showTipToast(true, getString(R.string.login_success));
+                                RegisterActivity.this.startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                                RegisterActivity.this.finish();
+                            }
+                        }else{
                             UiUtils.showTipToast(false, rsp.failReason);
                         }
                     }
@@ -136,5 +172,4 @@ public class RegisterActivity extends BaseActivity {
             }
         });
     }
-
 }

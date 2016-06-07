@@ -1,6 +1,8 @@
 package com.a82down.app.view;
 
 import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.a82down.app.R;
+import com.a82down.app.activity.LoginActivity;
+import com.a82down.app.activity.UserInfoActivity;
+import com.a82down.app.db.dao.UserDao;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -39,11 +44,17 @@ public class TitleBar extends RelativeLayout {
     public TitleBar(Context context) {
         super(context);
     }
+
     @Event(value = {R.id.rv_user_icon,R.id.iv_manager,R.id.edt_search})
     private void getEvent(View view){
         switch (view.getId()){
             case R.id.rv_user_icon://用户信息界面
-
+                String token = UserDao.getToken();
+                if (TextUtils.isEmpty(token)){
+                    getContext().startActivity(new Intent(getContext(), LoginActivity.class));
+                }else{
+                    getContext().startActivity(new Intent(getContext(), UserInfoActivity.class));
+                }
                 break;
             case R.id.iv_manager://app管理界面
 
@@ -53,4 +64,5 @@ public class TitleBar extends RelativeLayout {
                 break;
         }
     }
+
 }

@@ -30,11 +30,37 @@ public class UserDao {
         if (user!= null){
             DbManager dbManager = MyApplication.getAppDb();
             try {
-                dbManager.saveOrUpdate(user);
+                dbManager.delete(User.class);
+                dbManager.save(user);
             } catch (DbException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    public static User getUser(){
+        DbManager dbManager = MyApplication.getAppDb();
+        User user = null;
+        try {
+            user = dbManager.findFirst(User.class);
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public static String getToken(){
+        String token = "";
+        User user = getUser();
+        if (user != null){
+            token = user.getToken();
+        }
+        return token;
+    }
+
+    public static void logOut(){
+        User user = getUser();
+        user.setToken("");
+        saveUser(user);
+    }
 }

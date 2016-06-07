@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.a82down.app.MainActivity;
 import com.a82down.app.R;
 import com.a82down.app.base.BaseActivity;
 import com.a82down.app.db.dao.UserDao;
@@ -67,6 +68,8 @@ public class LoginActivity extends BaseActivity {
                             if (user != null) {
                                 UserDao.saveUser(user);
                                 UiUtils.showTipToast(true, getString(R.string.login_success));
+                                LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                LoginActivity.this.finish();
                             }
                         }else{
                             UiUtils.showTipToast(false, rsp.failReason);

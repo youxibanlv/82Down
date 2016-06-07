@@ -1,6 +1,7 @@
 package com.a82down.app.http;
 
 import com.a82down.app.base.AppConfig;
+import com.a82down.app.db.dao.UserDao;
 import com.a82down.app.utils.LogFactory;
 
 import org.xutils.common.Callback;
@@ -40,11 +41,13 @@ public class BaseRequest {
 
     public String getRequestData(){
         Gson gson = new Gson();
+        token = UserDao.getToken();
         return gson.toJson(this);
     }
 
     public void sendRequest(Callback.CommonCallback<String> callback){
         final Callback.CommonCallback<String> callback1 = callback;
+        LogFactory.e("url:"+UrlConfig.getUrl(cmdType));
         this.postRequest(UrlConfig.getUrl(cmdType),this.getRequestData(),callback);
     }
 

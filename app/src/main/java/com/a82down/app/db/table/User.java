@@ -8,8 +8,11 @@ import org.xutils.db.annotation.Table;
  */
 @Table(name = "appcms_user")
 public class User {
-    @Column(name = "uid", isId = true)
-    private int uid;//用户id
+    @Column(name = "id", isId = true)
+    private int id;
+
+    @Column(name = "uid")
+    private String uid;//用户id
 
     @Column(name = "username")
     private String username;//账号
@@ -35,11 +38,19 @@ public class User {
     @Column(name = "point")
     private int point;//积分点
 
-    public int getUid() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -105,20 +116,5 @@ public class User {
 
     public void setPoint(int point) {
         this.point = point;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "uid=" + uid +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", token='" + token + '\'' +
-                ", phone=" + phone +
-                ", nickname='" + nickname + '\'' +
-                ", icon='" + icon + '\'' +
-                ", alipay='" + alipay + '\'' +
-                ", point=" + point +
-                '}';
     }
 }

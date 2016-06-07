@@ -26,7 +26,7 @@ public class UiUtils {
         if (TextUtils.isEmpty(msg)){
             return;
         }
-        if (tempMessage.equals(msg) && waitTime<4000){
+        if (tempMessage.equals(msg) && waitTime<3000){
             return;
         }else{
             tempMessage = msg;
@@ -49,7 +49,7 @@ public class UiUtils {
         toast.setView(view);
         int yoffset = (int) AppContext.getContext().getResources().getDimension(R.dimen.wdp100);
         toast.setGravity(Gravity.CENTER, 0, yoffset);
-        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setDuration(Toast.LENGTH_SHORT);
         toast.show();
 
     }
