@@ -13,37 +13,37 @@ public class App {
     private int id;
 
     @Column(name = "app_id")
-    private String appId;
+    private String app_id;
 
     @Column(name = "last_cate_id")
     private String last_cate_id;
 
     @Column(name = "app_title")
-    private String appTitle;
+    private String app_title;
 
     @Column(name = "app_stitle")
-    private String appSitle;
+    private String app_stitle;
 
     @Column(name = "app_version")
-    private String appVersion;
+    private String app_version;
 
     @Column(name = "app_update_time")
-    private String appUpdateTime;
+    private String app_update_time;
 
     @Column(name = "app_size")
-    private String appSize;
+    private String app_size;
 
     @Column(name = "app_system")
-    private String appSystem;
+    private String app_system;
 
     @Column(name = "app_type")
-    private String appType;
+    private String app_type;
 
     @Column(name = "app_logo")
-    private String appLogo;
+    private String app_logo;
 
     @Column(name = "app_desc")
-    private String appDesc;
+    private String app_desc;
 
     public int getId() {
         return id;
@@ -53,12 +53,12 @@ public class App {
         this.id = id;
     }
 
-    public String getAppId() {
-        return appId;
+    public String getApp_id() {
+        return app_id;
     }
 
-    public void setAppId(String appId) {
-        this.appId = appId;
+    public void setApp_id(String app_id) {
+        this.app_id = app_id;
     }
 
     public String getLast_cate_id() {
@@ -69,75 +69,75 @@ public class App {
         this.last_cate_id = last_cate_id;
     }
 
-    public String getAppTitle() {
-        return appTitle;
+    public String getApp_title() {
+        return app_title;
     }
 
-    public void setAppTitle(String appTitle) {
-        this.appTitle = appTitle;
+    public void setApp_title(String app_title) {
+        this.app_title = app_title;
     }
 
-    public String getAppSitle() {
-        return appSitle;
+    public String getApp_stitle() {
+        return app_stitle;
     }
 
-    public void setAppSitle(String appSitle) {
-        this.appSitle = appSitle;
+    public void setApp_stitle(String app_stitle) {
+        this.app_stitle = app_stitle;
     }
 
-    public String getAppVersion() {
-        return appVersion;
+    public String getApp_version() {
+        return app_version;
     }
 
-    public void setAppVersion(String appVersion) {
-        this.appVersion = appVersion;
+    public void setApp_version(String app_version) {
+        this.app_version = app_version;
     }
 
-    public String getAppUpdateTime() {
-        return appUpdateTime;
+    public String getApp_update_time() {
+        return app_update_time;
     }
 
-    public void setAppUpdateTime(String appUpdateTime) {
-        this.appUpdateTime = appUpdateTime;
+    public void setApp_update_time(String app_update_time) {
+        this.app_update_time = app_update_time;
     }
 
-    public String getAppSize() {
-        return appSize;
+    public String getApp_size() {
+        return app_size;
     }
 
-    public void setAppSize(String appSize) {
-        this.appSize = appSize;
+    public void setApp_size(String app_size) {
+        this.app_size = app_size;
     }
 
-    public String getAppSystem() {
-        return appSystem;
+    public String getApp_system() {
+        return app_system;
     }
 
-    public void setAppSystem(String appSystem) {
-        this.appSystem = appSystem;
+    public void setApp_system(String app_system) {
+        this.app_system = app_system;
     }
 
-    public String getAppType() {
-        return appType;
+    public String getApp_type() {
+        return app_type;
     }
 
-    public void setAppType(String appType) {
-        this.appType = appType;
+    public void setApp_type(String app_type) {
+        this.app_type = app_type;
     }
 
-    public String getAppLogo() {
-        return appLogo;
+    public String getApp_logo() {
+        return app_logo;
     }
 
-    public void setAppLogo(String appLogo) {
-        this.appLogo = appLogo;
+    public void setApp_logo(String app_logo) {
+        this.app_logo = app_logo;
     }
 
-    public String getAppDesc() {
-        return appDesc;
+    public String getApp_desc() {
+        return app_desc;
     }
 
-    public void setAppDesc(String appDesc) {
-        this.appDesc = appDesc;
+    public void setApp_desc(String app_desc) {
+        this.app_desc = app_desc;
     }
 }
