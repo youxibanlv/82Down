@@ -1,17 +1,15 @@
 package com.a82down.app.fragment;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.a82down.app.R;
-import com.a82down.app.adapter.RecommendAdapter;
+import com.a82down.app.adapter.HomeAdapter;
 import com.a82down.app.base.BaseFragment;
-import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
 import com.a82down.app.http.MyCallBack;
@@ -20,64 +18,51 @@ import com.a82down.app.http.request.RecommendReq;
 import com.a82down.app.http.request.WheelPageReq;
 import com.a82down.app.http.response.RecommendRsp;
 import com.a82down.app.http.response.WheelPageRsp;
-import com.a82down.app.view.LoadMoreRecyclerView;
-import com.a82down.app.view.WheelViewPage;
+import com.a82down.app.utils.PullToRefreshUtils;
+import com.a82down.app.view.library.PullToRefreshBase;
+import com.a82down.app.view.library.PullToRefreshListView;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by strike on 16/6/5.
  */
 @ContentView(R.layout.fragment_recommend)
-public class RecommendFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment {
 
-    @ViewInject(R.id.swipeRefresh)
-    private SwipeRefreshLayout swipeRefresh;
+    @ViewInject(R.id.pull_to_refresh)
+    private PullToRefreshListView pull_to_refresh;
 
-    @ViewInject(R.id.rv_recommend)
-    private LoadMoreRecyclerView rv_recommend;
+    private HomeAdapter adapter;
 
-    @ViewInject(R.id.myWheelPages)
-    private WheelViewPage myWheelPages;
-
-    private RecommendAdapter adapter;
-
-    private List<App> appList = new ArrayList<>();
-
-    private int pageNo = 0,pageSize = 120,totalPage;
+    private int pageNo = 0,pageSize = 3,totalPage;
     private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = super.onCreateView(inflater, container, savedInstanceState);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        adapter = new HomeAdapter(getActivity());
+        pull_to_refresh.setAdapter(adapter);
+        pull_to_refresh.setMode(PullToRefreshBase.Mode.BOTH);
+        //初始化提示文字
+        PullToRefreshUtils.initRefresh(pull_to_refresh);
+        pull_to_refresh.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
-            public void onRefresh() {
-                pageNo = 0;
-//                getRecommend(pageNo,pageSize,false);
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 getWheelPage();
             }
-        });
-        rv_recommend.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        adapter = new RecommendAdapter(appList);
-        adapter.switchMode(true);
-        rv_recommend.setAdapter(adapter);
-        rv_recommend.setAutoLoadMoreEnable(true);
-        rv_recommend.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {
+
             @Override
-            public void onLoadMore() {
-                if (pageNo ++ > totalPage){
-                    pageNo = totalPage;
-                }
-                getRecommend(pageNo,pageSize,true);
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+
             }
         });
-        adapter.notifyDataSetChanged();
-//        getRecommend(pageNo,pageSize,false);
+        //加载轮播图片
+        getWheelPage();
+
         return view;
     }
 
@@ -91,19 +76,18 @@ public class RecommendFragment extends BaseFragment {
                     if (rsp!= null && rsp.result == Constance.HTTP_SUCCESS){
                         List<WheelPage> list = rsp.getWheelPages();
                         if (list!= null && list.size()>0){
-                            myWheelPages.setViewPage(list);
+                           adapter.setWheelPages(list);
                         }
                     }
                 }
             }
-
             @Override
             public void onFinished() {
-                swipeRefresh.setRefreshing(false);
+                pull_to_refresh.onRefreshComplete();
             }
         });
     }
-
+    //加载精品推荐
     private void getRecommend(final int pageNo, int pageSize, final boolean isLoadMore){
         RecommendReq req = new RecommendReq(String.valueOf(pageNo),String.valueOf(pageSize),"0");
         req.sendRequest(new MyCallBack() {
@@ -111,31 +95,26 @@ public class RecommendFragment extends BaseFragment {
             public void onSuccess(String result) {
                 RecommendRsp rsp = (RecommendRsp) BaseResponse.getRsp(result,RecommendRsp.class);
                 if (rsp.result == Constance.HTTP_SUCCESS){
-                    appList = rsp.getAppList();
+//                    appList = rsp.getAppList();
                     totalPage = rsp.getTotalPage();
-                    if (appList != null && appList.size()>0){
-                        if (isLoadMore){
-                            //上拉加载
-                            adapter.addDatas(appList);
-                            rv_recommend.notifyMoreFinish(pageNo< totalPage?true:false);
-                            adapter.notifyDataSetChanged();
-                        }else{
-                            //下拉刷新
-                            rv_recommend.setHasFixedSize(true);
-                            swipeRefresh.setRefreshing(false);
-                            adapter.setData(appList);
-                            adapter.notifyDataSetChanged();
-                        }
+//                    if (appList != null && appList.size()>0){
+//                        if (isLoadMore){
+//                            //上拉加载
+//
+//                        }else{
+//                            //下拉刷新
+//
+//                        }
 
 //                        AppDao.saveAppList(appList);
 
-                    }
+//                    }
                 }
             }
 
             @Override
             public void onFinished() {
-                swipeRefresh.setRefreshing(false);
+//                swipeRefresh.setRefreshing(false);
             }
         });
     }

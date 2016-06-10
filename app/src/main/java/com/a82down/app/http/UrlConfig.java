@@ -13,14 +13,14 @@ public class UrlConfig {
     /***
      * 服务器地址
      * **/
-    public static String BASE_URL = "http://192.168.98.108/82down/";//baidudu
-//    public static String BASE_URL = "http://192.168.206.22/82down/";//公司
-//    public static String BASE_URL = "http://123.57.86.113/";//外网
+    public static String BASE_URL = "http://192.168.98.108/82down";//baidudu
+//    public static String BASE_URL = "http://192.168.206.22/82down";//公司
+//    public static String BASE_URL = "http://123.57.86.113";//外网
 
     //用户相关
-    public static String USER_SERVICE = BASE_URL+"app/userService.php";
+    public static String USER_SERVICE = BASE_URL+"/app/userService.php";
     //应用香港
-    public static String APP_SERVICE = BASE_URL+"app/appService.php";
+    public static String APP_SERVICE = BASE_URL+"/app/appService.php";
 
 
     static {

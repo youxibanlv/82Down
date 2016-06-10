@@ -9,7 +9,7 @@ import org.xutils.db.annotation.Table;
 @Table(name = "appcms_app")
 public class App {
 
-    @Column(name = "id",isId = true)
+    @Column(name = "id", isId = true)
     private int id;
 
     @Column(name = "app_id")
@@ -44,6 +44,60 @@ public class App {
 
     @Column(name = "app_desc")
     private String app_desc;
+
+    @Column(name = "app_company")
+    private String app_company;
+
+    @Column(name = "app_company_url")
+    private String app_company_url;
+
+    @Column(name = "app_tags")
+    private String app_tags;
+
+    @Column(name = "create_time")
+    private String create_time;
+
+    @Column(name = "app_grade")
+    private String app_grade;
+
+    @Column(name = "app_recomment")
+    private String app_recomment;
+
+    @Column(name = "uid")
+    private String uid;
+
+    @Column(name = "uname")
+    private String uname;
+
+    @Column(name = "app_comments")
+    private String app_comments;
+
+    @Column(name = "app_visitors")
+    private String app_visitors;
+
+    @Column(name = "app_down")
+    private String app_down;
+
+    @Column(name = "app_order")
+    private String app_order;
+
+    @Column(name = "data_app_id")
+    private String data_app_id;
+
+    @Column(name = "charge_app_id")
+    private String charge_app_id;
+
+    @Column(name = "rewrite_tag")
+    private String rewrite_tag;
+
+    @Column(name = "seo_title")
+    private String seo_title;
+
+    @Column(name = "seo_keywords")
+    private String seo_keywords;
+
+    @Column(name = "seo_desc")
+    private String seo_desc;
 
     public int getId() {
         return id;
@@ -139,5 +193,149 @@ public class App {
 
     public void setApp_desc(String app_desc) {
         this.app_desc = app_desc;
+    }
+
+    public String getApp_company() {
+        return app_company;
+    }
+
+    public void setApp_company(String app_company) {
+        this.app_company = app_company;
+    }
+
+    public String getApp_company_url() {
+        return app_company_url;
+    }
+
+    public void setApp_company_url(String app_company_url) {
+        this.app_company_url = app_company_url;
+    }
+
+    public String getApp_tags() {
+        return app_tags;
+    }
+
+    public void setApp_tags(String app_tags) {
+        this.app_tags = app_tags;
+    }
+
+    public String getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
+    }
+
+    public String getApp_grade() {
+        return app_grade;
+    }
+
+    public void setApp_grade(String app_grade) {
+        this.app_grade = app_grade;
+    }
+
+    public String getApp_recomment() {
+        return app_recomment;
+    }
+
+    public void setApp_recomment(String app_recomment) {
+        this.app_recomment = app_recomment;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
+    public String getApp_comments() {
+        return app_comments;
+    }
+
+    public void setApp_comments(String app_comments) {
+        this.app_comments = app_comments;
+    }
+
+    public String getApp_visitors() {
+        return app_visitors;
+    }
+
+    public void setApp_visitors(String app_visitors) {
+        this.app_visitors = app_visitors;
+    }
+
+    public String getApp_down() {
+        return app_down;
+    }
+
+    public void setApp_down(String app_down) {
+        this.app_down = app_down;
+    }
+
+    public String getApp_order() {
+        return app_order;
+    }
+
+    public void setApp_order(String app_order) {
+        this.app_order = app_order;
+    }
+
+    public String getData_app_id() {
+        return data_app_id;
+    }
+
+    public void setData_app_id(String data_app_id) {
+        this.data_app_id = data_app_id;
+    }
+
+    public String getCharge_app_id() {
+        return charge_app_id;
+    }
+
+    public void setCharge_app_id(String charge_app_id) {
+        this.charge_app_id = charge_app_id;
+    }
+
+    public String getRewrite_tag() {
+        return rewrite_tag;
+    }
+
+    public void setRewrite_tag(String rewrite_tag) {
+        this.rewrite_tag = rewrite_tag;
+    }
+
+    public String getSeo_title() {
+        return seo_title;
+    }
+
+    public void setSeo_title(String seo_title) {
+        this.seo_title = seo_title;
+    }
+
+    public String getSeo_keywords() {
+        return seo_keywords;
+    }
+
+    public void setSeo_keywords(String seo_keywords) {
+        this.seo_keywords = seo_keywords;
+    }
+
+    public String getSeo_desc() {
+        return seo_desc;
+    }
+
+    public void setSeo_desc(String seo_desc) {
+        this.seo_desc = seo_desc;
     }
 }

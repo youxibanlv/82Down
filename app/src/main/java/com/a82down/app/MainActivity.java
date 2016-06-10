@@ -10,7 +10,7 @@ import com.a82down.app.base.BaseFragment;
 import com.a82down.app.fragment.AppFragment;
 import com.a82down.app.fragment.ArticleFragment;
 import com.a82down.app.fragment.GameFragment;
-import com.a82down.app.fragment.RecommendFragment;
+import com.a82down.app.fragment.HomeFragment;
 import com.a82down.app.utils.UiUtils;
 import com.a82down.app.view.IconTabPageIndicator;
 import com.a82down.app.view.TabAdapter;
@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity {
 
     private List<BaseFragment> initFragments() {
         List<BaseFragment> fragments = new ArrayList<BaseFragment>();
-        BaseFragment recommend = new RecommendFragment();
+        BaseFragment recommend = new HomeFragment();
         recommend.setTitle("推荐");
         recommend.setIconId(R.drawable.recommend_icon_selector);
         fragments.add(recommend);

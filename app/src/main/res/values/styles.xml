@@ -23,9 +23,19 @@
     </style>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <!--<item name="android:windowAnimationStyle">@style/default_animation</item>-->
         <item name="android:windowNoTitle">true</item>
         <item name="tabView">@style/TabView</item>
-        <!--  <item name="tabView">@style/TabView</item>-->
+    </style>
+    <!-- 灰色星星评分 -->
+    <style name="RatingBar.Grey" parent="@android:style/Widget.RatingBar">
+        <item name="android:maxHeight">12dp</item>
+        <item name="android:progressDrawable">@mipmap/star_gray</item>
+        <item name="android:minHeight">12dp</item>
+    </style>
+    <!-- bai色星星评分 -->
+    <style name="RatingBar.white" parent="@android:style/Widget.RatingBar">
+        <item name="android:maxHeight">12dp</item>
+        <item name="android:progressDrawable">@mipmap/star_yellow</item>
+        <item name="android:minHeight">12dp</item>
     </style>
 </resources>

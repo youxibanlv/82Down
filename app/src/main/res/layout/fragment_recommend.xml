@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.a82down.app.view.WheelViewPage
-        android:id="@+id/myWheelPages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
-        android:layout_below="@id/myWheelPages"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.a82down.app.view.LoadMoreRecyclerView
-            android:id="@+id/rv_recommend"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="LinearLayoutManager"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+   <com.a82down.app.view.library.PullToRefreshListView
+       android:id="@+id/pull_to_refresh"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:fastScrollEnabled="false"
+       android:footerDividersEnabled="false"
+       android:headerDividersEnabled="false"
+       android:paddingBottom="30dp"
+       android:scrollbars="none"
+       android:smoothScrollbar="true" />
 </RelativeLayout>

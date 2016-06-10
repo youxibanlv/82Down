@@ -34,7 +34,7 @@ public class ImageAdapter extends PagerAdapter {
         if (list!= null && list.size()>0){
             for (WheelPage wheelPage : list) {
                 ImageView imageView = new ImageView(context);
-                x.image().bind(imageView, UrlConfig.BASE_URL.substring(0,UrlConfig.BASE_URL.length()-1)+wheelPage.getResource_url(),options);
+                x.image().bind(imageView, UrlConfig.BASE_URL+wheelPage.getResource_url(),options);
                 imageViews.add(imageView);
             }
         }
