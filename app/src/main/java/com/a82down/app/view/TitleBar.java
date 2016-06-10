@@ -25,13 +25,16 @@ import org.xutils.x;
 public class TitleBar extends RelativeLayout {
 
     @ViewInject(R.id.rv_user_icon)
-    private RoundImageView rvUserIcon;
+    private ImageView rvUserIcon;
 
     @ViewInject(R.id.iv_manager)
     private ImageView ivManager;
 
     @ViewInject(R.id.edt_search)
     private EditText edtSearch;
+
+    @ViewInject(R.id.btn_search)
+    private ImageView btn_search;
 
     private View view;
 
@@ -45,7 +48,7 @@ public class TitleBar extends RelativeLayout {
         super(context);
     }
 
-    @Event(value = {R.id.rv_user_icon,R.id.iv_manager,R.id.edt_search})
+    @Event(value = {R.id.rv_user_icon,R.id.iv_manager,R.id.btn_search})
     private void getEvent(View view){
         switch (view.getId()){
             case R.id.rv_user_icon://用户信息界面
@@ -59,7 +62,7 @@ public class TitleBar extends RelativeLayout {
             case R.id.iv_manager://app管理界面
 
                 break;
-            case R.id.edt_search://搜索界面
+            case R.id.btn_search://搜索界面
 
                 break;
         }

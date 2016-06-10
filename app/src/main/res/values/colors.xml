@@ -7,5 +7,8 @@
     <color name="bg_divider">#999999</color>
     <color name="tab_text_normal">#696969</color>
     <color name="tab_text_selected">#147895</color>
-    <color name="light_black">#15000000</color>
+    <color name="light_black">#313030</color>
+
+
+    <color name="text_gray">#b4b4b4</color>
 </resources>

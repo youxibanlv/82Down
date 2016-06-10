@@ -4,10 +4,10 @@
     android:layout_height="@dimen/wdp80"
     android:background="@color/light_black"
     android:orientation="vertical">
-    <com.a82down.app.view.RoundImageView
+    <ImageView
         android:id="@+id/rv_user_icon"
-        android:layout_width="@dimen/wdp55"
-        android:layout_height="@dimen/wdp55"
+        android:layout_width="@dimen/wdp45"
+        android:layout_height="@dimen/wdp45"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/wdp20"
         android:src="@mipmap/user_icon"/>
@@ -19,21 +19,33 @@
         android:src="@mipmap/icon_manager"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"/>
-    <EditText
-        android:id="@+id/edt_search"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/wdp55"
-        android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/iv_manager"
-        android:layout_toRightOf="@id/rv_user_icon"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/wdp20"
         android:layout_marginRight="@dimen/wdp20"
-        android:background="@mipmap/bg_search"
-        android:drawableRight="@mipmap/icon_search"
-        android:paddingRight="@dimen/wdp25"
-        android:paddingLeft="@dimen/wdp20"
-        android:hint="热搜词"
-        android:textColorHint="@android:color/holo_orange_light"
-        android:textSize="@dimen/wdp24"
-        />
+        android:layout_toRightOf="@id/rv_user_icon">
+        <EditText
+            android:id="@+id/edt_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/bg_search"
+            android:paddingRight="@dimen/wdp25"
+            android:paddingLeft="@dimen/wdp20"
+            android:hint="输入搜索关键词"
+            android:textColorHint="@color/text_gray"
+            android:textSize="@dimen/wdp24"
+            />
+        <ImageView
+            android:id="@+id/btn_search"
+            android:layout_width="@dimen/wdp40"
+            android:layout_height="@dimen/wdp40"
+            android:layout_marginRight="@dimen/wdp20"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_search"/>
+    </RelativeLayout>
+
 </RelativeLayout>

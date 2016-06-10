@@ -3,6 +3,7 @@ package com.a82down.app.fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,13 @@ import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
 import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.entity.WheelPage;
 import com.a82down.app.http.request.RecommendReq;
+import com.a82down.app.http.request.WheelPageReq;
 import com.a82down.app.http.response.RecommendRsp;
+import com.a82down.app.http.response.WheelPageRsp;
 import com.a82down.app.view.LoadMoreRecyclerView;
+import com.a82down.app.view.WheelViewPage;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -36,6 +41,9 @@ public class RecommendFragment extends BaseFragment {
     @ViewInject(R.id.rv_recommend)
     private LoadMoreRecyclerView rv_recommend;
 
+    @ViewInject(R.id.myWheelPages)
+    private WheelViewPage myWheelPages;
+
     private RecommendAdapter adapter;
 
     private List<App> appList = new ArrayList<>();
@@ -50,7 +58,8 @@ public class RecommendFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 pageNo = 0;
-                getRecommend(pageNo,pageSize,false);
+//                getRecommend(pageNo,pageSize,false);
+                getWheelPage();
             }
         });
         rv_recommend.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
@@ -68,10 +77,32 @@ public class RecommendFragment extends BaseFragment {
             }
         });
         adapter.notifyDataSetChanged();
-        getRecommend(pageNo,pageSize,false);
+//        getRecommend(pageNo,pageSize,false);
         return view;
     }
 
+    private void getWheelPage(){
+        WheelPageReq req = new WheelPageReq();
+        req.sendRequest(new MyCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                if (!TextUtils.isEmpty(result)){
+                    WheelPageRsp rsp = (WheelPageRsp) BaseResponse.getRsp(result,WheelPageRsp.class);
+                    if (rsp!= null && rsp.result == Constance.HTTP_SUCCESS){
+                        List<WheelPage> list = rsp.getWheelPages();
+                        if (list!= null && list.size()>0){
+                            myWheelPages.setViewPage(list);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFinished() {
+                swipeRefresh.setRefreshing(false);
+            }
+        });
+    }
 
     private void getRecommend(final int pageNo, int pageSize, final boolean isLoadMore){
         RecommendReq req = new RecommendReq(String.valueOf(pageNo),String.valueOf(pageSize),"0");
@@ -104,7 +135,7 @@ public class RecommendFragment extends BaseFragment {
 
             @Override
             public void onFinished() {
-
+                swipeRefresh.setRefreshing(false);
             }
         });
     }

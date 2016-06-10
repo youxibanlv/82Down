@@ -17,9 +17,10 @@ public class RecommendRsp extends BaseResponse {
     public int getTotalPage(){
         return resultData.totalPage;
     }
+    class ResultData {
+        List<App> appList = null;
+        int totalPage;
+    }
 }
 
-class ResultData {
-     List<App> appList = null;
-     int totalPage;
-}
+

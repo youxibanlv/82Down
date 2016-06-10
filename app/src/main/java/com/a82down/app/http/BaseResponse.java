@@ -22,6 +22,12 @@ public class BaseResponse {
                     rsp = (BaseResponse) gson.fromJson(result,resultClass);
                 }
             }catch (Exception e){
+                try {
+                    Class c = Class.forName(resultClass.getName());
+                    rsp = (BaseResponse) c.newInstance();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
                 e.printStackTrace();
             }finally {
                 if (rsp == null){
