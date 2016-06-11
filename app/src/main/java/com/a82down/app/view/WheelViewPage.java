@@ -19,6 +19,7 @@ import com.a82down.app.http.entity.WheelPage;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -41,7 +42,7 @@ public class WheelViewPage extends LinearLayout {
 
     private ImageView[] mBottomImages;//底部只是当前页面的小圆点
 
-    private List<WheelPage> list;
+    private List<WheelPage> list = new ArrayList<>();
 
     private Timer timer = new Timer(); //为了方便取消定时轮播，将 Timer 设为全局
 
@@ -73,11 +74,16 @@ public class WheelViewPage extends LinearLayout {
     }
 
     public void setViewPage(List<WheelPage> pagelist) {
+        list.clear();
         list = pagelist;
+        if (list.size() <1){
+            return;
+        }
         adapter = new ImageAdapter(context, list);
         vp_hottest.setAdapter(adapter);
         mBottomImages = new ImageView[list.size()];
         //圆点指示器
+        ll_hottest_indicator.removeAllViews();
         for (int i = 0; i < mBottomImages.length; i++) {
             ImageView imageView = new ImageView(context);
             LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

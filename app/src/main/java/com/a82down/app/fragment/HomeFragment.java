@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.a82down.app.R;
 import com.a82down.app.adapter.HomeAdapter;
 import com.a82down.app.base.BaseFragment;
+import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
 import com.a82down.app.http.MyCallBack;
@@ -38,7 +39,8 @@ public class HomeFragment extends BaseFragment {
 
     private HomeAdapter adapter;
 
-    private int pageNo = 0,pageSize = 3,totalPage;
+    private int pageNo = 0,pageSize = 3,totalPage;//热门游戏部分
+    private int recommedPageNo = 0,recommendPageSize = 3;//精品推荐显示数目
     private View view;
 
     @Override
@@ -53,6 +55,7 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 getWheelPage();
+                getRecommend(recommedPageNo,recommendPageSize);
             }
 
             @Override
@@ -62,7 +65,7 @@ public class HomeFragment extends BaseFragment {
         });
         //加载轮播图片
         getWheelPage();
-
+        getRecommend(recommedPageNo,recommendPageSize);
         return view;
     }
 
@@ -88,33 +91,23 @@ public class HomeFragment extends BaseFragment {
         });
     }
     //加载精品推荐
-    private void getRecommend(final int pageNo, int pageSize, final boolean isLoadMore){
+    private void getRecommend(final int pageNo, int pageSize){
         RecommendReq req = new RecommendReq(String.valueOf(pageNo),String.valueOf(pageSize),"0");
         req.sendRequest(new MyCallBack() {
             @Override
             public void onSuccess(String result) {
                 RecommendRsp rsp = (RecommendRsp) BaseResponse.getRsp(result,RecommendRsp.class);
                 if (rsp.result == Constance.HTTP_SUCCESS){
-//                    appList = rsp.getAppList();
-                    totalPage = rsp.getTotalPage();
-//                    if (appList != null && appList.size()>0){
-//                        if (isLoadMore){
-//                            //上拉加载
-//
-//                        }else{
-//                            //下拉刷新
-//
-//                        }
-
-//                        AppDao.saveAppList(appList);
-
-//                    }
+                    List<App> list = rsp.getAppList();
+                    if (list!= null && list.size()>0){
+                        adapter.setRecommends(list);
+                    }
                 }
             }
 
             @Override
             public void onFinished() {
-//                swipeRefresh.setRefreshing(false);
+                pull_to_refresh.onRefreshComplete();
             }
         });
     }

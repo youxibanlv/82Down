@@ -44,17 +44,30 @@ public class ExtrAppVertical extends LinearLayout {
     }
 
     public void setApp(App app){
-       if (app_icon != null){
+        String appLogo = app.getApp_logo();
+       if (app_icon != null && appLogo != null && !"".equals(appLogo)){
            x.image().bind(app_icon, UrlConfig.BASE_URL+app.getApp_logo());
        }
-        if (app_title != null) {
-            app_title.setText(app.getApp_title());
+        String title = app.getApp_title();
+        if (title == null){
+            title = "";
         }
-        if (app_score != null) {
-            app_score.setNumStars(Integer.parseInt(app.getApp_recomment()));
+        if (app_title != null) {
+            app_title.setText(title);
+        }
+        String score = app.getApp_recomment();
+        if (score == null || "".equals(score)){
+            score = "0";
+        }
+        if (app_score != null ) {
+            app_score.setNumStars(Integer.parseInt(score)/2);
+        }
+        String size = app.getApp_size();
+        if (size == null){
+            size = "";
         }
         if (app_size != null) {
-            app_size.setText(app.getApp_size());
+            app_size.setText(size);
         }
     }
 }

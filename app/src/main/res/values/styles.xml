@@ -26,16 +26,16 @@
         <item name="android:windowNoTitle">true</item>
         <item name="tabView">@style/TabView</item>
     </style>
-    <!-- 灰色星星评分 -->
+    <!-- 黄色星星评分 -->
     <style name="RatingBar.Grey" parent="@android:style/Widget.RatingBar">
-        <item name="android:maxHeight">12dp</item>
-        <item name="android:progressDrawable">@mipmap/star_gray</item>
-        <item name="android:minHeight">12dp</item>
+        <item name="android:maxHeight">@dimen/wdp19</item>
+        <item name="android:progressDrawable">@mipmap/ratingbat_gray</item>
+        <item name="android:minHeight">@dimen/wdp19</item>
     </style>
-    <!-- bai色星星评分 -->
+    <!-- 灰色星星评分 -->
     <style name="RatingBar.white" parent="@android:style/Widget.RatingBar">
-        <item name="android:maxHeight">12dp</item>
-        <item name="android:progressDrawable">@mipmap/star_yellow</item>
-        <item name="android:minHeight">12dp</item>
+        <item name="android:maxHeight">@dimen/wdp19</item>
+        <item name="android:progressDrawable">@mipmap/ratingbar_white</item>
+        <item name="android:minHeight">@dimen/wdp19</item>
     </style>
 </resources>

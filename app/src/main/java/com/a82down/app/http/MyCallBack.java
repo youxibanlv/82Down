@@ -13,7 +13,7 @@ public abstract class MyCallBack implements Callback.CommonCallback<String> {
 
     @Override
     public void onError(Throwable ex, boolean isOnCallback) {
-
+        ex.printStackTrace();
     }
 
     @Override

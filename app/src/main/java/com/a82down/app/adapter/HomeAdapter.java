@@ -21,27 +21,37 @@ import java.util.List;
  */
 public class HomeAdapter extends BaseAdapter{
 
-    private final int TYPE_HEAD = 0;
-    private final int TYPE_RECOMMEND = 1;
-    private final int TYPE_LIST = 2;
+    private final int TYPE_HEAD = 0;//轮播图
+    private final int TYPE_RECOMMEND = 1;//精品推荐
+    private final int TYPE_LIST = 2;//热门新游
 
-    private List<WheelPage> wheelPages = new ArrayList<>();
-    private List<App> recommends = new ArrayList<>();
-    private List<App> newGames = new ArrayList<>();
+    private List<WheelPage> wheelPages = new ArrayList<>();//轮播图集合
+    private List<App> recommends = new ArrayList<>();//精品推荐
+    private List<App> newGames = new ArrayList<>();//热门新游
+
+    private GridRecommendAdapter gridAdapter;
 
     private Context context;
     private LayoutInflater inflater;
 
     public HomeAdapter (Context context){
         this.context = context;
+        gridAdapter = new GridRecommendAdapter(context);
         inflater = LayoutInflater.from(context);
     }
-
+    //设置轮播图数据
     public void setWheelPages(List<WheelPage> list){
+        wheelPages.clear();
         wheelPages = list;
         this.notifyDataSetChanged();
     }
 
+//    设置精品推荐数据
+    public void setRecommends(List<App> list){
+        recommends.clear();
+        recommends = list;
+        this.notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         int count = 0;
@@ -86,17 +96,19 @@ public class HomeAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         int type = getItemViewType(position);
-        WheelPageHolder wheelPageHolder = new WheelPageHolder();
-        RecommendHolder recommendHolder = new RecommendHolder();
+        WheelPageHolder wheelPageHolder = null;
+        RecommendHolder recommendHolder = null;
         if (convertView == null){
             switch (type){
                 case TYPE_HEAD:
                     convertView = inflater.inflate(R.layout.item_wheel_page,parent,false);
+                    wheelPageHolder = new WheelPageHolder();
                     wheelPageHolder.myWheelPages = (WheelViewPage) convertView.findViewById(R.id.myWheelPages);
                     convertView.setTag(wheelPageHolder);
                     break;
                 case TYPE_RECOMMEND:
                     convertView = inflater.inflate(R.layout.item_recommed,parent,false);
+                    recommendHolder = new RecommendHolder();
                     recommendHolder.tv_recommend = (TextView) convertView.findViewById(R.id.tv_recommend);
                     recommendHolder.gv_recommend = (NoScrollGridView) convertView.findViewById(R.id.gv_recommend);
                     convertView.setTag(recommendHolder);
@@ -128,6 +140,10 @@ public class HomeAdapter extends BaseAdapter{
                 break;
             case TYPE_RECOMMEND:
                 recommendHolder.tv_recommend.setText(context.getResources().getString(R.string.recommend));
+                if (recommends.size()>0){
+                    gridAdapter.setList(recommends);
+                    recommendHolder.gv_recommend.setAdapter(gridAdapter);
+                }
                 break;
             case TYPE_LIST:
 
