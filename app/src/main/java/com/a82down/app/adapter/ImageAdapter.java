@@ -40,6 +40,12 @@ public class ImageAdapter extends PagerAdapter {
         }
     }
 
+    public void refresh(List<WheelPage> pages){
+        list.clear();
+        list = pages;
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return list.size();

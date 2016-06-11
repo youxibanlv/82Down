@@ -54,7 +54,7 @@ public class HomeFragment extends BaseFragment {
         pull_to_refresh.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                getWheelPage();
+//                getWheelPage();
                 getRecommend(recommedPageNo,recommendPageSize);
             }
 
@@ -79,7 +79,8 @@ public class HomeFragment extends BaseFragment {
                     if (rsp!= null && rsp.result == Constance.HTTP_SUCCESS){
                         List<WheelPage> list = rsp.getWheelPages();
                         if (list!= null && list.size()>0){
-                           adapter.setWheelPages(list);
+                            adapter.refreshWheelPages(list);
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 }
@@ -100,7 +101,8 @@ public class HomeFragment extends BaseFragment {
                 if (rsp.result == Constance.HTTP_SUCCESS){
                     List<App> list = rsp.getAppList();
                     if (list!= null && list.size()>0){
-                        adapter.setRecommends(list);
+                        adapter.refreshRecommends(list);
+                        adapter.notifyDataSetChanged();
                     }
                 }
             }

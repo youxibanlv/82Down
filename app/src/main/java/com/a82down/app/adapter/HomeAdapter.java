@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by strike on 16/6/7.
  */
-public class HomeAdapter extends BaseAdapter{
+public class HomeAdapter extends BaseAdapter {
 
     private final int TYPE_HEAD = 0;//轮播图
     private final int TYPE_RECOMMEND = 1;//精品推荐
@@ -34,44 +34,44 @@ public class HomeAdapter extends BaseAdapter{
     private Context context;
     private LayoutInflater inflater;
 
-    public HomeAdapter (Context context){
+    public HomeAdapter(Context context) {
         this.context = context;
         gridAdapter = new GridRecommendAdapter(context);
         inflater = LayoutInflater.from(context);
     }
+
     //设置轮播图数据
-    public void setWheelPages(List<WheelPage> list){
+    public void refreshWheelPages(List<WheelPage> list) {
         wheelPages.clear();
         wheelPages = list;
-        this.notifyDataSetChanged();
     }
 
-//    设置精品推荐数据
-    public void setRecommends(List<App> list){
+    //    设置精品推荐数据
+    public void refreshRecommends(List<App> list) {
         recommends.clear();
         recommends = list;
-        this.notifyDataSetChanged();
     }
+
     @Override
     public int getCount() {
-        int count = 0;
-        if (wheelPages.size()>0){
-            count ++;
-        }
-        if (recommends.size()>0){
-            count ++;
-        }
-        if (newGames.size()>0){
-            count = count+newGames.size();
+        int count = 2;
+//        if (wheelPages.size() > 0) {
+//            count++;
+//        }
+//        if (recommends.size() > 0) {
+//            count++;
+//        }
+        if (newGames.size() > 0) {
+            count = count + newGames.size();
         }
         return count;
     }
 
     @Override
     public Object getItem(int position) {
-        if (position<2){
+        if (position < 2) {
             return null;
-        }else{
+        } else {
             return newGames.get(position);
         }
 
@@ -84,11 +84,12 @@ public class HomeAdapter extends BaseAdapter{
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0){
+        if (position == 0) {
             return TYPE_HEAD;
-        }else if (position == 1){
+//            return TYPE_RECOMMEND;
+        } else if (position == 1) {
             return TYPE_RECOMMEND;
-        }else {
+        } else {
             return TYPE_LIST;
         }
     }
@@ -98,16 +99,16 @@ public class HomeAdapter extends BaseAdapter{
         int type = getItemViewType(position);
         WheelPageHolder wheelPageHolder = null;
         RecommendHolder recommendHolder = null;
-        if (convertView == null){
-            switch (type){
+        if (convertView == null) {
+            switch (type) {
                 case TYPE_HEAD:
-                    convertView = inflater.inflate(R.layout.item_wheel_page,parent,false);
+                    convertView = inflater.inflate(R.layout.item_wheel_page, parent, false);
                     wheelPageHolder = new WheelPageHolder();
                     wheelPageHolder.myWheelPages = (WheelViewPage) convertView.findViewById(R.id.myWheelPages);
                     convertView.setTag(wheelPageHolder);
                     break;
                 case TYPE_RECOMMEND:
-                    convertView = inflater.inflate(R.layout.item_recommed,parent,false);
+                    convertView = inflater.inflate(R.layout.item_recommed, parent, false);
                     recommendHolder = new RecommendHolder();
                     recommendHolder.tv_recommend = (TextView) convertView.findViewById(R.id.tv_recommend);
                     recommendHolder.gv_recommend = (NoScrollGridView) convertView.findViewById(R.id.gv_recommend);
@@ -118,8 +119,8 @@ public class HomeAdapter extends BaseAdapter{
                     break;
 
             }
-        }else {
-            switch (type){
+        } else {
+            switch (type) {
                 case TYPE_HEAD:
                     wheelPageHolder = (WheelPageHolder) convertView.getTag();
                     break;
@@ -132,17 +133,19 @@ public class HomeAdapter extends BaseAdapter{
             }
         }
         //设置资源
-        switch (type){
+        switch (type) {
             case TYPE_HEAD:
-                if (wheelPages.size()>0){
+                if (wheelPages.size() > 0) {
                     wheelPageHolder.myWheelPages.setViewPage(wheelPages);
                 }
                 break;
             case TYPE_RECOMMEND:
                 recommendHolder.tv_recommend.setText(context.getResources().getString(R.string.recommend));
-                if (recommends.size()>0){
+                recommendHolder.gv_recommend.setAdapter(gridAdapter);
+                if (recommends.size() > 0) {
                     gridAdapter.setList(recommends);
-                    recommendHolder.gv_recommend.setAdapter(gridAdapter);
+                    gridAdapter.notifyDataSetChanged();
+
                 }
                 break;
             case TYPE_LIST:
@@ -151,10 +154,12 @@ public class HomeAdapter extends BaseAdapter{
         }
         return convertView;
     }
-    class WheelPageHolder{
+
+    class WheelPageHolder {
         WheelViewPage myWheelPages;
     }
-    class RecommendHolder{
+
+    class RecommendHolder {
         TextView tv_recommend;
         NoScrollGridView gv_recommend;
     }

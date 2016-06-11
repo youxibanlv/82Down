@@ -81,6 +81,7 @@ public class WheelViewPage extends LinearLayout {
         }
         adapter = new ImageAdapter(context, list);
         vp_hottest.setAdapter(adapter);
+        adapter.refresh(list);
         mBottomImages = new ImageView[list.size()];
         //圆点指示器
         ll_hottest_indicator.removeAllViews();
