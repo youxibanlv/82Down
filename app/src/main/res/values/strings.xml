@@ -15,4 +15,5 @@
     <string name="recommend">精品推荐</string>
     <string name="app_title">问道</string>
     <string name="install">安装</string>
+    <string name="refresh_too_fast">你刷新的太快了，%1$d秒刷一次哦</string>
 </resources>

@@ -20,12 +20,12 @@ import java.util.List;
  */
 public class ImageAdapter extends PagerAdapter {
 
-    private List<WheelPage> list;
+    private List<WheelPage> pages;
     private List<ImageView> imageViews;
     private Context context;
 
     public ImageAdapter(Context context,List<WheelPage> list) {
-        this.list = list;
+        this.pages = list;
         this.context = context;
         imageViews = new ArrayList<>();
         ImageOptions.Builder builder = new ImageOptions.Builder();
@@ -40,15 +40,13 @@ public class ImageAdapter extends PagerAdapter {
         }
     }
 
-    public void refresh(List<WheelPage> pages){
-        list.clear();
-        list = pages;
-        this.notifyDataSetChanged();
+    public void setPages(List<WheelPage> wheelPages){
+        pages = wheelPages;
     }
 
     @Override
     public int getCount() {
-        return list.size();
+        return pages.size();
     }
 
     @Override

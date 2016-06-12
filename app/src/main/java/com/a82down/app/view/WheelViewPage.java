@@ -70,18 +70,34 @@ public class WheelViewPage extends LinearLayout {
         super(context, attrs);
         this.context = context;
         view = LayoutInflater.from(context).inflate(R.layout.extr_wheel_page, this, true);
+        // 设置自动轮播图片，5s后执行，周期是5s
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Message message = new Message();
+                message.what = UPTATE_VIEWPAGER;
+                if (autoCurrIndex == list.size() - 1) {
+                    autoCurrIndex = -1;
+                }
+                message.arg1 = autoCurrIndex + 1;
+                mHandler.sendMessage(message);
+            }
+        }, 5000, 5000);
         x.view().inject(view);
     }
-
     public void setViewPage(List<WheelPage> pagelist) {
         list.clear();
         list = pagelist;
         if (list.size() <1){
             return;
         }
-        adapter = new ImageAdapter(context, list);
-        vp_hottest.setAdapter(adapter);
-        adapter.refresh(list);
+        if(adapter == null){
+            adapter = new ImageAdapter(context, list);
+            vp_hottest.setAdapter(adapter);
+        }else{
+            adapter.setPages(list);
+            adapter.notifyDataSetChanged();
+        }
         mBottomImages = new ImageView[list.size()];
         //圆点指示器
         ll_hottest_indicator.removeAllViews();
@@ -126,19 +142,5 @@ public class WheelViewPage extends LinearLayout {
 
             }
         });
-        // 设置自动轮播图片，5s后执行，周期是5s
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Message message = new Message();
-                message.what = UPTATE_VIEWPAGER;
-                if (autoCurrIndex == list.size() - 1) {
-                    autoCurrIndex = -1;
-                }
-                message.arg1 = autoCurrIndex + 1;
-                mHandler.sendMessage(message);
-            }
-        }, 5000, 5000);
-
     }
 }

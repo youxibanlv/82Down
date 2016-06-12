@@ -41,6 +41,8 @@ public class HomeFragment extends BaseFragment {
 
     private int pageNo = 0,pageSize = 3,totalPage;//热门游戏部分
     private int recommedPageNo = 0,recommendPageSize = 3;//精品推荐显示数目
+
+    private long waitTime = 0,lastRefreshTime = 0,minWaitTime = 15000;//等待时间，最后一次刷新时间,最小等待时间，用于控制用户的刷新频率
     private View view;
 
     @Override
@@ -54,10 +56,16 @@ public class HomeFragment extends BaseFragment {
         pull_to_refresh.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-//                getWheelPage();
-                getRecommend(recommedPageNo,recommendPageSize);
+                if (lastRefreshTime == 0 || waitTime > minWaitTime){
+                    lastRefreshTime = System.currentTimeMillis();
+                    getWheelPage();
+                    getRecommend(recommedPageNo,recommendPageSize);
+                }else{
+                    waitTime = System.currentTimeMillis() - lastRefreshTime;
+                    showTipToast(false,String.format(getString(R.string.refresh_too_fast),minWaitTime/1000));
+                    stopRefresh();
+                }
             }
-
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
 
@@ -68,7 +76,15 @@ public class HomeFragment extends BaseFragment {
         getRecommend(recommedPageNo,recommendPageSize);
         return view;
     }
-
+    //停止刷新
+    private void stopRefresh(){
+        pull_to_refresh.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                pull_to_refresh.onRefreshComplete();
+            }
+        },1000);
+    }
     private void getWheelPage(){
         WheelPageReq req = new WheelPageReq();
         req.sendRequest(new MyCallBack() {
