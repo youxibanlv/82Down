@@ -14,6 +14,10 @@ import com.a82down.app.R;
 import com.a82down.app.activity.LoginActivity;
 import com.a82down.app.activity.UserInfoActivity;
 import com.a82down.app.db.dao.UserDao;
+import com.a82down.app.http.BaseResponse;
+import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.request.KeywordsReq;
+import com.a82down.app.http.response.KeywordsRsp;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -38,14 +42,38 @@ public class TitleBar extends RelativeLayout {
 
     private View view;
 
+    private int keySize = 15;
+
     public TitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = LayoutInflater.from(context).inflate(R.layout.extr_title,this,true);
         x.view().inject(view);
+        edtSearch.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    String key = edtSearch.getText().toString();
+                    showKeywords(key);
+                }
+            }
+        });
     }
 
-    public TitleBar(Context context) {
-        super(context);
+    private void showKeywords(String keyword){
+        KeywordsReq req = new KeywordsReq(keyword,keySize);
+        req.sendRequest(new MyCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                if (!TextUtils.isEmpty(result)){
+                    KeywordsRsp rsp = (KeywordsRsp) BaseResponse.getRsp(result,KeywordsRsp.class);
+                }
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     @Event(value = {R.id.rv_user_icon,R.id.iv_manager,R.id.btn_search})

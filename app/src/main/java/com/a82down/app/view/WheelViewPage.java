@@ -86,7 +86,6 @@ public class WheelViewPage extends LinearLayout {
         x.view().inject(view);
     }
     public void setViewPage(List<WheelPage> pagelist) {
-        list.clear();
         list = pagelist;
         if (list.size() <1){
             return;

@@ -27,6 +27,11 @@
         android:layout_marginLeft="@dimen/wdp20"
         android:layout_marginRight="@dimen/wdp20"
         android:layout_toRightOf="@id/rv_user_icon">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
         <EditText
             android:id="@+id/edt_search"
             android:layout_width="match_parent"
@@ -35,6 +40,8 @@
             android:paddingRight="@dimen/wdp25"
             android:paddingLeft="@dimen/wdp20"
             android:hint="输入搜索关键词"
+            android:singleLine="true"
+            android:maxLength="20"
             android:textColorHint="@color/text_gray"
             android:textSize="@dimen/wdp24"
             />

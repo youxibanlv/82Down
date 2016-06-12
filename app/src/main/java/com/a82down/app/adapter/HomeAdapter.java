@@ -55,12 +55,6 @@ public class HomeAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         int count = 2;
-//        if (wheelPages.size() > 0) {
-//            count++;
-//        }
-//        if (recommends.size() > 0) {
-//            count++;
-//        }
         if (newGames.size() > 0) {
             count = count + newGames.size();
         }
