@@ -2,26 +2,37 @@ package com.a82down.app.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.a82down.app.R;
 import com.a82down.app.activity.LoginActivity;
 import com.a82down.app.activity.UserInfoActivity;
+import com.a82down.app.adapter.KeywordAdapter;
 import com.a82down.app.db.dao.UserDao;
 import com.a82down.app.http.BaseResponse;
+import com.a82down.app.http.Constance;
 import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.entity.Keyword;
 import com.a82down.app.http.request.KeywordsReq;
 import com.a82down.app.http.response.KeywordsRsp;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.util.List;
 
 /**
  * Created by strike on 16/6/6.
@@ -42,30 +53,59 @@ public class TitleBar extends RelativeLayout {
 
     private View view;
 
-    private int keySize = 15;
+    private int keySize = 5;
+    private Context context;
+    private PopupWindow popupWindow;
+    private KeywordAdapter adapter;
+
 
     public TitleBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        view = LayoutInflater.from(context).inflate(R.layout.extr_title,this,true);
+        this.context = context;
+        view = LayoutInflater.from(context).inflate(R.layout.extr_title, this, true);
         x.view().inject(view);
         edtSearch.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    String key = edtSearch.getText().toString();
-                    showKeywords(key);
+                if (hasFocus) {
+                    showKeywords(edtSearch.getText().toString());
+                } else {
+                    if (popupWindow != null && popupWindow.isShowing()) {
+                        popupWindow.dismiss();
+                    }
                 }
             }
         });
-    }
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    private void showKeywords(String keyword){
-        KeywordsReq req = new KeywordsReq(keyword,keySize);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                showKeywords(s.toString());
+                edtSearch.setSelection(s.toString().length());
+            }
+        });
+    }
+    //获取热搜词列表
+    private void showKeywords(String keyword) {
+        KeywordsReq req = new KeywordsReq(keyword, keySize);
         req.sendRequest(new MyCallBack() {
             @Override
             public void onSuccess(String result) {
-                if (!TextUtils.isEmpty(result)){
-                    KeywordsRsp rsp = (KeywordsRsp) BaseResponse.getRsp(result,KeywordsRsp.class);
+                if (!TextUtils.isEmpty(result)) {
+                    KeywordsRsp rsp = (KeywordsRsp) BaseResponse.getRsp(result, KeywordsRsp.class);
+                    if (rsp != null && rsp.result == Constance.HTTP_SUCCESS) {
+                        List<Keyword> list = rsp.getKeywords();
+                        showPopuWindow(list);
+                    }
                 }
             }
 
@@ -75,15 +115,57 @@ public class TitleBar extends RelativeLayout {
             }
         });
     }
+    //根据关键词查询应用
+    private void searAppByKeyword(String keyword){
 
-    @Event(value = {R.id.rv_user_icon,R.id.iv_manager,R.id.btn_search})
-    private void getEvent(View view){
-        switch (view.getId()){
+    }
+    //从列表中设置搜索关键词
+    private void setSearchWord(String key) {
+        if (edtSearch != null) {
+            edtSearch.setText(key);
+        }
+    }
+    //显示关键词列表
+    private void showPopuWindow(final List<Keyword> list) {
+        if (popupWindow == null) {
+            int width = edtSearch.getWidth();
+            View viewContent = LayoutInflater.from(context).inflate(R.layout.pop_keyword, null);
+            popupWindow = new PopupWindow(viewContent, width, LinearLayout.LayoutParams.WRAP_CONTENT);
+            popupWindow.setContentView(viewContent);
+
+            ListView listView = (ListView) viewContent.findViewById(R.id.lv_key);
+            adapter = new KeywordAdapter(context, list);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Keyword keyword = list.get(position);
+                    if (keyword != null && keyword.getQ() != null) {
+                        setSearchWord(keyword.getQ());
+                    }
+                    if (popupWindow != null && popupWindow.isShowing()) {
+                        popupWindow.dismiss();
+                    }
+                }
+            });
+        }
+        popupWindow.showAsDropDown(edtSearch);
+        if (list == null || list.size() == 0) {
+            if (popupWindow.isShowing()) {
+                popupWindow.dismiss();
+            }
+        }
+        adapter.refresh(list);
+    }
+
+    @Event(value = {R.id.rv_user_icon, R.id.iv_manager, R.id.btn_search})
+    private void getEvent(View view) {
+        switch (view.getId()) {
             case R.id.rv_user_icon://用户信息界面
                 String token = UserDao.getToken();
-                if (TextUtils.isEmpty(token)){
+                if (TextUtils.isEmpty(token)) {
                     getContext().startActivity(new Intent(getContext(), LoginActivity.class));
-                }else{
+                } else {
                     getContext().startActivity(new Intent(getContext(), UserInfoActivity.class));
                 }
                 break;

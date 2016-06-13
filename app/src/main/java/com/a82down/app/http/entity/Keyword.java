@@ -6,7 +6,7 @@ package com.a82down.app.http.entity;
 public class Keyword {
     private int id;
     private String q;//搜索关键字
-    private int qnum;//搜索次数
+    private Integer qnum;//搜索次数
     private int qorder;//关键字排序
 
     public int getId() {
@@ -25,11 +25,11 @@ public class Keyword {
         this.q = q;
     }
 
-    public int getQnum() {
+    public Integer getQnum() {
         return qnum;
     }
 
-    public void setQnum(int qnum) {
+    public void setQnum(Integer qnum) {
         this.qnum = qnum;
     }
 

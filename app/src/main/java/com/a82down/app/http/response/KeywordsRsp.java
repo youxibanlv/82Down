@@ -10,6 +10,9 @@ import java.util.List;
  */
 public class KeywordsRsp extends BaseResponse {
     public ResultData resultData = null;
+    public List<Keyword> getKeywords(){
+        return resultData.keywords;
+    }
 
     class ResultData {
         List<Keyword> keywords;
