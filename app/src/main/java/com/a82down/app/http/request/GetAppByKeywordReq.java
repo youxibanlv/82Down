@@ -10,17 +10,21 @@ public class GetAppByKeywordReq extends BaseRequest {
 
     RequestParam requestParams;
 
-    public GetAppByKeywordReq(String key) {
+    public GetAppByKeywordReq(String key,int pageNo,int pageSize) {
         cmdType = "appService";
         methodName = "getAppByKeyword";
-        requestParams = new RequestParam(key);
+        requestParams = new RequestParam(key,pageNo,pageSize);
     }
 
     class RequestParam {
         String keyword;
+        int pageNo;
+        int pageSize;
 
-        public RequestParam(String key) {
+        public RequestParam(String key,int pageNo,int pageSize) {
             keyword = key;
+            this.pageNo = pageNo;
+            this.pageSize = pageSize;
         }
     }
 }

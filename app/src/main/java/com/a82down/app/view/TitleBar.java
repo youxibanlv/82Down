@@ -21,12 +21,16 @@ import com.a82down.app.activity.LoginActivity;
 import com.a82down.app.activity.UserInfoActivity;
 import com.a82down.app.adapter.KeywordAdapter;
 import com.a82down.app.db.dao.UserDao;
+import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
 import com.a82down.app.http.MyCallBack;
 import com.a82down.app.http.entity.Keyword;
+import com.a82down.app.http.request.GetAppByKeywordReq;
 import com.a82down.app.http.request.KeywordsReq;
+import com.a82down.app.http.response.GetAppByKeywordRsp;
 import com.a82down.app.http.response.KeywordsRsp;
+import com.a82down.app.utils.UiUtils;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -57,6 +61,8 @@ public class TitleBar extends RelativeLayout {
     private Context context;
     private PopupWindow popupWindow;
     private KeywordAdapter adapter;
+
+    private int pageNo = 0,pageSize = 6;
 
 
     public TitleBar(Context context, AttributeSet attrs) {
@@ -117,13 +123,32 @@ public class TitleBar extends RelativeLayout {
     }
     //根据关键词查询应用
     private void searAppByKeyword(String keyword){
+        GetAppByKeywordReq req = new GetAppByKeywordReq(keyword,pageNo,pageSize);
+        req.sendRequest(new MyCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                if (!TextUtils.isEmpty(result)){
+                    GetAppByKeywordRsp rsp = (GetAppByKeywordRsp) BaseResponse.getRsp(result,GetAppByKeywordRsp.class);
+                    if (rsp!= null && rsp.result == Constance.HTTP_SUCCESS){
+                        List<App> list = rsp.getAppList();
+                    }else {
+                        UiUtils.showTipToast(false,rsp.failReason);
+                    }
+                }
+            }
 
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
     //从列表中设置搜索关键词
-    private void setSearchWord(String key) {
+    private void doSearch(String key) {
         if (edtSearch != null) {
             edtSearch.setText(key);
         }
+        searAppByKeyword(key);
     }
     //显示关键词列表
     private void showPopuWindow(final List<Keyword> list) {
@@ -141,7 +166,7 @@ public class TitleBar extends RelativeLayout {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Keyword keyword = list.get(position);
                     if (keyword != null && keyword.getQ() != null) {
-                        setSearchWord(keyword.getQ());
+                        doSearch(keyword.getQ());
                     }
                     if (popupWindow != null && popupWindow.isShowing()) {
                         popupWindow.dismiss();
@@ -173,7 +198,10 @@ public class TitleBar extends RelativeLayout {
 
                 break;
             case R.id.btn_search://搜索界面
-
+                String key = edtSearch.getText().toString();
+                if (!"".equals(key)){
+                    searAppByKeyword(key);
+                }
                 break;
         }
     }
