@@ -5,6 +5,8 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import org.xutils.x;
@@ -31,17 +33,17 @@ public class BaseActivity extends AppCompatActivity {
         context = this;
     }
 
-    public void showProgressDialogCloseDelay(String msg,long time){
+    public void showProgressDialogCloseDelay(String msg, long time) {
         dialogHandler.removeCallbacks(closeProgressRunnable);
-        if (progressDialog == null){
-            progressDialog = ProgressDialog.show(this,"",msg);
+        if (progressDialog == null) {
+            progressDialog = ProgressDialog.show(this, "", msg);
             progressDialog.setCanceledOnTouchOutside(false);
-        }else{
+        } else {
             progressDialog.setMessage(msg);
             progressDialog.show();
         }
-        if (dialogHandler!= null){
-            dialogHandler.postDelayed(closeProgressRunnable,time);
+        if (dialogHandler != null) {
+            dialogHandler.postDelayed(closeProgressRunnable, time);
         }
 
     }
@@ -74,6 +76,14 @@ public class BaseActivity extends AppCompatActivity {
         return false;
     }
 
+    // 设置默认的fragment
+    protected void setFragment(int containerViewId, BaseFragment fragment) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        transaction.replace(containerViewId, fragment);
+        transaction.commit();
+    }
 
     public class CloseProgressRunnable implements Runnable {
         @Override

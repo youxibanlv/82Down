@@ -1,5 +1,7 @@
 package com.a82down.app.db.table;
 
+import com.a82down.app.http.UrlConfig;
+
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
@@ -180,7 +182,11 @@ public class App {
     }
 
     public String getApp_logo() {
-        return app_logo;
+        if (app_logo.contains("http://")){
+            return app_logo;
+        }else {
+            return UrlConfig.BASE_URL+app_logo;
+        }
     }
 
     public void setApp_logo(String app_logo) {

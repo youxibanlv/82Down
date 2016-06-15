@@ -1,5 +1,10 @@
 <resources>
+    <!--通用-->
     <string name="app_name">My82down</string>
+    <string name="press_to_exit">再按一次退出应用</string>
+    <string name="refresh_too_fast">你刷新的太快了，%1$d秒刷一次哦</string>
+    <string name="keyword">keyword</string>
+    <!--登录注册-->
     <string name="register_success">注册成功，自动登录中。。。</string>
     <string name="login">登  录</string>
     <string name="forget_pass">忘记密码</string>
@@ -11,9 +16,21 @@
     <string name="enter_pass">请输入密码</string>
     <string name="enter_pass_again">请再次输入密码</string>
     <string name="confirm_error_pass">两次输入密码不一致，请重新输入</string>
-    <string name="press_to_exit">再按一次退出应用</string>
-    <string name="recommend">精品推荐</string>
-    <string name="app_title">问道</string>
+
+    <!--首页相关-->
     <string name="install">安装</string>
-    <string name="refresh_too_fast">你刷新的太快了，%1$d秒刷一次哦</string>
+    <string name="recommend">精品推荐</string>
+    <string name="app_title">__</string>
+
+    <!--错误相关-->
+    <string name="connect_timeout">连接服务器超时</string>
+
+
+
+    <!--=======-->
+
+
+
+
+
 </resources>

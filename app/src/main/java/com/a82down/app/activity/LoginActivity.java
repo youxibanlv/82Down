@@ -71,8 +71,6 @@ public class LoginActivity extends BaseActivity {
                                 LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 LoginActivity.this.finish();
                             }
-                        }else{
-                            UiUtils.showTipToast(false, rsp.failReason);
                         }
                     }
                 }

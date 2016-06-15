@@ -1,80 +1,70 @@
-package com.a82down.app.view;
+package com.a82down.app.activity;
 
-import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 
 import com.a82down.app.R;
-import com.a82down.app.activity.LoginActivity;
-import com.a82down.app.activity.UserInfoActivity;
 import com.a82down.app.adapter.KeywordAdapter;
-import com.a82down.app.db.dao.UserDao;
-import com.a82down.app.db.table.App;
+import com.a82down.app.base.BaseActivity;
+import com.a82down.app.fragment.AppFragment;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
 import com.a82down.app.http.MyCallBack;
 import com.a82down.app.http.entity.Keyword;
-import com.a82down.app.http.request.GetAppByKeywordReq;
 import com.a82down.app.http.request.KeywordsReq;
-import com.a82down.app.http.response.GetAppByKeywordRsp;
 import com.a82down.app.http.response.KeywordsRsp;
-import com.a82down.app.utils.UiUtils;
 
+import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
-import org.xutils.x;
 
 import java.util.List;
 
 /**
- * Created by strike on 16/6/6.
+ * Created by strike on 16/6/14.
  */
-public class TitleBar extends RelativeLayout {
-
-    @ViewInject(R.id.rv_user_icon)
-    private ImageView rvUserIcon;
-
-    @ViewInject(R.id.iv_manager)
-    private ImageView ivManager;
+@ContentView(R.layout.activity_app)
+public class AppActivity extends BaseActivity {
 
     @ViewInject(R.id.edt_search)
-    private EditText edtSearch;
+    private EditText edt_search;
 
-    @ViewInject(R.id.btn_search)
-    private ImageView btn_search;
+    @ViewInject(R.id.fl_content)
+    private FrameLayout fl_content;
 
-    private View view;
-
+    private AppFragment fragment;
     private int keySize = 5;
-    private Context context;
     private PopupWindow popupWindow;
     private KeywordAdapter adapter;
 
-    private int pageNo = 0,pageSize = 6;
-
-
-    public TitleBar(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.context = context;
-        view = LayoutInflater.from(context).inflate(R.layout.extr_title, this, true);
-        x.view().inject(view);
-        edtSearch.setOnFocusChangeListener(new OnFocusChangeListener() {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle!= null){
+            String keyword = bundle.getString(getString(R.string.keyword));
+            if (keyword!= null){
+                edt_search.setText(keyword);
+            }
+            fragment = new AppFragment();
+            fragment.setArguments(bundle);
+        }
+        edt_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    showKeywords(edtSearch.getText().toString());
+                    showKeywords(edt_search.getText().toString());
                 } else {
                     if (popupWindow != null && popupWindow.isShowing()) {
                         popupWindow.dismiss();
@@ -82,7 +72,7 @@ public class TitleBar extends RelativeLayout {
                 }
             }
         });
-        edtSearch.addTextChangedListener(new TextWatcher() {
+        edt_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -96,9 +86,31 @@ public class TitleBar extends RelativeLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 showKeywords(s.toString());
-                edtSearch.setSelection(s.toString().length());
+                edt_search.setSelection(s.toString().length());
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setFragment(R.id.fl_content,fragment);
+    }
+
+    @Event(value = {R.id.rv_back,R.id.btn_search,R.id.iv_manager})
+    private void getEvent(View view){
+        switch (view.getId()){
+            case R.id.rv_back:
+                finish();
+                break;
+            case R.id.btn_search:
+                String keyword = edt_search.getText().toString();
+                fragment.refreshKey(keyword);
+                break;
+            case R.id.iv_manager:
+
+                break;
+        }
     }
     //获取热搜词列表
     private void showKeywords(String keyword) {
@@ -121,39 +133,10 @@ public class TitleBar extends RelativeLayout {
             }
         });
     }
-    //根据关键词查询应用
-    private void searAppByKeyword(String keyword){
-        GetAppByKeywordReq req = new GetAppByKeywordReq(keyword,pageNo,pageSize);
-        req.sendRequest(new MyCallBack() {
-            @Override
-            public void onSuccess(String result) {
-                if (!TextUtils.isEmpty(result)){
-                    GetAppByKeywordRsp rsp = (GetAppByKeywordRsp) BaseResponse.getRsp(result,GetAppByKeywordRsp.class);
-                    if (rsp!= null && rsp.result == Constance.HTTP_SUCCESS){
-                        List<App> list = rsp.getAppList();
-                    }else {
-                        UiUtils.showTipToast(false,rsp.failReason);
-                    }
-                }
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
-    }
-    //从列表中设置搜索关键词
-    private void doSearch(String key) {
-        if (edtSearch != null) {
-            edtSearch.setText(key);
-        }
-        searAppByKeyword(key);
-    }
     //显示关键词列表
     private void showPopuWindow(final List<Keyword> list) {
         if (popupWindow == null) {
-            int width = edtSearch.getWidth();
+            int width = edt_search.getWidth();
             View viewContent = LayoutInflater.from(context).inflate(R.layout.pop_keyword, null);
             popupWindow = new PopupWindow(viewContent, width, LinearLayout.LayoutParams.WRAP_CONTENT);
             popupWindow.setContentView(viewContent);
@@ -166,7 +149,7 @@ public class TitleBar extends RelativeLayout {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Keyword keyword = list.get(position);
                     if (keyword != null && keyword.getQ() != null) {
-                        doSearch(keyword.getQ());
+                        fragment.refreshKey(keyword.getQ());
                     }
                     if (popupWindow != null && popupWindow.isShowing()) {
                         popupWindow.dismiss();
@@ -174,7 +157,7 @@ public class TitleBar extends RelativeLayout {
                 }
             });
         }
-        popupWindow.showAsDropDown(edtSearch);
+        popupWindow.showAsDropDown(edt_search);
         if (list == null || list.size() == 0) {
             if (popupWindow.isShowing()) {
                 popupWindow.dismiss();
@@ -182,28 +165,4 @@ public class TitleBar extends RelativeLayout {
         }
         adapter.refresh(list);
     }
-
-    @Event(value = {R.id.rv_user_icon, R.id.iv_manager, R.id.btn_search})
-    private void getEvent(View view) {
-        switch (view.getId()) {
-            case R.id.rv_user_icon://用户信息界面
-                String token = UserDao.getToken();
-                if (TextUtils.isEmpty(token)) {
-                    getContext().startActivity(new Intent(getContext(), LoginActivity.class));
-                } else {
-                    getContext().startActivity(new Intent(getContext(), UserInfoActivity.class));
-                }
-                break;
-            case R.id.iv_manager://app管理界面
-
-                break;
-            case R.id.btn_search://搜索界面
-                String key = edtSearch.getText().toString();
-                if (!"".equals(key)){
-                    searAppByKeyword(key);
-                }
-                break;
-        }
-    }
-
 }

@@ -127,8 +127,6 @@ public class RegisterActivity extends BaseActivity {
                                 UiUtils.showTipToast(true, getString(R.string.register_success));
                                 login(userName,password);
                             }
-                        } else {
-                            UiUtils.showTipToast(false, rsp.failReason);
                         }
                     }
                 }
@@ -159,8 +157,6 @@ public class RegisterActivity extends BaseActivity {
                                 RegisterActivity.this.startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                                 RegisterActivity.this.finish();
                             }
-                        }else{
-                            UiUtils.showTipToast(false, rsp.failReason);
                         }
                     }
                 }

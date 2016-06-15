@@ -3,6 +3,7 @@ package com.a82down.app.http;
 import android.text.TextUtils;
 
 import com.a82down.app.utils.LogFactory;
+import com.a82down.app.utils.UiUtils;
 
 import gson.Gson;
 
@@ -32,6 +33,11 @@ public class BaseResponse {
             }finally {
                 if (rsp == null){
                     rsp = new BaseResponse();
+                }
+                if (rsp.result != Constance.HTTP_SUCCESS){//提示错误信息
+                    if (rsp.failReason != null && !"".equals(rsp.failReason)){
+                        UiUtils.showTipToast(false,rsp.failReason);
+                    }
                 }
                 LogFactory.e("response :"+ result);
             }

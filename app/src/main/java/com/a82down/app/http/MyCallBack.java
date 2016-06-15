@@ -1,6 +1,12 @@
 package com.a82down.app.http;
 
+import com.a82down.app.R;
+import com.a82down.app.base.AppContext;
+import com.a82down.app.utils.UiUtils;
+
 import org.xutils.common.Callback;
+
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by strike on 16/6/1.
@@ -13,7 +19,9 @@ public abstract class MyCallBack implements Callback.CommonCallback<String> {
 
     @Override
     public void onError(Throwable ex, boolean isOnCallback) {
-        ex.printStackTrace();
+        if (ex instanceof TimeoutException){
+            UiUtils.showTipToast(false, AppContext.getContext().getString(R.string.connect_timeout));
+        }
     }
 
     @Override
