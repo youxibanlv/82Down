@@ -25,10 +25,11 @@ import com.a82down.app.adapter.KeywordAdapter;
 import com.a82down.app.db.dao.UserDao;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
-import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.entity.Keyword;
 import com.a82down.app.http.request.KeywordsReq;
 import com.a82down.app.http.response.KeywordsRsp;
+import com.a82down.app.utils.UiUtils;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -92,21 +93,27 @@ public class HomeTitleBar extends RelativeLayout {
 
             @Override
             public void afterTextChanged(Editable s) {
-                showKeywords(s.toString());
-                edtSearch.setSelection(s.toString().length());
+                if (edtSearch.hasFocus()){
+                    showKeywords(s.toString());
+                    edtSearch.setSelection(s.toString().length());
+                }
             }
         });
+    }
+    public void refresh(){
+        if (!edtSearch.hasFocus()&& popupWindow != null && popupWindow.isShowing()){
+            popupWindow.dismiss();
+        }
     }
     //获取热搜词列表
     private void showKeywords(String keyword) {
         KeywordsReq req = new KeywordsReq(keyword, keySize);
-        req.sendRequest(new MyCallBack() {
+        req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)) {
                     KeywordsRsp rsp = (KeywordsRsp) BaseResponse.getRsp(result, KeywordsRsp.class);
                     if (rsp != null && rsp.result == Constance.HTTP_SUCCESS) {
-//                        keywords.clear();
                         keywords = rsp.getKeywords();
                         showPopuWindow();
                     }
@@ -155,6 +162,7 @@ public class HomeTitleBar extends RelativeLayout {
                     if (popupWindow != null && popupWindow.isShowing()) {
                         popupWindow.dismiss();
                     }
+                    edtSearch.clearFocus();
                 }
             });
         }
@@ -166,7 +174,6 @@ public class HomeTitleBar extends RelativeLayout {
         }
         adapter.refresh(keywords);
     }
-
     @Event(value = {R.id.rv_user_icon, R.id.iv_manager, R.id.btn_search})
     private void getEvent(View view) {
         switch (view.getId()) {
@@ -186,6 +193,7 @@ public class HomeTitleBar extends RelativeLayout {
                 if (!"".equals(key)){
                     searAppByKeyword(key);
                 }
+                UiUtils.closeKeybord(edtSearch,context);
                 break;
         }
     }

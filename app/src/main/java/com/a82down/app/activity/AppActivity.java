@@ -20,10 +20,11 @@ import com.a82down.app.base.BaseActivity;
 import com.a82down.app.fragment.AppFragment;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
-import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.entity.Keyword;
 import com.a82down.app.http.request.KeywordsReq;
 import com.a82down.app.http.response.KeywordsRsp;
+import com.a82down.app.utils.UiUtils;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -47,6 +48,8 @@ public class AppActivity extends BaseActivity {
     private int keySize = 5;
     private PopupWindow popupWindow;
     private KeywordAdapter adapter;
+
+    private List<Keyword> keywords;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,7 +108,11 @@ public class AppActivity extends BaseActivity {
                 break;
             case R.id.btn_search:
                 String keyword = edt_search.getText().toString();
+                if (popupWindow!= null && popupWindow.isShowing()){
+                    popupWindow.dismiss();
+                }
                 fragment.refreshKey(keyword);
+                UiUtils.closeKeybord(edt_search,this);
                 break;
             case R.id.iv_manager:
 
@@ -115,14 +122,14 @@ public class AppActivity extends BaseActivity {
     //获取热搜词列表
     private void showKeywords(String keyword) {
         KeywordsReq req = new KeywordsReq(keyword, keySize);
-        req.sendRequest(new MyCallBack() {
+        req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)) {
                     KeywordsRsp rsp = (KeywordsRsp) BaseResponse.getRsp(result, KeywordsRsp.class);
                     if (rsp != null && rsp.result == Constance.HTTP_SUCCESS) {
-                        List<Keyword> list = rsp.getKeywords();
-                        showPopuWindow(list);
+                        keywords = rsp.getKeywords();
+                        showPopuWindow();
                     }
                 }
             }
@@ -134,7 +141,7 @@ public class AppActivity extends BaseActivity {
         });
     }
     //显示关键词列表
-    private void showPopuWindow(final List<Keyword> list) {
+    private void showPopuWindow() {
         if (popupWindow == null) {
             int width = edt_search.getWidth();
             View viewContent = LayoutInflater.from(context).inflate(R.layout.pop_keyword, null);
@@ -142,13 +149,14 @@ public class AppActivity extends BaseActivity {
             popupWindow.setContentView(viewContent);
 
             ListView listView = (ListView) viewContent.findViewById(R.id.lv_key);
-            adapter = new KeywordAdapter(context, list);
+            adapter = new KeywordAdapter(context, keywords);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Keyword keyword = list.get(position);
+                    Keyword keyword = keywords.get(position);
                     if (keyword != null && keyword.getQ() != null) {
+                        edt_search.setText(keyword.getQ());
                         fragment.refreshKey(keyword.getQ());
                     }
                     if (popupWindow != null && popupWindow.isShowing()) {
@@ -158,11 +166,11 @@ public class AppActivity extends BaseActivity {
             });
         }
         popupWindow.showAsDropDown(edt_search);
-        if (list == null || list.size() == 0) {
+        if (keywords == null || keywords.size() == 0) {
             if (popupWindow.isShowing()) {
                 popupWindow.dismiss();
             }
         }
-        adapter.refresh(list);
+        adapter.refresh(keywords);
     }
 }

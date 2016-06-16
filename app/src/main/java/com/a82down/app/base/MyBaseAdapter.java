@@ -14,6 +14,15 @@ public abstract class MyBaseAdapter <T> extends BaseAdapter {
     protected List<T> list = new ArrayList<>();
     protected Context context;
     protected LayoutInflater inflater;
+
+    public List<T> getList() {
+        return list;
+    }
+
+    public void setList(List<T> list) {
+        this.list = list;
+    }
+
     public MyBaseAdapter(Context context){
         this.context = context;
         inflater = LayoutInflater.from(context);

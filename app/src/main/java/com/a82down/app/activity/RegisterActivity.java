@@ -14,7 +14,7 @@ import com.a82down.app.db.dao.UserDao;
 import com.a82down.app.db.table.User;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
-import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.request.LoginReq;
 import com.a82down.app.http.request.RegisterReq;
 import com.a82down.app.http.response.LoginRsp;
@@ -112,7 +112,7 @@ public class RegisterActivity extends BaseActivity {
     private void register(final String userName, final String password) {
         RegisterReq registerReq = new RegisterReq(userName, password);
         showProgressDialogCloseDelay("正在注册，请稍后...",Constance.DEFAULT_TIMEOUT);
-        registerReq.sendRequest(new MyCallBack() {
+        registerReq.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
                 dismissProgressDialog();
@@ -141,7 +141,7 @@ public class RegisterActivity extends BaseActivity {
     private void login(String userName, String password) {
         LoginReq loginReq = new LoginReq(userName,password);
         showProgressDialogCloseDelay("登录中，请稍后...",Constance.DEFAULT_TIMEOUT);
-        loginReq.sendRequest(new MyCallBack() {
+        loginReq.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
                 dismissProgressDialog();

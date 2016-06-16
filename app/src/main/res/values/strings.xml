@@ -24,7 +24,7 @@
 
     <!--错误相关-->
     <string name="connect_timeout">连接服务器超时</string>
-
+    <string name="this_is_last">已经是到底了</string>
 
 
     <!--=======-->

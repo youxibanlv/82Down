@@ -13,13 +13,15 @@ import com.a82down.app.base.BaseFragment;
 import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
-import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.request.GetAppByKeywordReq;
-import com.a82down.app.http.response.GetAppByKeywordRsp;
+import com.a82down.app.http.response.GetAppRsp;
 import com.a82down.app.utils.PullToRefreshUtils;
+import com.a82down.app.utils.UiUtils;
 import com.a82down.app.view.library.PullToRefreshBase;
 import com.a82down.app.view.library.PullToRefreshListView;
 
+import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
@@ -42,11 +44,6 @@ public class AppFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = super.onCreateView(inflater,container,savedInstanceState);
-        try {
-            keyword = this.getArguments().getString(getString(R.string.keyword));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         pull_to_refresh.setMode(PullToRefreshBase.Mode.BOTH);
         PullToRefreshUtils.initRefresh(pull_to_refresh);
         adapter = new AppLIstAdapter(getActivity());
@@ -54,44 +51,66 @@ public class AppFragment extends BaseFragment {
         pull_to_refresh.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                pageNo = 0;
                 searchAppByKey(true,keyword);
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                searchAppByKey(false,keyword);
+                if ( ++pageNo<= total){
+                    searchAppByKey(false,keyword);
+                }else {
+                    UiUtils.showTipToast(false,getString(R.string.this_is_last));
+                    UiUtils.stopRefresh(pull_to_refresh);
+                }
+
             }
         });
-        searchAppByKey(true,keyword);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            keyword = this.getArguments().getString(getString(R.string.keyword));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        searchAppByKey(true,keyword);
     }
 
     public void refreshKey(String key){
         this.keyword = key;
         searchAppByKey(true,key);
     }
-    private void searchAppByKey(boolean isRefresh,String key){
-        if (isRefresh){
-            pageNo = 0;
-        }else {
-            pageNo ++;
-        }
+    private void searchAppByKey(final boolean isRefresh, String key){
         GetAppByKeywordReq req = new GetAppByKeywordReq(key,pageNo,pageSize);
-        req.sendRequest(new MyCallBack() {
+        req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)){
-                    GetAppByKeywordRsp rsp = (GetAppByKeywordRsp) BaseResponse.getRsp(result,GetAppByKeywordRsp.class);
+                    GetAppRsp rsp = (GetAppRsp) BaseResponse.getRsp(result,GetAppRsp.class);
                     if (rsp!= null && rsp.result == Constance.HTTP_SUCCESS){
+                        if (pageNo == 0){
+                            total = rsp.getTotalPage();
+                        }
                         List<App> list = rsp.getAppList();
-                        adapter.refresh(list);
+                        if (isRefresh){
+                            adapter.refresh(list);
+                        }else{
+                           adapter.getList().addAll(list);
+                            adapter.notifyDataSetChanged();
+                        }
+
                     }
                 }
             }
 
             @Override
             public void onFinished() {
-
+                pull_to_refresh.onRefreshComplete();
+                LogUtil.e("pageNo = "+pageNo+",totalPage = "+total);
             }
         });
     }

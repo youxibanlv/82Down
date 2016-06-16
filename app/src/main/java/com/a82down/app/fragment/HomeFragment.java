@@ -13,13 +13,14 @@ import com.a82down.app.base.BaseFragment;
 import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.Constance;
-import com.a82down.app.http.MyCallBack;
+import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.entity.WheelPage;
 import com.a82down.app.http.request.RecommendReq;
 import com.a82down.app.http.request.WheelPageReq;
-import com.a82down.app.http.response.RecommendRsp;
+import com.a82down.app.http.response.GetAppRsp;
 import com.a82down.app.http.response.WheelPageRsp;
 import com.a82down.app.utils.PullToRefreshUtils;
+import com.a82down.app.utils.UiUtils;
 import com.a82down.app.view.library.PullToRefreshBase;
 import com.a82down.app.view.library.PullToRefreshListView;
 
@@ -63,7 +64,7 @@ public class HomeFragment extends BaseFragment {
                 }else{
                     waitTime = System.currentTimeMillis() - lastRefreshTime;
                     showTipToast(false,String.format(getString(R.string.refresh_too_fast),minWaitTime/1000));
-                    stopRefresh();
+                    UiUtils.stopRefresh(pull_to_refresh);
                 }
             }
             @Override
@@ -76,18 +77,10 @@ public class HomeFragment extends BaseFragment {
         getRecommend(recommedPageNo,recommendPageSize);
         return view;
     }
-    //停止刷新
-    private void stopRefresh(){
-        pull_to_refresh.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                pull_to_refresh.onRefreshComplete();
-            }
-        },1000);
-    }
+    //获取轮播图
     private void getWheelPage(){
         WheelPageReq req = new WheelPageReq();
-        req.sendRequest(new MyCallBack() {
+        req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)){
@@ -110,10 +103,10 @@ public class HomeFragment extends BaseFragment {
     //加载精品推荐
     private void getRecommend(final int pageNo, int pageSize){
         RecommendReq req = new RecommendReq(String.valueOf(pageNo),String.valueOf(pageSize),"0");
-        req.sendRequest(new MyCallBack() {
+        req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
-                RecommendRsp rsp = (RecommendRsp) BaseResponse.getRsp(result,RecommendRsp.class);
+                GetAppRsp rsp = (GetAppRsp) BaseResponse.getRsp(result,GetAppRsp.class);
                 if (rsp.result == Constance.HTTP_SUCCESS){
                     List<App> list = rsp.getAppList();
                     if (list!= null && list.size()>0){

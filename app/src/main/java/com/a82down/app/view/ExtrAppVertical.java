@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.a82down.app.R;
 import com.a82down.app.db.table.App;
+import com.a82down.app.images.ImgConfig;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -45,7 +46,7 @@ public class ExtrAppVertical extends LinearLayout {
     public void setApp(App app){
         String appLogo = app.getApp_logo();
        if (app_icon != null && appLogo != null && !"".equals(appLogo)){
-           x.image().bind(app_icon,app.getApp_logo());
+           x.image().bind(app_icon,app.getApp_logo(), ImgConfig.getImgOption());
        }
         String title = app.getApp_title();
         if (title == null){

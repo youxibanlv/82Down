@@ -11,7 +11,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by strike on 16/6/1.
  */
-public abstract class MyCallBack implements Callback.CommonCallback<String> {
+public abstract class NormalCallBack implements Callback.CommonCallback<String> {
 
     @Override
     public abstract void onSuccess(String result);

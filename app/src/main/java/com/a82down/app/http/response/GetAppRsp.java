@@ -6,18 +6,19 @@ import com.a82down.app.http.BaseResponse;
 import java.util.List;
 
 /**
- * Created by strike on 16/6/7.
+ * Created by strike on 16/6/13.
  */
-public class RecommendRsp extends BaseResponse {
+public class GetAppRsp extends BaseResponse {
     public ResultData resultData = null;
 
     public List<App> getAppList(){
         return resultData.appList;
+    }
+    public int getTotalPage(){
+        return resultData.totalPage;
     }
     class ResultData {
         List<App> appList = null;
         int totalPage;
     }
 }
-
-

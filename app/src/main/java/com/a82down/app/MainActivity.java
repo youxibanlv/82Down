@@ -11,6 +11,7 @@ import com.a82down.app.fragment.ArticleFragment;
 import com.a82down.app.fragment.GameFragment;
 import com.a82down.app.fragment.HomeFragment;
 import com.a82down.app.utils.UiUtils;
+import com.a82down.app.view.HomeTitleBar;
 import com.a82down.app.view.IconTabPageIndicator;
 import com.a82down.app.view.TabAdapter;
 
@@ -42,6 +43,9 @@ public class MainActivity extends BaseActivity {
 
     private long mExitTime;
 
+    @ViewInject(R.id.title_bar)
+    private HomeTitleBar title_bar;
+
     private TabAdapter mAdapter;
 
 
@@ -72,6 +76,9 @@ public class MainActivity extends BaseActivity {
                 BaseFragment baseFragment = (BaseFragment) mAdapter.instantiateItem(mViewPager, curItem);
                 baseFragment.freshView();
             }
+        }
+        if (title_bar!= null){
+            title_bar.refresh();
         }
     }
 
