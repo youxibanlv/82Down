@@ -12,7 +12,7 @@ public class AppConfig {
     /*****
      * 本地文件的默认存储路径
      ****/
-    public static final String BASE_PATH = Environment.getExternalStorageDirectory() + File.separator + "strike";
+    public static final String BASE_PATH = Environment.getExternalStorageDirectory() + File.separator + "82down";
     /**
      * 日志的存储路径
      */

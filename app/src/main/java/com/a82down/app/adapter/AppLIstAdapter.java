@@ -13,6 +13,7 @@ import com.a82down.app.base.MyBaseAdapter;
 import com.a82down.app.db.table.App;
 import com.a82down.app.images.ImgConfig;
 
+import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 /**
@@ -29,13 +30,7 @@ public class AppLIstAdapter extends MyBaseAdapter<App> {
         AppListViewHolder holder = null;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_app_list, parent, false);
-            holder = new AppListViewHolder();
-            holder.iv_app_icon = (ImageView) convertView.findViewById(R.id.iv_app_icon);
-            holder.tv_app_title = (TextView) convertView.findViewById(R.id.tv_app_title);
-            holder.app_score = (RatingBar) convertView.findViewById(R.id.app_score);
-            holder.tv_des = (TextView) convertView.findViewById(R.id.tv_des);
-            holder.tv_down = (TextView) convertView.findViewById(R.id.tv_down);
-            holder.tv_down_num = (TextView) convertView.findViewById(R.id.tv_down_num);
+            holder = new AppListViewHolder(convertView);
             convertView.setTag(holder);
         } else {
             holder = (AppListViewHolder) convertView.getTag();
@@ -48,16 +43,36 @@ public class AppLIstAdapter extends MyBaseAdapter<App> {
         holder.tv_des.setText(Html.fromHtml(app.getApp_desc()));
         String down = app.getApp_down() == null ? "0" : app.getApp_down();
         holder.tv_down_num.setText("下载：" + down);
+        holder.tv_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return convertView;
     }
 
     class AppListViewHolder {
+        @ViewInject(R.id.iv_app_icon)
         ImageView iv_app_icon;
+
+        @ViewInject(R.id.tv_app_title)
         TextView tv_app_title;
+
+        @ViewInject(R.id.app_score)
         RatingBar app_score;
+
+        @ViewInject(R.id.tv_des)
         TextView tv_des;
-        //        TextView tv_time;
+
+        @ViewInject(R.id.tv_down)
         TextView tv_down;
+
+        @ViewInject(R.id.tv_down_num)
         TextView tv_down_num;
+
+        public AppListViewHolder(View view){
+            x.view().inject(this,view);
+        }
     }
 }
