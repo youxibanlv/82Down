@@ -2,6 +2,7 @@ package com.a82down.app.download;
 
 import com.a82down.app.base.AppConfig;
 import com.a82down.app.db.table.App;
+import com.a82down.app.view.DownloadBtn;
 
 import org.xutils.DbManager;
 import org.xutils.common.Callback;
@@ -72,8 +73,12 @@ public final class DownloadManager {
         return instance;
     }
 
-    public void updateDownloadInfo(DownloadInfo info) throws DbException {
-        db.update(info);
+    public void updateDownloadInfo(DownloadInfo info) {
+        try {
+            db.update(info);
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getDownloadListCount() {
@@ -83,23 +88,36 @@ public final class DownloadManager {
     public DownloadInfo getDownloadInfo(int index) {
         return downloadInfoList.get(index);
     }
-
-    public synchronized void startDownload(String url, App app, DownloadViewHolder viewHolder) throws DbException {
+    public DownloadInfo getDownloadInfo(App app) {
+        DownloadInfo info = null;
+        try {
+            info = db.selector(DownloadInfo.class).where("objId","=",app.getApp_id()).findFirst();
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        return info;
+    }
+    public synchronized void startDownload(String url, App app, DownloadBtn viewHolder) {
         String objId = app.getApp_id();
-        String savePath = AppConfig.BASE_PATH+app.getApp_title()+".apk";
+        String savePath = AppConfig.BASE_PATH+"apk/"+app.getApp_title()+".apk";
         boolean autoResume = true;
         boolean autoRename = true;
 
         String fileSavePath = new File(savePath).getAbsolutePath();
-        DownloadInfo downloadInfo = db.selector(DownloadInfo.class)
-                .where("label", "=", objId)
-                .and("fileSavePath", "=", fileSavePath)
-                .findFirst();
+        DownloadInfo downloadInfo = null;
+        try {
+            downloadInfo = db.selector(DownloadInfo.class)
+                    .where("objId", "=", objId)
+                    .and("fileSavePath", "=", fileSavePath)
+                    .findFirst();
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
         if (downloadInfo != null) {
             DownloadCallback callback = callbackMap.get(downloadInfo);
             if (callback != null) {
                 if (viewHolder == null) {
-                    viewHolder = new DefaultDownloadViewHolder(null, downloadInfo);
+                    return;
                 }
                 if (callback.switchViewHolder(viewHolder)) {
                     return;
@@ -117,12 +135,16 @@ public final class DownloadManager {
             downloadInfo.setAutoResume(autoResume);
             downloadInfo.setObjId(objId);
             downloadInfo.setFileSavePath(fileSavePath);
-            db.saveBindingId(downloadInfo);
+            try {
+                db.saveBindingId(downloadInfo);
+            } catch (DbException e) {
+                e.printStackTrace();
+            }
         }
 
         // start downloading
         if (viewHolder == null) {
-            viewHolder = new DefaultDownloadViewHolder(null, downloadInfo);
+//            viewHolder = new DefaultDownloadViewHolder(null, downloadInfo);
         } else {
             viewHolder.update(downloadInfo);
         }
@@ -150,13 +172,29 @@ public final class DownloadManager {
 
     public void stopDownload(int index) {
         DownloadInfo downloadInfo = downloadInfoList.get(index);
-        stopDownload(downloadInfo);
+        stopDownload(downloadInfo,null);
     }
 
-    public void stopDownload(DownloadInfo downloadInfo) {
+    public void stopDownload(DownloadInfo downloadInfo,DownloadBtn viewHolder) {
         Callback.Cancelable cancelable = callbackMap.get(downloadInfo);
         if (cancelable != null) {
             cancelable.cancel();
+            downloadInfo.setState(DownloadState.STOPPED);
+                updateDownloadInfo(downloadInfo);
+        }else {
+            DownloadCallback callback = new DownloadCallback(viewHolder);
+            callback.setDownloadManager(this);
+            viewHolder.update(downloadInfo);
+            callback.switchViewHolder(viewHolder);
+            RequestParams params = new RequestParams(downloadInfo.getUrl());
+            params.setAutoResume(downloadInfo.isAutoResume());
+            params.setAutoRename(downloadInfo.isAutoRename());
+            params.setSaveFilePath(downloadInfo.getFileSavePath());
+            params.setExecutor(executor);
+            params.setCancelFast(true);
+            cancelable = x.http().get(params, callback);
+            callback.setCancelable(cancelable);
+            callbackMap.put(downloadInfo, callback);
         }
     }
 
@@ -172,13 +210,17 @@ public final class DownloadManager {
     public void removeDownload(int index) throws DbException {
         DownloadInfo downloadInfo = downloadInfoList.get(index);
         db.delete(downloadInfo);
-        stopDownload(downloadInfo);
+        stopDownload(downloadInfo,null);
         downloadInfoList.remove(index);
     }
 
-    public void removeDownload(DownloadInfo downloadInfo) throws DbException {
-        db.delete(downloadInfo);
-        stopDownload(downloadInfo);
-        downloadInfoList.remove(downloadInfo);
+    public void removeDownload(DownloadInfo downloadInfo) {
+        try {
+            db.delete(downloadInfo);
+            stopDownload(downloadInfo,null);
+            downloadInfoList.remove(downloadInfo);
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
     }
 }

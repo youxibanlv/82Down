@@ -8,7 +8,7 @@ import org.xutils.db.annotation.Table;
  * Date: 13-11-10
  * Time: 下午8:11
  */
-@Table(name = "download", onCreated = "CREATE UNIQUE INDEX index_name ON download(label,objId)")
+@Table(name = "download", onCreated = "CREATE UNIQUE INDEX index_name ON download(fileSavePath,objId)")
 public class DownloadInfo {
 
     public DownloadInfo() {

@@ -57,13 +57,12 @@
             android:numStars="1"
             />
     </RelativeLayout>
-    <TextView
+    <com.a82down.app.view.DownloadBtn
         android:id="@+id/app_install"
         android:layout_width="@dimen/wdp100"
-        android:layout_height="@dimen/wdp50"
-        android:background="@mipmap/bg_install"
+        android:layout_height="@dimen/wdp40"
         android:layout_marginTop="@dimen/wdp20"
         android:text="@string/install"
-        android:textSize="@dimen/wdp22"
+        android:textSize="@dimen/wdp19"
         android:gravity="center"/>
 </LinearLayout>

@@ -25,6 +25,15 @@
     <!--错误相关-->
     <string name="connect_timeout">连接服务器超时</string>
     <string name="this_is_last">已经是到底了</string>
+    <string name="free_down">免费下载</string>
+    <string name="continue_down">继续下载</string>
+    <string name="queue_down">队列中...</string>
+    <string name="restart_down">重新开始</string>
+    <string name="click_too_fast">你点的太快了</string>
+    <string name="please_wait">队列中，稍后将自动下载。。。</string>
+    <string name="retry_download">安装包不完整，请重新下载</string>
+    <string name="open">打开</string>
+    <string name="cancellde">已取消</string>
 
 
     <!--=======-->

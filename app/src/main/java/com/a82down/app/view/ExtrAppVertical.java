@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.a82down.app.R;
 import com.a82down.app.db.table.App;
 import com.a82down.app.images.ImgConfig;
+import com.a82down.app.utils.DownLoadUtils;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -33,7 +34,7 @@ public class ExtrAppVertical extends LinearLayout {
     private TextView app_size;
 
     @ViewInject(R.id.app_install)
-    private TextView app_install;
+    private DownloadBtn app_install;
 
     private View view;
 
@@ -45,6 +46,7 @@ public class ExtrAppVertical extends LinearLayout {
 
     public void setApp(App app){
         String appLogo = app.getApp_logo();
+        new DownLoadUtils(getContext()).initDownLoad(app,app_install);
        if (app_icon != null && appLogo != null && !"".equals(appLogo)){
            x.image().bind(app_icon,app.getApp_logo(), ImgConfig.getImgOption());
        }

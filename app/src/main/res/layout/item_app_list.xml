@@ -89,14 +89,12 @@
         android:paddingBottom="@dimen/wdp10"
         android:layout_gravity="center_vertical"
         android:orientation="vertical">
-        <TextView
+        <com.a82down.app.view.DownloadBtn
             android:id="@+id/tv_down"
             android:layout_width="match_parent"
             android:layout_height="@dimen/wdp40"
-            android:background="@mipmap/bg_install"
-            android:text="免费下载"
-            android:gravity="center"
-            android:textSize="@dimen/wdp18"/>
+            android:text="@string/free_down"
+            android:textSize="@dimen/wdp19"/>
         <TextView
             android:id="@+id/tv_down_num"
             android:layout_width="match_parent"
