@@ -20,7 +20,6 @@ import com.a82down.app.http.request.DownloadUrlReq;
 import com.a82down.app.http.response.DownloadUrlRsp;
 import com.a82down.app.view.DownloadBtn;
 
-import org.xutils.common.util.LogUtil;
 import org.xutils.x;
 
 import java.io.File;
@@ -73,11 +72,10 @@ public class DownLoadUtils {
     }
 
     public void download(final App app, final DownloadBtn downloadBtn) {
-        DownloadUrlReq req = new DownloadUrlReq(app.getApp_id(), app.getApp_version());
+        DownloadUrlReq req = new DownloadUrlReq(app.getApp_id(), app.getApp_version(),app.getUid());
         req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
-                LogUtil.e(result);
                 if (!TextUtils.isEmpty(result)) {
                     DownloadUrlRsp rsp = (DownloadUrlRsp) BaseResponse.getRsp(result, DownloadUrlRsp.class);
                     if (rsp != null && rsp.result == Constance.HTTP_SUCCESS) {
@@ -103,9 +101,11 @@ public class DownLoadUtils {
         if (info != null) {
             switch (info.getState()) {
                 case WAITING:
+                    manager.startDownload(info.getUrl(),app,textView);
                     textView.setText(R.string.queue_down);
                     break;
                 case STARTED:
+                    manager.startDownload(info.getUrl(),app,textView);
                     textView.setText(info.getProgress() + "%");
                     break;
                 case FINISHED:
@@ -138,6 +138,7 @@ public class DownLoadUtils {
                             manager.startDownload(downloadInfo.getUrl(),app,textView);
                             break;
                         case STARTED:
+                            textView.setText(R.string.continue_down);
                             manager.stopDownload(downloadInfo,textView);
                             break;
                         case FINISHED:
@@ -152,6 +153,7 @@ public class DownLoadUtils {
                             }
                             break;
                         case STOPPED:
+                            textView.setText(downloadInfo.getProgress() + "%");
                             manager.startDownload(downloadInfo.getUrl(), app, textView);
                             break;
                         case ERROR:

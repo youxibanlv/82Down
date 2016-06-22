@@ -82,6 +82,7 @@ public class AppFragment extends BaseFragment {
 
     public void refreshKey(String key){
         this.keyword = key;
+        pageNo = 0;
         searchAppByKey(true,key);
     }
     private void searchAppByKey(final boolean isRefresh, String key){

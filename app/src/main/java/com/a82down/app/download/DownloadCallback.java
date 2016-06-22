@@ -7,6 +7,7 @@ import com.a82down.app.view.DownloadBtn;
 
 import org.xutils.common.Callback;
 import org.xutils.ex.HttpException;
+import org.xutils.x;
 
 import java.io.EOFException;
 import java.io.File;
@@ -121,11 +122,12 @@ import java.lang.ref.WeakReference;
             if (ex instanceof EOFException){
                 DownLoadUtils.deleteApk(downloadInfo);
                 downloadManager.removeDownload(downloadInfo);
+                UiUtils.showTipToast(false,x.app().getString(R.string.server_busy));
             }
             if (ex instanceof HttpException){
                 HttpException e = (HttpException) ex;
                 if (e.getCode() == 404){
-                    UiUtils.showTipToast(false,"下载资源出错了，请联系管理员！");
+                    UiUtils.showTipToast(false, x.app().getString(R.string.server_not_found));
                 }
             }
             if (viewHolder != null) {
