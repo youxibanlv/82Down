@@ -12,11 +12,20 @@ public class AppConfig {
     /*****
      * 本地文件的默认存储路径
      ****/
-    public static final String BASE_PATH = Environment.getExternalStorageDirectory() + File.separator + "82down"+File.separator;
+    public static String getBasePath(){
+        String BASE_PATH = null;
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            BASE_PATH = Environment.getExternalStorageDirectory() + File.separator + "82down/";
+        }else{
+//            BASE_PATH = Environment.getExternalStoragePublicDirectory()
+        }
+        return BASE_PATH;
+    }
+//    public static final String BASE_PATH = Environment.getExternalStorageDirectory() + File.separator + "82down";
     /**
      * 日志的存储路径
      */
-    public static final String LOG_PATH = BASE_PATH + "/log/";
+    public static final String LOG_PATH = getBasePath() + "/log/";
     /**
      * 默认的字符格式
      */

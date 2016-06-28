@@ -4,15 +4,31 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/light_bg">
-    <TextView
-        android:id="@+id/tv_recommend"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/wdp30"
-        android:layout_marginTop="@dimen/wdp30"
-        android:text="@string/recommend"
-        android:textSize="@dimen/wdp28"
-        android:paddingLeft="@dimen/wdp20"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/wdp30"
+            android:layout_marginTop="@dimen/wdp30"
+            android:text="@string/recommend"
+            android:textSize="@dimen/wdp28"
+            android:paddingLeft="@dimen/wdp20"/>
+        <TextView
+            android:id="@+id/tv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/wdp30"
+            android:layout_marginTop="@dimen/wdp30"
+            android:layout_alignParentRight="true"
+            android:text="更多 >> "
+            android:layout_marginRight="@dimen/wdp20"
+            android:textSize="@dimen/wdp28"
+            android:paddingLeft="@dimen/wdp20"/>
+    </RelativeLayout>
+
     <com.a82down.app.view.NoScrollGridView
         android:id="@+id/gv_recommend"
         android:layout_width="match_parent"

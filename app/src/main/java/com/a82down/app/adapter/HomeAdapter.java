@@ -1,6 +1,7 @@
 package com.a82down.app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.a82down.app.R;
+import com.a82down.app.activity.RecommedActivity;
 import com.a82down.app.db.table.App;
 import com.a82down.app.http.entity.WheelPage;
 import com.a82down.app.view.NoScrollGridView;
 import com.a82down.app.view.WheelViewPage;
+
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,9 +108,7 @@ public class HomeAdapter extends BaseAdapter {
                     break;
                 case TYPE_RECOMMEND:
                     convertView = inflater.inflate(R.layout.item_recommed, parent, false);
-                    recommendHolder = new RecommendHolder();
-                    recommendHolder.tv_recommend = (TextView) convertView.findViewById(R.id.tv_recommend);
-                    recommendHolder.gv_recommend = (NoScrollGridView) convertView.findViewById(R.id.gv_recommend);
+                    recommendHolder = new RecommendHolder(convertView);
                     convertView.setTag(recommendHolder);
                     break;
                 case TYPE_LIST:
@@ -139,8 +142,15 @@ public class HomeAdapter extends BaseAdapter {
                 if (recommends.size() > 0) {
                     gridAdapter.setList(recommends);
                     gridAdapter.notifyDataSetChanged();
-
                 }
+                recommendHolder.tv_more.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //点击更多，跳转到app推荐列表界面
+                        Intent intent = new Intent(context, RecommedActivity.class);
+                        context.startActivity(intent);
+                    }
+                });
                 break;
             case TYPE_LIST:
 
@@ -154,7 +164,17 @@ public class HomeAdapter extends BaseAdapter {
     }
 
     class RecommendHolder {
+        @ViewInject(R.id.tv_recommend)
         TextView tv_recommend;
+        @ViewInject(R.id.tv_more)
+        TextView tv_more;
+        @ViewInject(R.id.gv_recommend)
         NoScrollGridView gv_recommend;
+
+        public RecommendHolder(View view){
+            x.view().inject(this,view);
+        }
+
+
     }
 }

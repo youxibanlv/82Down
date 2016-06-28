@@ -34,7 +34,7 @@ public class BaseResponse {
                 if (rsp == null){
                     rsp = new BaseResponse();
                 }
-                if (rsp.result != Constance.HTTP_SUCCESS){//提示错误信息
+                if (rsp.result != HttpConstance.HTTP_SUCCESS){//提示错误信息
                     if (rsp.failReason != null && !"".equals(rsp.failReason)){
                         UiUtils.showTipToast(false,rsp.failReason);
                     }

@@ -12,10 +12,11 @@ import com.a82down.app.adapter.AppLIstAdapter;
 import com.a82down.app.base.BaseFragment;
 import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
-import com.a82down.app.http.Constance;
+import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.request.GetAppByKeywordReq;
 import com.a82down.app.http.response.GetAppRsp;
+import com.a82down.app.utils.Constance;
 import com.a82down.app.utils.PullToRefreshUtils;
 import com.a82down.app.utils.UiUtils;
 import com.a82down.app.view.library.PullToRefreshBase;
@@ -73,7 +74,7 @@ public class AppFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         try {
-            keyword = this.getArguments().getString(getString(R.string.keyword));
+            keyword = this.getArguments().getString(Constance.KEYWORD);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -92,7 +93,7 @@ public class AppFragment extends BaseFragment {
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)){
                     GetAppRsp rsp = (GetAppRsp) BaseResponse.getRsp(result,GetAppRsp.class);
-                    if (rsp!= null && rsp.result == Constance.HTTP_SUCCESS){
+                    if (rsp!= null && rsp.result == HttpConstance.HTTP_SUCCESS){
                         if (pageNo == 0){
                             total = rsp.getTotalPage();
                         }

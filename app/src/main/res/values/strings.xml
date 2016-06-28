@@ -3,7 +3,6 @@
     <string name="app_name">My82down</string>
     <string name="press_to_exit">再按一次退出应用</string>
     <string name="refresh_too_fast">你刷新的太快了，%1$d秒刷一次哦</string>
-    <string name="keyword">keyword</string>
     <!--登录注册-->
     <string name="register_success">注册成功，自动登录中。。。</string>
     <string name="login">登  录</string>

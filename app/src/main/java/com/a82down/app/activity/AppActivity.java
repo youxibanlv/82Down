@@ -19,11 +19,12 @@ import com.a82down.app.adapter.KeywordAdapter;
 import com.a82down.app.base.BaseActivity;
 import com.a82down.app.fragment.AppFragment;
 import com.a82down.app.http.BaseResponse;
-import com.a82down.app.http.Constance;
+import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.entity.Keyword;
 import com.a82down.app.http.request.KeywordsReq;
 import com.a82down.app.http.response.KeywordsRsp;
+import com.a82down.app.utils.Constance;
 import com.a82down.app.utils.UiUtils;
 
 import org.xutils.view.annotation.ContentView;
@@ -56,13 +57,14 @@ public class AppActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         if (bundle!= null){
-            String keyword = bundle.getString(getString(R.string.keyword));
+            String keyword = bundle.getString(Constance.KEYWORD);
             if (keyword!= null){
                 edt_search.setText(keyword);
             }
             fragment = new AppFragment();
             fragment.setArguments(bundle);
         }
+
         edt_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -97,6 +99,7 @@ public class AppActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        fragment.refreshKey(edt_search.getText().toString());
         setFragment(R.id.fl_content,fragment);
     }
 
@@ -127,7 +130,7 @@ public class AppActivity extends BaseActivity {
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)) {
                     KeywordsRsp rsp = (KeywordsRsp) BaseResponse.getRsp(result, KeywordsRsp.class);
-                    if (rsp != null && rsp.result == Constance.HTTP_SUCCESS) {
+                    if (rsp != null && rsp.result == HttpConstance.HTTP_SUCCESS) {
                         keywords = rsp.getKeywords();
                         showPopuWindow();
                     }

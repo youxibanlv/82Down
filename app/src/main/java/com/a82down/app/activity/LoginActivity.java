@@ -15,7 +15,7 @@ import com.a82down.app.base.BaseActivity;
 import com.a82down.app.db.dao.UserDao;
 import com.a82down.app.db.table.User;
 import com.a82down.app.http.BaseResponse;
-import com.a82down.app.http.Constance;
+import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.request.LoginReq;
 import com.a82down.app.http.response.LoginRsp;
@@ -54,7 +54,7 @@ public class LoginActivity extends BaseActivity {
 
     private void login(String userName, String password) {
         LoginReq loginReq = new LoginReq(userName,password);
-        showProgressDialogCloseDelay("登录中，请稍后...",Constance.DEFAULT_TIMEOUT);
+        showProgressDialogCloseDelay("登录中，请稍后...", HttpConstance.DEFAULT_TIMEOUT);
         loginReq.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
@@ -63,7 +63,7 @@ public class LoginActivity extends BaseActivity {
                     Gson gson = new Gson();
                     LoginRsp rsp = (LoginRsp) BaseResponse.getRsp(result,LoginRsp.class);
                     if (rsp!= null){
-                        if (rsp.result == Constance.HTTP_SUCCESS){
+                        if (rsp.result == HttpConstance.HTTP_SUCCESS){
                              User user = gson.fromJson(gson.toJson(rsp.resultData), User.class);
                             if (user != null) {
                                 UserDao.saveUser(user);

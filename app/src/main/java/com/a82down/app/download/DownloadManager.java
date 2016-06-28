@@ -99,10 +99,15 @@ public final class DownloadManager {
     }
     public synchronized void startDownload(String url, App app, DownloadBtn viewHolder) {
         String objId = app.getApp_id();
-        String savePath = AppConfig.BASE_PATH+"apk/"+app.getApp_title()+".apk";
+        String path = AppConfig.getBasePath()+"apk/";
+        String savePath = path+app.getApp_title()+".apk";
         boolean autoResume = true;
         boolean autoRename = true;
 
+        File dir = new File(path);
+        if (!dir.exists()){
+            dir.mkdirs();
+        }
         String fileSavePath = new File(savePath).getAbsolutePath();
         DownloadInfo downloadInfo = null;
         try {

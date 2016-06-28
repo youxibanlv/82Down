@@ -12,7 +12,7 @@ import com.a82down.app.adapter.HomeAdapter;
 import com.a82down.app.base.BaseFragment;
 import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
-import com.a82down.app.http.Constance;
+import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.entity.WheelPage;
 import com.a82down.app.http.request.RecommendReq;
@@ -85,7 +85,7 @@ public class HomeFragment extends BaseFragment {
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)){
                     WheelPageRsp rsp = (WheelPageRsp) BaseResponse.getRsp(result,WheelPageRsp.class);
-                    if (rsp!= null && rsp.result == Constance.HTTP_SUCCESS){
+                    if (rsp!= null && rsp.result == HttpConstance.HTTP_SUCCESS){
                         List<WheelPage> list = rsp.getWheelPages();
                         if (list!= null && list.size()>0){
                             adapter.refreshWheelPages(list);
@@ -107,7 +107,7 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onSuccess(String result) {
                 GetAppRsp rsp = (GetAppRsp) BaseResponse.getRsp(result,GetAppRsp.class);
-                if (rsp.result == Constance.HTTP_SUCCESS){
+                if (rsp.result == HttpConstance.HTTP_SUCCESS){
                     List<App> list = rsp.getAppList();
                     if (list!= null && list.size()>0){
                         adapter.refreshRecommends(list);

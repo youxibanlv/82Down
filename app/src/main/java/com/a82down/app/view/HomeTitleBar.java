@@ -24,11 +24,12 @@ import com.a82down.app.activity.UserInfoActivity;
 import com.a82down.app.adapter.KeywordAdapter;
 import com.a82down.app.db.dao.UserDao;
 import com.a82down.app.http.BaseResponse;
-import com.a82down.app.http.Constance;
+import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.entity.Keyword;
 import com.a82down.app.http.request.KeywordsReq;
 import com.a82down.app.http.response.KeywordsRsp;
+import com.a82down.app.utils.Constance;
 import com.a82down.app.utils.UiUtils;
 
 import org.xutils.view.annotation.Event;
@@ -113,7 +114,7 @@ public class HomeTitleBar extends RelativeLayout {
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)) {
                     KeywordsRsp rsp = (KeywordsRsp) BaseResponse.getRsp(result, KeywordsRsp.class);
-                    if (rsp != null && rsp.result == Constance.HTTP_SUCCESS) {
+                    if (rsp != null && rsp.result == HttpConstance.HTTP_SUCCESS) {
                         keywords = rsp.getKeywords();
                         showPopuWindow();
                     }
@@ -130,7 +131,7 @@ public class HomeTitleBar extends RelativeLayout {
     private void searAppByKeyword(String keyword){
         Intent intent = new Intent(context,AppActivity.class);
         Bundle b = new Bundle();
-        b.putString(getContext().getString(R.string.keyword),keyword);
+        b.putString(Constance.KEYWORD,keyword);
         intent.putExtras(b);
         context.startActivity(intent);
     }

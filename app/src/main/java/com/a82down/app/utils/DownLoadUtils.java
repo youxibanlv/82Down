@@ -14,7 +14,7 @@ import com.a82down.app.download.DownloadInfo;
 import com.a82down.app.download.DownloadManager;
 import com.a82down.app.download.DownloadState;
 import com.a82down.app.http.BaseResponse;
-import com.a82down.app.http.Constance;
+import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.request.DownloadUrlReq;
 import com.a82down.app.http.response.DownloadUrlRsp;
@@ -78,7 +78,7 @@ public class DownLoadUtils {
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)) {
                     DownloadUrlRsp rsp = (DownloadUrlRsp) BaseResponse.getRsp(result, DownloadUrlRsp.class);
-                    if (rsp != null && rsp.result == Constance.HTTP_SUCCESS) {
+                    if (rsp != null && rsp.result == HttpConstance.HTTP_SUCCESS) {
                         String url = rsp.resultData;
                         if (!TextUtils.isEmpty(url)) {
                             manager.startDownload(url, app, downloadBtn);
