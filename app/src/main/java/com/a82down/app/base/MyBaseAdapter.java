@@ -31,6 +31,10 @@ public abstract class MyBaseAdapter <T> extends BaseAdapter {
         this.list = list;
         notifyDataSetChanged();
     }
+    public void addData(List<T> dataList){
+        this.list.addAll(dataList);
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         return list.size();

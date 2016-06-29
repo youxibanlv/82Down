@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.a82down.app.R;
-import com.a82down.app.activity.RecommedActivity;
+import com.a82down.app.activity.RecommendActivity;
 import com.a82down.app.db.table.App;
 import com.a82down.app.http.entity.WheelPage;
 import com.a82down.app.view.NoScrollGridView;
@@ -147,7 +147,7 @@ public class HomeAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         //点击更多，跳转到app推荐列表界面
-                        Intent intent = new Intent(context, RecommedActivity.class);
+                        Intent intent = new Intent(context, RecommendActivity.class);
                         context.startActivity(intent);
                     }
                 });
@@ -171,8 +171,8 @@ public class HomeAdapter extends BaseAdapter {
         @ViewInject(R.id.gv_recommend)
         NoScrollGridView gv_recommend;
 
-        public RecommendHolder(View view){
-            x.view().inject(this,view);
+        public RecommendHolder(View view) {
+            x.view().inject(this, view);
         }
 
 
