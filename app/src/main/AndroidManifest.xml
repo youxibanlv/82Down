@@ -24,7 +24,7 @@
         <activity android:name=".activity.LoginActivity"></activity>
         <activity android:name=".activity.UserInfoActivity"></activity>
         <activity android:name=".activity.AppActivity"></activity>
-        <activity android:name=".activity.DetailsActivity"></activity>
+        <activity android:name=".activity.AppDetailsActivity"></activity>
         <activity android:name=".activity.RecommendActivity"></activity>
     </application>
 

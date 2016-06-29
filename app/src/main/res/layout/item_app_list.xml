@@ -76,11 +76,6 @@
             android:layout_marginTop="@dimen/wdp5"
             android:text="sldkflskdflksdflsdkfjsldfjlsdkfjlsdkjfsdlfkjsdlfj"
             />
-        <!--<TextView
-            android:id="@+id/tv_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="sldjlsdkflsdkfj"/>-->
     </LinearLayout>
     <LinearLayout
         android:layout_width="@dimen/wdp100"

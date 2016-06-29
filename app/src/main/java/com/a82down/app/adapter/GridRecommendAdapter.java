@@ -1,13 +1,16 @@
 package com.a82down.app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.a82down.app.R;
+import com.a82down.app.activity.AppDetailsActivity;
 import com.a82down.app.db.table.App;
+import com.a82down.app.utils.Constance;
 import com.a82down.app.view.ExtrAppVertical;
 
 import java.util.ArrayList;
@@ -47,7 +50,7 @@ public class GridRecommendAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_recommed_grid, parent, false);
@@ -59,6 +62,15 @@ public class GridRecommendAdapter extends BaseAdapter {
         }
         //配置app界面
         holder.grid_recommend.setApp(list.get(position));
+        holder.grid_recommend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, AppDetailsActivity.class);
+                intent.putExtra(Constance.APP_ID,getItem(position).getApp_id());
+                context.startActivity(intent);
+
+            }
+        });
         return convertView;
     }
 

@@ -35,6 +35,8 @@
     <string name="cancellde">已取消</string>
     <string name="server_busy">服务器忙，请稍后重试</string>
     <string name="server_not_found">下载资源出错了，请联系管理员！</string>
+    <string name="error_null_id">未获取到应用id，请联系管理员</string>
+    <string name="details_app">应用详情</string>
 
 
     <!--=======-->

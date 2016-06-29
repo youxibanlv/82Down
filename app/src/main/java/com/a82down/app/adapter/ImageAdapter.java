@@ -1,13 +1,18 @@
 package com.a82down.app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.a82down.app.R;
+import com.a82down.app.activity.AppDetailsActivity;
 import com.a82down.app.http.UrlConfig;
 import com.a82down.app.http.entity.WheelPage;
+import com.a82down.app.utils.Constance;
+import com.a82down.app.utils.UiUtils;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -38,6 +43,7 @@ public class ImageAdapter extends PagerAdapter {
                 imageViews.add(imageView);
             }
         }
+
     }
 
     public void setPages(List<WheelPage> wheelPages){
@@ -50,8 +56,27 @@ public class ImageAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         container.addView(imageViews.get(position));
+        ImageView view = imageViews.get(position);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, AppDetailsActivity.class);
+                String url = pages.get(position).getUrl();
+                 String id = "";
+                if (url.contains("id=")){
+                    id = url.substring(url.indexOf("id=")+3,url.length());
+                }
+                if(!"".equals(id)){
+                    intent.putExtra(Constance.APP_ID,id);
+                }else{
+                    UiUtils.showTipToast(false,context.getString(R.string.error_null_id));
+                    return;
+                }
+                context.startActivity(intent);
+            }
+        });
         return imageViews.get(position);
     }
 

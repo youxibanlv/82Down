@@ -5,6 +5,8 @@ import com.a82down.app.http.UrlConfig;
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
+import java.util.List;
+
 /**
  * Created by strike on 16/6/7.
  */
@@ -100,6 +102,8 @@ public class App {
 
     @Column(name = "seo_desc")
     private String seo_desc;
+
+    private List<String> resource;
 
     public int getId() {
         return id;
@@ -343,5 +347,13 @@ public class App {
 
     public void setSeo_desc(String seo_desc) {
         this.seo_desc = seo_desc;
+    }
+
+    public List<String> getResource() {
+        return resource;
+    }
+
+    public void setResource(List<String> resource) {
+        this.resource = resource;
     }
 }

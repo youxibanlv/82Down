@@ -13,6 +13,8 @@ public interface Constance {
 
     String KEYWORD = "keyword";//关键词
 
+    String APP_ID = "app_id";//应用id
+
 
     int RECOMMEND = 0;//推荐
     int SEARCH = 1;//搜索

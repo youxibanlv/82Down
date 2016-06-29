@@ -32,7 +32,7 @@ public class HomeAdapter extends BaseAdapter {
 
     private List<WheelPage> wheelPages = new ArrayList<>();//轮播图集合
     private List<App> recommends = new ArrayList<>();//精品推荐
-    private List<App> newGames = new ArrayList<>();//热门新游
+    private List<App> newGames = new ArrayList<>();//装机
 
     private GridRecommendAdapter gridAdapter;
 
@@ -47,14 +47,14 @@ public class HomeAdapter extends BaseAdapter {
 
     //设置轮播图数据
     public void refreshWheelPages(List<WheelPage> list) {
-        wheelPages.clear();
         wheelPages = list;
+        notifyDataSetChanged();
     }
 
     //    设置精品推荐数据
     public void refreshRecommends(List<App> list) {
-        recommends.clear();
         recommends = list;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -141,7 +141,6 @@ public class HomeAdapter extends BaseAdapter {
                 recommendHolder.gv_recommend.setAdapter(gridAdapter);
                 if (recommends.size() > 0) {
                     gridAdapter.setList(recommends);
-                    gridAdapter.notifyDataSetChanged();
                 }
                 recommendHolder.tv_more.setOnClickListener(new View.OnClickListener() {
                     @Override
