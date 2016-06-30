@@ -37,6 +37,8 @@
     <string name="server_not_found">下载资源出错了，请联系管理员！</string>
     <string name="error_null_id">未获取到应用id，请联系管理员</string>
     <string name="details_app">应用详情</string>
+    <string name="info">简介：</string>
+    <string name="img">截图：</string>
 
 
     <!--=======-->

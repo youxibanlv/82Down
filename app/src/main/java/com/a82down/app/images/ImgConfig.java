@@ -18,7 +18,7 @@ public class ImgConfig {
                 .setFailureDrawableId(R.mipmap.load_faild)
                 .setLoadingDrawableId(R.mipmap.loading)
                 .setIgnoreGif(false)
-                .setImageScaleType(ImageView.ScaleType.FIT_CENTER)
+                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
                 .setUseMemCache(true)
                 .setAutoRotate(true)
                 .build();

@@ -5,10 +5,12 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.a82down.app.R;
+import com.a82down.app.adapter.DetailsAdapter;
 import com.a82down.app.base.BaseActivity;
 import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
@@ -25,6 +27,9 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by strike on 16/6/21.
@@ -54,12 +59,19 @@ public class AppDetailsActivity extends BaseActivity {
     @ViewInject(R.id.tv_down_num)
     private TextView tv_down_num;
 
+    @ViewInject(R.id.lv_icon)
+    private ListView lv_icon;
+
 
     private DownLoadUtils downloadUtils;
+
+    private DetailsAdapter adapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         downloadUtils = new DownLoadUtils(this);
+        adapter = new DetailsAdapter(this);
+        lv_icon.setAdapter(adapter);
     }
 
     @Override
@@ -68,6 +80,7 @@ public class AppDetailsActivity extends BaseActivity {
         String appId = getIntent().getStringExtra(Constance.APP_ID);
         if (appId != null){
             getAppDetails(appId);
+            showProgressDialogCloseDelay("加载中，请稍后",HttpConstance.DEFAULT_TIMEOUT);
         }
     }
 
@@ -101,7 +114,7 @@ public class AppDetailsActivity extends BaseActivity {
 
             @Override
             public void onFinished() {
-
+                dismissProgressDialog();
             }
         });
     }
@@ -125,5 +138,12 @@ public class AppDetailsActivity extends BaseActivity {
         if (app.getApp_down()!= null){
             tv_down_num.setText("下载："+app.getApp_down());
         }
+        if (app.getResource()!= null){
+            List<String> list = new ArrayList<>();
+            list.add(0,app.getApp_desc());
+            list.addAll(app.getResource());
+            adapter.refresh(list);
+        }
     }
+
 }

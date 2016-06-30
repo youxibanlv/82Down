@@ -192,6 +192,16 @@ public class App {
             return UrlConfig.BASE_URL+app_logo;
         }
     }
+    public List<String> getResource() {
+        for (int i = 0;i<resource.size();i++){
+            String url = resource.get(i);
+            if (!url.contains("http://")){
+                url = UrlConfig.BASE_URL+resource.get(i);
+            }
+            resource.set(i,url);
+        }
+        return resource;
+    }
 
     public void setApp_logo(String app_logo) {
         this.app_logo = app_logo;
@@ -347,10 +357,6 @@ public class App {
 
     public void setSeo_desc(String seo_desc) {
         this.seo_desc = seo_desc;
-    }
-
-    public List<String> getResource() {
-        return resource;
     }
 
     public void setResource(List<String> resource) {

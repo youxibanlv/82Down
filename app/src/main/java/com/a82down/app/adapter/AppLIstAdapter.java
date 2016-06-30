@@ -1,17 +1,21 @@
 package com.a82down.app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.a82down.app.R;
+import com.a82down.app.activity.AppDetailsActivity;
 import com.a82down.app.base.MyBaseAdapter;
 import com.a82down.app.db.table.App;
 import com.a82down.app.images.ImgConfig;
+import com.a82down.app.utils.Constance;
 import com.a82down.app.utils.DownLoadUtils;
 import com.a82down.app.view.DownloadBtn;
 
@@ -37,7 +41,7 @@ public class AppLIstAdapter extends MyBaseAdapter<App> {
         } else {
             holder = (AppListViewHolder) convertView.getTag();
         }
-        App app = list.get(position);
+        final App app = list.get(position);
         x.image().bind(holder.iv_app_icon, app.getApp_logo(), ImgConfig.getImgOption());
         holder.tv_app_title.setText(app.getApp_title());
         int score = app.getApp_recomment() == null ? 0 : (int) (Float.parseFloat(app.getApp_recomment()) / 2);
@@ -46,10 +50,21 @@ public class AppLIstAdapter extends MyBaseAdapter<App> {
         String down = app.getApp_down() == null ? "0" : app.getApp_down();
         holder.tv_down_num.setText("下载：" + down);
         new DownLoadUtils(context).initDownLoad(app,holder.tv_down);
+        holder.ll_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, AppDetailsActivity.class);
+                intent.putExtra(Constance.APP_ID,app.getApp_id());
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
 
     class AppListViewHolder {
+        @ViewInject(R.id.ll_item)
+        private LinearLayout ll_item;
+
         @ViewInject(R.id.iv_app_icon)
         ImageView iv_app_icon;
 
