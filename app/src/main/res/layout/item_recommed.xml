@@ -39,4 +39,17 @@
         android:horizontalSpacing="@dimen/wdp5"
         android:verticalSpacing="@dimen/wdp5"
         android:numColumns="3"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/wdp1"
+        android:layout_marginLeft="@dimen/wdp20"
+        android:layout_marginRight="@dimen/wdp20"
+        android:background="@color/light_bg_divider"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/wdp70"
+        android:text="@string/guess_you_like"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/wdp28"
+        android:paddingLeft="@dimen/wdp20"/>
 </LinearLayout>

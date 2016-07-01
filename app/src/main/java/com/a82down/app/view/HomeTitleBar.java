@@ -18,7 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.a82down.app.R;
-import com.a82down.app.activity.AppActivity;
+import com.a82down.app.activity.SearchActivity;
 import com.a82down.app.activity.LoginActivity;
 import com.a82down.app.activity.UserInfoActivity;
 import com.a82down.app.adapter.KeywordAdapter;
@@ -129,7 +129,7 @@ public class HomeTitleBar extends RelativeLayout {
     }
     //根据关键词查询应用
     private void searAppByKeyword(String keyword){
-        Intent intent = new Intent(context,AppActivity.class);
+        Intent intent = new Intent(context,SearchActivity.class);
         Bundle b = new Bundle();
         b.putString(Constance.KEYWORD,keyword);
         intent.putExtras(b);

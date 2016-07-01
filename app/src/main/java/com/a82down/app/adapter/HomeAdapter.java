@@ -2,16 +2,25 @@ package com.a82down.app.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.a82down.app.R;
+import com.a82down.app.activity.AppDetailsActivity;
 import com.a82down.app.activity.RecommendActivity;
 import com.a82down.app.db.table.App;
 import com.a82down.app.http.entity.WheelPage;
+import com.a82down.app.images.ImgConfig;
+import com.a82down.app.utils.Constance;
+import com.a82down.app.utils.DownLoadUtils;
+import com.a82down.app.view.DownloadBtn;
 import com.a82down.app.view.NoScrollGridView;
 import com.a82down.app.view.WheelViewPage;
 
@@ -57,6 +66,11 @@ public class HomeAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    //设置猜你喜欢
+    public void refreshGuessYouLike(List<App> list){
+        newGames = list;
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         int count = 2;
@@ -98,6 +112,7 @@ public class HomeAdapter extends BaseAdapter {
         int type = getItemViewType(position);
         WheelPageHolder wheelPageHolder = null;
         RecommendHolder recommendHolder = null;
+        AppListViewHolder appListViewHolder = null;
         if (convertView == null) {
             switch (type) {
                 case TYPE_HEAD:
@@ -112,7 +127,9 @@ public class HomeAdapter extends BaseAdapter {
                     convertView.setTag(recommendHolder);
                     break;
                 case TYPE_LIST:
-
+                    convertView = inflater.inflate(R.layout.item_app_list,parent,false);
+                    appListViewHolder = new AppListViewHolder(convertView);
+                    convertView.setTag(appListViewHolder);
                     break;
 
             }
@@ -125,7 +142,7 @@ public class HomeAdapter extends BaseAdapter {
                     recommendHolder = (RecommendHolder) convertView.getTag();
                     break;
                 case TYPE_LIST:
-
+                    appListViewHolder = (AppListViewHolder) convertView.getTag();
                     break;
             }
         }
@@ -152,7 +169,23 @@ public class HomeAdapter extends BaseAdapter {
                 });
                 break;
             case TYPE_LIST:
-
+                final App app = newGames.get(position-2);
+                x.image().bind(appListViewHolder.iv_app_icon, app.getApp_logo(), ImgConfig.getImgOption());
+                appListViewHolder.tv_app_title.setText(app.getApp_title());
+                int score = app.getApp_recomment() == null ? 0 : (int) (Float.parseFloat(app.getApp_recomment()) / 2);
+                appListViewHolder.app_score.setNumStars(score);
+                appListViewHolder.tv_des.setText(Html.fromHtml(app.getApp_desc()));
+                String down = app.getApp_down() == null ? "0" : app.getApp_down();
+                appListViewHolder.tv_down_num.setText("下载：" + down);
+                new DownLoadUtils(context).initDownLoad(app,appListViewHolder.tv_down);
+                appListViewHolder.ll_item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, AppDetailsActivity.class);
+                        intent.putExtra(Constance.APP_ID,app.getApp_id());
+                        context.startActivity(intent);
+                    }
+                });
                 break;
         }
         return convertView;
@@ -165,15 +198,40 @@ public class HomeAdapter extends BaseAdapter {
     class RecommendHolder {
         @ViewInject(R.id.tv_recommend)
         TextView tv_recommend;
+
         @ViewInject(R.id.tv_more)
         TextView tv_more;
+
         @ViewInject(R.id.gv_recommend)
         NoScrollGridView gv_recommend;
-
         public RecommendHolder(View view) {
             x.view().inject(this, view);
         }
+    }
+    class AppListViewHolder {
+        @ViewInject(R.id.ll_item)
+        private LinearLayout ll_item;
 
+        @ViewInject(R.id.iv_app_icon)
+        ImageView iv_app_icon;
 
+        @ViewInject(R.id.tv_app_title)
+        TextView tv_app_title;
+
+        @ViewInject(R.id.app_score)
+        RatingBar app_score;
+
+        @ViewInject(R.id.tv_des)
+        TextView tv_des;
+
+        @ViewInject(R.id.tv_down)
+        DownloadBtn tv_down;
+
+        @ViewInject(R.id.tv_down_num)
+        TextView tv_down_num;
+
+        public AppListViewHolder(View view){
+            x.view().inject(this,view);
+        }
     }
 }

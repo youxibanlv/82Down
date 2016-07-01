@@ -186,6 +186,9 @@ public class App {
     }
 
     public String getApp_logo() {
+        if (app_logo == null){
+            return null;
+        }
         if (app_logo.contains("http://")){
             return app_logo;
         }else {
@@ -193,6 +196,9 @@ public class App {
         }
     }
     public List<String> getResource() {
+        if (resource == null){
+            return null;
+        }
         for (int i = 0;i<resource.size();i++){
             String url = resource.get(i);
             if (!url.contains("http://")){

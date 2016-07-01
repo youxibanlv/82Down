@@ -9,24 +9,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.a82down.app.R;
+import com.a82down.app.adapter.AppLIstAdapter;
 import com.a82down.app.adapter.KeywordAdapter;
 import com.a82down.app.base.BaseActivity;
-import com.a82down.app.fragment.AppFragment;
+import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.entity.Keyword;
+import com.a82down.app.http.request.GetAppByKeywordReq;
 import com.a82down.app.http.request.KeywordsReq;
+import com.a82down.app.http.response.GetAppRsp;
 import com.a82down.app.http.response.KeywordsRsp;
 import com.a82down.app.utils.Constance;
+import com.a82down.app.utils.PullToRefreshUtils;
 import com.a82down.app.utils.UiUtils;
+import com.a82down.app.view.library.PullToRefreshBase;
+import com.a82down.app.view.library.PullToRefreshListView;
 
+import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -36,35 +42,35 @@ import java.util.List;
 /**
  * Created by strike on 16/6/14.
  */
-@ContentView(R.layout.activity_app)
-public class AppActivity extends BaseActivity {
+@ContentView(R.layout.activity_search)
+public class SearchActivity extends BaseActivity {
 
     @ViewInject(R.id.edt_search)
     private EditText edt_search;
 
-    @ViewInject(R.id.fl_content)
-    private FrameLayout fl_content;
+    @ViewInject(R.id.pull_to_refresh)
+    private PullToRefreshListView pull_to_refresh;
 
-    private AppFragment fragment;
-    private int keySize = 5;
     private PopupWindow popupWindow;
     private KeywordAdapter adapter;
 
     private List<Keyword> keywords;
+
+    private String key;
+
+    private int pageNo = 0,pageSize = 5,total,keySize = 5;
+    private AppLIstAdapter appLIstAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         if (bundle!= null){
-            String keyword = bundle.getString(Constance.KEYWORD);
-            if (keyword!= null){
-                edt_search.setText(keyword);
+            key = bundle.getString(Constance.KEYWORD);
+            if (key!= null){
+                edt_search.setText(key);
             }
-            fragment = new AppFragment();
-            fragment.setArguments(bundle);
         }
-
         edt_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -94,13 +100,35 @@ public class AppActivity extends BaseActivity {
                 edt_search.setSelection(s.toString().length());
             }
         });
+        pull_to_refresh.setMode(PullToRefreshBase.Mode.BOTH);
+        PullToRefreshUtils.initRefresh(pull_to_refresh);
+        appLIstAdapter = new AppLIstAdapter(this);
+        pull_to_refresh.setAdapter(appLIstAdapter);
+        pull_to_refresh.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                pageNo = 0;
+                searchAppByKey(true,key);
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                if ( ++pageNo<= total){
+                    searchAppByKey(false,key);
+                }else {
+                    UiUtils.showTipToast(false,getString(R.string.this_is_last));
+                    UiUtils.stopRefresh(pull_to_refresh);
+                }
+
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        fragment.refreshKey(edt_search.getText().toString());
-        setFragment(R.id.fl_content,fragment);
+        key = edt_search.getText().toString();
+        searchAppByKey(true,key);
     }
 
     @Event(value = {R.id.rv_back,R.id.btn_search,R.id.iv_manager})
@@ -110,11 +138,11 @@ public class AppActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_search:
-                String keyword = edt_search.getText().toString();
+                key = edt_search.getText().toString();
                 if (popupWindow!= null && popupWindow.isShowing()){
                     popupWindow.dismiss();
                 }
-                fragment.refreshKey(keyword);
+                searchAppByKey(true,key);
                 UiUtils.closeKeybord(edt_search,this);
                 break;
             case R.id.iv_manager:
@@ -143,6 +171,36 @@ public class AppActivity extends BaseActivity {
             }
         });
     }
+    private void searchAppByKey(final boolean isRefresh, String key){
+        GetAppByKeywordReq req = new GetAppByKeywordReq(key,pageNo,pageSize);
+        req.sendRequest(new NormalCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                if (!TextUtils.isEmpty(result)){
+                    GetAppRsp rsp = (GetAppRsp) BaseResponse.getRsp(result,GetAppRsp.class);
+                    if (rsp!= null && rsp.result == HttpConstance.HTTP_SUCCESS){
+                        if (pageNo == 0){
+                            total = rsp.getTotalPage();
+                        }
+                        List<App> list = rsp.getAppList();
+                        if (isRefresh){
+                            appLIstAdapter.refresh(list);
+                        }else{
+                            appLIstAdapter.getList().addAll(list);
+                            appLIstAdapter.notifyDataSetChanged();
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFinished() {
+                pull_to_refresh.onRefreshComplete();
+                LogUtil.e("pageNo = "+pageNo+",totalPage = "+total);
+            }
+        });
+    }
     //显示关键词列表
     private void showPopuWindow() {
         if (popupWindow == null) {
@@ -160,7 +218,7 @@ public class AppActivity extends BaseActivity {
                     Keyword keyword = keywords.get(position);
                     if (keyword != null && keyword.getQ() != null) {
                         edt_search.setText(keyword.getQ());
-                        fragment.refreshKey(keyword.getQ());
+                        searchAppByKey(true,keyword.getQ());
                     }
                     if (popupWindow != null && popupWindow.isShowing()) {
                         popupWindow.dismiss();

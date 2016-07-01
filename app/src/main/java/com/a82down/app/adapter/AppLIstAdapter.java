@@ -42,22 +42,34 @@ public class AppLIstAdapter extends MyBaseAdapter<App> {
             holder = (AppListViewHolder) convertView.getTag();
         }
         final App app = list.get(position);
-        x.image().bind(holder.iv_app_icon, app.getApp_logo(), ImgConfig.getImgOption());
-        holder.tv_app_title.setText(app.getApp_title());
-        int score = app.getApp_recomment() == null ? 0 : (int) (Float.parseFloat(app.getApp_recomment()) / 2);
-        holder.app_score.setNumStars(score);
-        holder.tv_des.setText(Html.fromHtml(app.getApp_desc()));
-        String down = app.getApp_down() == null ? "0" : app.getApp_down();
-        holder.tv_down_num.setText("下载：" + down);
-        new DownLoadUtils(context).initDownLoad(app,holder.tv_down);
-        holder.ll_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, AppDetailsActivity.class);
-                intent.putExtra(Constance.APP_ID,app.getApp_id());
-                context.startActivity(intent);
+        if (app != null){
+            if (app.getApp_logo()!= null){
+                x.image().bind(holder.iv_app_icon, app.getApp_logo(), ImgConfig.getImgOption());
             }
-        });
+            if (app.getApp_title()== null){
+                holder.tv_app_title.setText("");
+            }else{
+                holder.tv_app_title.setText(app.getApp_title());
+            }
+            int score = app.getApp_recomment() == null ? 0 : (int) (Float.parseFloat(app.getApp_recomment()) / 2);
+            holder.app_score.setNumStars(score);
+            if (app.getApp_desc()!= null){
+                holder.tv_des.setText(Html.fromHtml(app.getApp_desc()));
+            }else {
+                holder.tv_des.setText("");
+            }
+            String down = app.getApp_down() == null ? "0" : app.getApp_down();
+            holder.tv_down_num.setText("下载：" + down);
+            new DownLoadUtils(context).initDownLoad(app,holder.tv_down);
+            holder.ll_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, AppDetailsActivity.class);
+                    intent.putExtra(Constance.APP_ID,app.getApp_id());
+                    context.startActivity(intent);
+                }
+            });
+        }
         return convertView;
     }
 

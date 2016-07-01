@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 
 import com.a82down.app.base.BaseActivity;
 import com.a82down.app.base.BaseFragment;
+import com.a82down.app.fragment.AppFragment;
 import com.a82down.app.fragment.ArticleFragment;
 import com.a82down.app.fragment.GameFragment;
 import com.a82down.app.fragment.HomeFragment;
@@ -94,10 +95,10 @@ public class MainActivity extends BaseActivity {
         game.setIconId(R.drawable.recommend_icon_selector);
         fragments.add(game);
 
-//        BaseFragment app = new AppFragment();
-//        app.setTitle("应用");
-//        app.setIconId(R.drawable.recommend_icon_selector);
-//        fragments.add(app);
+        BaseFragment app = new AppFragment();
+        app.setTitle("应用");
+        app.setIconId(R.drawable.recommend_icon_selector);
+        fragments.add(app);
 
         BaseFragment article = new ArticleFragment();
         article.setTitle("软文");
