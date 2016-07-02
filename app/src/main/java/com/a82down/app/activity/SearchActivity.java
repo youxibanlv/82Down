@@ -131,7 +131,7 @@ public class SearchActivity extends BaseActivity {
         searchAppByKey(true,key);
     }
 
-    @Event(value = {R.id.rv_back,R.id.btn_search,R.id.iv_manager})
+    @Event(value = {R.id.rv_back,R.id.btn_search})
     private void getEvent(View view){
         switch (view.getId()){
             case R.id.rv_back:
@@ -144,9 +144,6 @@ public class SearchActivity extends BaseActivity {
                 }
                 searchAppByKey(true,key);
                 UiUtils.closeKeybord(edt_search,this);
-                break;
-            case R.id.iv_manager:
-
                 break;
         }
     }

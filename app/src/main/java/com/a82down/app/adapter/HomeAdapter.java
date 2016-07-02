@@ -71,6 +71,10 @@ public class HomeAdapter extends BaseAdapter {
         newGames = list;
         notifyDataSetChanged();
     }
+    public void loadMore(List<App> list){
+        newGames.addAll(list);
+        notifyDataSetChanged();
+    }
     @Override
     public int getCount() {
         int count = 2;
@@ -78,6 +82,11 @@ public class HomeAdapter extends BaseAdapter {
             count = count + newGames.size();
         }
         return count;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 3;
     }
 
     @Override
@@ -99,7 +108,6 @@ public class HomeAdapter extends BaseAdapter {
     public int getItemViewType(int position) {
         if (position == 0) {
             return TYPE_HEAD;
-//            return TYPE_RECOMMEND;
         } else if (position == 1) {
             return TYPE_RECOMMEND;
         } else {

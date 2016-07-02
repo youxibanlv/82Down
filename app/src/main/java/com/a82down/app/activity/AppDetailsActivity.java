@@ -80,7 +80,7 @@ public class AppDetailsActivity extends BaseActivity {
         String appId = getIntent().getStringExtra(Constance.APP_ID);
         if (appId != null){
             getAppDetails(appId);
-            showProgressDialogCloseDelay("加载中，请稍后",HttpConstance.DEFAULT_TIMEOUT);
+            showProgressDialogCloseDelay(getString(R.string.loading),HttpConstance.DEFAULT_TIMEOUT);
         }
     }
 

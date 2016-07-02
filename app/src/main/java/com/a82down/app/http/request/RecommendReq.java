@@ -18,12 +18,12 @@ public class RecommendReq extends BaseRequest {
     class RequestParam{
         String pageNo;
         String pageSize;
-        String areaType;
+        String type;
 
         public RequestParam(String pn,String ps,String at){
             pageNo = pn;
             pageSize = ps;
-            areaType = at;
+            type = at;
         }
     }
 }

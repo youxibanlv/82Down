@@ -70,13 +70,8 @@ public class RecommendActivity extends BaseActivity {
 
             }
         });
+        showProgressDialogCloseDelay(getString(R.string.loading),HttpConstance.DEFAULT_TIMEOUT);
         getRecommend(true);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
     }
 
     @Event(value = {R.id.iv_back})
@@ -112,6 +107,7 @@ public class RecommendActivity extends BaseActivity {
             @Override
             public void onFinished() {
                 pull_to_refresh.onRefreshComplete();
+                dismissProgressDialog();
             }
         });
     }

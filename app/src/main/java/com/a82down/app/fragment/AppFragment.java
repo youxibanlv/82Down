@@ -53,13 +53,13 @@ public class AppFragment extends BaseFragment {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 pageNo = 0;
-                searchAppByKey(true,keyword);
+//                searchAppByKey(true,keyword);
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
                 if ( ++pageNo<= total){
-                    searchAppByKey(false,keyword);
+//                    searchAppByKey(false,keyword);
                 }else {
                     UiUtils.showTipToast(false,getString(R.string.this_is_last));
                     UiUtils.stopRefresh(pull_to_refresh);
@@ -78,7 +78,7 @@ public class AppFragment extends BaseFragment {
         }catch (Exception e){
             e.printStackTrace();
         }
-        searchAppByKey(true,keyword);
+//        searchAppByKey(true,keyword);
     }
 
     public void refreshKey(String key){

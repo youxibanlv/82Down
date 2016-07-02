@@ -40,7 +40,7 @@ public class HomeFragment extends BaseFragment {
 
     private HomeAdapter adapter;
 
-    private int pageNo = 0,pageSize = 3,totalPage;//热门游戏部分
+    private int pageNo = 0,pageSize = 5,totalPage;//热门游戏部分
     private int recommedPageNo = 0,recommendPageSize = 3;//精品推荐显示数目
 
     private long waitTime = 0,lastRefreshTime = 0,minWaitTime = 15000;//等待时间，最后一次刷新时间,最小等待时间，用于控制用户的刷新频率
@@ -59,8 +59,10 @@ public class HomeFragment extends BaseFragment {
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 if (lastRefreshTime == 0 || waitTime > minWaitTime){
                     lastRefreshTime = System.currentTimeMillis();
+                    pageNo = 0;
                     getWheelPage();
-                    getRecommend(recommedPageNo,recommendPageSize);
+                    getRecommend(recommedPageNo,recommendPageSize,"0",true);
+                    getRecommend(pageNo,pageSize,"1",true);
                 }else{
                     waitTime = System.currentTimeMillis() - lastRefreshTime;
                     showTipToast(false,String.format(getString(R.string.refresh_too_fast),minWaitTime/1000));
@@ -69,12 +71,19 @@ public class HomeFragment extends BaseFragment {
             }
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-
+                    if (pageNo <= totalPage){
+                        pageNo ++;
+                        getRecommend(pageNo,pageSize,"1",false);
+                    }else{
+                        UiUtils.showTipToast(false,getString(R.string.this_is_last));
+                        UiUtils.stopRefresh(pull_to_refresh);
+                    }
             }
         });
         //加载轮播图片
         getWheelPage();
-        getRecommend(recommedPageNo,recommendPageSize);
+        getRecommend(recommedPageNo,recommendPageSize,"0",true);
+        getRecommend(pageNo,pageSize,"1",true);
         return view;
     }
     //获取轮播图
@@ -101,8 +110,8 @@ public class HomeFragment extends BaseFragment {
         });
     }
     //加载精品推荐
-    private void getRecommend(final int pageNo, int pageSize){
-        RecommendReq req = new RecommendReq(String.valueOf(pageNo),String.valueOf(pageSize),"0");
+    private void getRecommend(final int pageNo, int pageSize, final String type, final boolean isRefresh){
+        RecommendReq req = new RecommendReq(String.valueOf(pageNo),String.valueOf(pageSize),type);
         req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
@@ -110,7 +119,19 @@ public class HomeFragment extends BaseFragment {
                 if (rsp.result == HttpConstance.HTTP_SUCCESS){
                     List<App> list = rsp.getAppList();
                     if (list!= null && list.size()>0){
-                        adapter.refreshRecommends(list);
+                        if ("0".equals(type)){
+                            adapter.refreshRecommends(list);
+                        }else{
+                            if (pageNo == 0){
+                                totalPage = rsp.getTotalPage();
+                            }
+                            if (isRefresh){
+                                adapter.refreshGuessYouLike(list);
+                            }else {
+                                adapter.loadMore(list);
+                            }
+
+                        }
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -122,4 +143,6 @@ public class HomeFragment extends BaseFragment {
             }
         });
     }
+
+
 }

@@ -16,21 +16,21 @@
             android:layout_marginLeft="@dimen/wdp20"
             android:src="@mipmap/icon_back"/>
         <ImageView
-            android:id="@+id/iv_manager"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/wdp55"
+            android:id="@+id/btn_search"
+            android:layout_width="@dimen/wdp45"
+            android:layout_height="@dimen/wdp45"
             android:layout_marginRight="@dimen/wdp20"
-            android:src="@mipmap/icon_manager"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"/>
+            android:src="@mipmap/icon_search"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/wdp55"
-            android:layout_toLeftOf="@id/iv_manager"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/wdp20"
             android:layout_marginRight="@dimen/wdp20"
-            android:layout_toRightOf="@id/rv_back">
+            android:layout_toRightOf="@id/rv_back"
+            android:layout_toLeftOf="@id/btn_search">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0px"
@@ -49,14 +49,6 @@
                 android:textColorHint="@color/text_gray"
                 android:textSize="@dimen/wdp24"
                 />
-            <ImageView
-                android:id="@+id/btn_search"
-                android:layout_width="@dimen/wdp40"
-                android:layout_height="@dimen/wdp40"
-                android:layout_marginRight="@dimen/wdp20"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/icon_search"/>
         </RelativeLayout>
 
     </RelativeLayout>

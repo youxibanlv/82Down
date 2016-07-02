@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity {
         fragments.add(recommend);
 
         BaseFragment game = new GameFragment();
-        game.setTitle("游戏");
+        game.setTitle("专题");
         game.setIconId(R.drawable.recommend_icon_selector);
         fragments.add(game);
 
