@@ -4,13 +4,55 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <RadioGroup
+        android:id="@+id/rg_nav"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/wdp70"
+        android:background="@color/light_black"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
         <RadioButton
             android:id="@+id/app_class"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:button="@null"/>
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:button="@null"
+            android:text="游戏分类"
+            android:drawableBottom="@drawable/radio_button_bg"
+            android:textColor="@drawable/radio_button_text_color"
+            android:textSize="@dimen/wdp26"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/app_hot"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:button="@null"
+            android:text="最热游戏"
+            android:gravity="center"
+            android:drawableBottom="@drawable/radio_button_bg"
+            android:textColor="@drawable/radio_button_text_color"
+            android:textSize="@dimen/wdp26"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/app_new"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:button="@null"
+            android:text="最新游戏"
+            android:gravity="center"
+            android:drawableBottom="@drawable/radio_button_bg"
+            android:textColor="@drawable/radio_button_text_color"
+            android:textSize="@dimen/wdp26"
+            android:layout_weight="1"/>
     </RadioGroup>
+    <com.a82down.app.view.library.PullToRefreshListView
+        android:id="@+id/pull_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:layout_marginTop="@dimen/wdp30"
+        android:paddingBottom="@dimen/wdp30"
+        android:scrollbars="none"
+        android:smoothScrollbar="true" />
 </LinearLayout>
