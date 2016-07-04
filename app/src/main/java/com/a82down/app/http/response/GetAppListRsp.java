@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by strike on 16/6/13.
  */
-public class GetAppRsp extends BaseResponse {
+public class GetAppListRsp extends BaseResponse {
     public ResultData resultData = null;
 
     public List<App> getAppList(){

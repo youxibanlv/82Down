@@ -15,7 +15,7 @@ import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.request.RecommendReq;
-import com.a82down.app.http.response.GetAppRsp;
+import com.a82down.app.http.response.GetAppListRsp;
 import com.a82down.app.utils.PullToRefreshUtils;
 import com.a82down.app.utils.UiUtils;
 import com.a82down.app.view.library.PullToRefreshBase;
@@ -88,7 +88,7 @@ public class RecommendActivity extends BaseActivity {
         req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
-                GetAppRsp rsp = (GetAppRsp) BaseResponse.getRsp(result,GetAppRsp.class);
+                GetAppListRsp rsp = (GetAppListRsp) BaseResponse.getRsp(result,GetAppListRsp.class);
                 if (rsp.result == HttpConstance.HTTP_SUCCESS){
                     if (pageNo == 0){
                         total = rsp.getTotalPage();

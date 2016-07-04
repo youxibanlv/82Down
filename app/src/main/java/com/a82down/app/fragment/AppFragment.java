@@ -15,7 +15,7 @@ import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.request.GetAppByKeywordReq;
-import com.a82down.app.http.response.GetAppRsp;
+import com.a82down.app.http.response.GetAppListRsp;
 import com.a82down.app.utils.Constance;
 import com.a82down.app.utils.PullToRefreshUtils;
 import com.a82down.app.utils.UiUtils;
@@ -92,7 +92,7 @@ public class AppFragment extends BaseFragment {
             @Override
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)){
-                    GetAppRsp rsp = (GetAppRsp) BaseResponse.getRsp(result,GetAppRsp.class);
+                    GetAppListRsp rsp = (GetAppListRsp) BaseResponse.getRsp(result,GetAppListRsp.class);
                     if (rsp!= null && rsp.result == HttpConstance.HTTP_SUCCESS){
                         if (pageNo == 0){
                             total = rsp.getTotalPage();

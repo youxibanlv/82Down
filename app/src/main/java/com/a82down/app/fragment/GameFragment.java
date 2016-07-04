@@ -22,9 +22,12 @@ import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.entity.Category;
+import com.a82down.app.http.request.GetAppByCateIdReq;
 import com.a82down.app.http.request.GetCategoryReq;
+import com.a82down.app.http.response.GetAppListRsp;
 import com.a82down.app.http.response.GetCategoryRsp;
 import com.a82down.app.utils.PullToRefreshUtils;
+import com.a82down.app.utils.UiUtils;
 import com.a82down.app.view.library.PullToRefreshBase;
 import com.a82down.app.view.library.PullToRefreshListView;
 
@@ -40,8 +43,8 @@ import java.util.List;
 @ContentView(R.layout.frament_game)
 public class GameFragment extends BaseFragment {
 
-    private final int type_hot = 0;
-    private final int type_new = 1;
+    private final int type_hot = 1;
+    private final int type_new = 0;
 
     private final int game = 2;
 
@@ -55,7 +58,8 @@ public class GameFragment extends BaseFragment {
     private RadioButton app_class;
 
     private AppLIstAdapter adapter;
-    private int pageNo = 0,pageSize = 5,total;
+    private int pageNo = 0,pageSize = 5,total = 0;
+    private int currrentCateId= -1;//当前分类id
 
     private PopupWindow popupWindow;
     private CategoryAdapter categoryAdapter;
@@ -84,12 +88,10 @@ public class GameFragment extends BaseFragment {
                         }
                         break;
                     case R.id.app_hot:
-
+                        getContent(game,type_hot,true);//按下载最多排序查询游戏列表
                         break;
                     case R.id.app_new:
-
-                        break;
-                    default:
+                        getContent(game,type_new,true);//按最新更新排序获取游戏列表
                         break;
                 }
             }
@@ -97,12 +99,48 @@ public class GameFragment extends BaseFragment {
         pull_to_refresh.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                pageNo = 0;
+                switch (rg_nav.getCheckedRadioButtonId()){
+                    case R.id.app_class:
 
+                        break;
+                    case R.id.app_hot:
+                        getContent(game,type_hot,true);//按下载最多排序查询游戏列表
+                        break;
+                    case R.id.app_new:
+                        getContent(game,type_new,true);//按最新更新排序获取游戏列表
+                        break;
+                    case -1:
+
+                        break;
+
+                }
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                if (pageNo < total){
+                    pageNo ++;
+                }else{
+                    UiUtils.showTipToast(false,getString(R.string.this_is_last));
+                    UiUtils.stopRefresh(pull_to_refresh);
+                    return;
+                }
+                switch (rg_nav.getCheckedRadioButtonId()){
+                    case R.id.app_class:
 
+                        break;
+                    case R.id.app_hot:
+                        getContent(game,type_hot,false);//按下载最多排序查询游戏列表
+                        break;
+                    case R.id.app_new:
+                        getContent(game,type_new,false);//按最新更新排序获取游戏列表
+                        break;
+                    case -1:
+
+                        break;
+
+                }
             }
         });
         app_class.setOnClickListener(new View.OnClickListener() {
@@ -118,8 +156,21 @@ public class GameFragment extends BaseFragment {
         return view;
     }
 
-    private void getContent(int serachType,boolean isRefresh,int pageNo,int pageSize){
+    private void getContent(int cate_id,int orederType,boolean isRefresh){
+        GetAppByCateIdReq req = new GetAppByCateIdReq(cate_id,orederType,pageNo+"",pageSize+"");
+        req.sendRequest(new NormalCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                if (!TextUtils.isEmpty(result)){
+                    GetAppListRsp rsp = (GetAppListRsp) BaseResponse.getRsp(result,GetAppListRsp.class);
+                }
+            }
 
+            @Override
+            public void onFinished() {
+                pull_to_refresh.onRefreshComplete();
+            }
+        });
     }
 
     private void getGameClass(){
@@ -176,5 +227,13 @@ public class GameFragment extends BaseFragment {
         }
         popupWindow.showAsDropDown(app_class);
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (rg_nav.getCheckedRadioButtonId() == -1){
+            rg_nav.check(R.id.app_hot);
+        }
     }
 }

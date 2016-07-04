@@ -17,7 +17,7 @@ import com.a82down.app.http.NormalCallBack;
 import com.a82down.app.http.entity.WheelPage;
 import com.a82down.app.http.request.RecommendReq;
 import com.a82down.app.http.request.WheelPageReq;
-import com.a82down.app.http.response.GetAppRsp;
+import com.a82down.app.http.response.GetAppListRsp;
 import com.a82down.app.http.response.WheelPageRsp;
 import com.a82down.app.utils.PullToRefreshUtils;
 import com.a82down.app.utils.UiUtils;
@@ -115,7 +115,7 @@ public class HomeFragment extends BaseFragment {
         req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
-                GetAppRsp rsp = (GetAppRsp) BaseResponse.getRsp(result,GetAppRsp.class);
+                GetAppListRsp rsp = (GetAppListRsp) BaseResponse.getRsp(result,GetAppListRsp.class);
                 if (rsp.result == HttpConstance.HTTP_SUCCESS){
                     List<App> list = rsp.getAppList();
                     if (list!= null && list.size()>0){

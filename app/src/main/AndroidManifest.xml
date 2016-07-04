@@ -26,6 +26,7 @@
         <activity android:name=".activity.SearchActivity"></activity>
         <activity android:name=".activity.AppDetailsActivity"></activity>
         <activity android:name=".activity.RecommendActivity"></activity>
+        <activity android:name=".activity.ImgDetailsActivity"></activity>
     </application>
 
 </manifest>
