@@ -18,6 +18,7 @@ import com.a82down.app.R;
 import com.a82down.app.adapter.AppLIstAdapter;
 import com.a82down.app.adapter.CategoryAdapter;
 import com.a82down.app.base.BaseFragment;
+import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
@@ -58,7 +59,7 @@ public class GameFragment extends BaseFragment {
     private RadioButton app_class;
 
     private AppLIstAdapter adapter;
-    private int pageNo = 0,pageSize = 5,total = 0;
+    private int pageNo = 0,pageSize = 6,total = 0;
     private int currrentCateId= -1;//当前分类id
 
     private PopupWindow popupWindow;
@@ -102,16 +103,16 @@ public class GameFragment extends BaseFragment {
                 pageNo = 0;
                 switch (rg_nav.getCheckedRadioButtonId()){
                     case R.id.app_class:
-
+                        if (currrentCateId == -1){
+                            return;
+                        }
+                        getContent(currrentCateId,type_hot,true);
                         break;
                     case R.id.app_hot:
                         getContent(game,type_hot,true);//按下载最多排序查询游戏列表
                         break;
                     case R.id.app_new:
                         getContent(game,type_new,true);//按最新更新排序获取游戏列表
-                        break;
-                    case -1:
-
                         break;
 
                 }
@@ -128,7 +129,10 @@ public class GameFragment extends BaseFragment {
                 }
                 switch (rg_nav.getCheckedRadioButtonId()){
                     case R.id.app_class:
-
+                        if (currrentCateId == -1){
+                            return;
+                        }
+                        getContent(currrentCateId,type_hot,false);
                         break;
                     case R.id.app_hot:
                         getContent(game,type_hot,false);//按下载最多排序查询游戏列表
@@ -136,10 +140,6 @@ public class GameFragment extends BaseFragment {
                     case R.id.app_new:
                         getContent(game,type_new,false);//按最新更新排序获取游戏列表
                         break;
-                    case -1:
-
-                        break;
-
                 }
             }
         });
@@ -156,13 +156,30 @@ public class GameFragment extends BaseFragment {
         return view;
     }
 
-    private void getContent(int cate_id,int orederType,boolean isRefresh){
+    @Override
+    public void onResume() {
+        super.onResume();
+        getContent(game,type_hot,true);
+    }
+
+    private void getContent(int cate_id, int orederType, final boolean isRefresh){
         GetAppByCateIdReq req = new GetAppByCateIdReq(cate_id,orederType,pageNo+"",pageSize+"");
         req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)){
                     GetAppListRsp rsp = (GetAppListRsp) BaseResponse.getRsp(result,GetAppListRsp.class);
+                    if (rsp != null && rsp.result == HttpConstance.HTTP_SUCCESS){
+                        List<App> list = rsp.getAppList();
+                        if (pageNo == 0){
+                           total = rsp.getTotalPage();
+                        }
+                        if (isRefresh){
+                            adapter.refresh(list);
+                        }else {
+                            adapter.addData(list);
+                        }
+                    }
                 }
             }
 
@@ -214,6 +231,7 @@ public class GameFragment extends BaseFragment {
                     for (int i=0;i<categoryList.size();i++){
                        if (i == position){
                            categoryList.get(i).setChecked(true);
+                           currrentCateId = categoryList.get(i).getCate_id();//设置当前选中的分类
                        }else {
                            categoryList.get(i).setChecked(false);
                        }
@@ -222,6 +240,7 @@ public class GameFragment extends BaseFragment {
                     if (popupWindow != null && popupWindow.isShowing()) {
                         popupWindow.dismiss();
                     }
+                    getContent(currrentCateId,type_hot,true);
                 }
             });
         }

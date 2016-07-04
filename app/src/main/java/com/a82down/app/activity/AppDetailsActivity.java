@@ -76,6 +76,11 @@ public class AppDetailsActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         downloadUtils = new DownLoadUtils(this);
+        String appId = getIntent().getStringExtra(Constance.APP_ID);
+        if (appId != null){
+            getAppDetails(appId);
+            showProgressDialogCloseDelay(getString(R.string.loading),HttpConstance.DEFAULT_TIMEOUT);
+        }
         imgList.setOnItemClickListener(new MyHorizontalScrollView.OnItemClickListener() {
             @Override
             public void onClick(View view, int pos) {
@@ -88,15 +93,15 @@ public class AppDetailsActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        String appId = getIntent().getStringExtra(Constance.APP_ID);
-        if (appId != null){
-            getAppDetails(appId);
-            showProgressDialogCloseDelay(getString(R.string.loading),HttpConstance.DEFAULT_TIMEOUT);
-        }
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        String appId = getIntent().getStringExtra(Constance.APP_ID);
+//        if (appId != null){
+//            getAppDetails(appId);
+//            showProgressDialogCloseDelay(getString(R.string.loading),HttpConstance.DEFAULT_TIMEOUT);
+//        }
+//    }
 
     @Event(value = {R.id.iv_back})
     private void getEvent(View view){

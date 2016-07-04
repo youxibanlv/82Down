@@ -19,7 +19,6 @@ import com.a82down.app.db.table.App;
 import com.a82down.app.http.entity.WheelPage;
 import com.a82down.app.images.ImgConfig;
 import com.a82down.app.utils.Constance;
-import com.a82down.app.utils.DownLoadUtils;
 import com.a82down.app.view.DownloadBtn;
 import com.a82down.app.view.NoScrollGridView;
 import com.a82down.app.view.WheelViewPage;
@@ -185,7 +184,7 @@ public class HomeAdapter extends BaseAdapter {
                 appListViewHolder.tv_des.setText(Html.fromHtml(app.getApp_desc()));
                 String down = app.getApp_down() == null ? "0" : app.getApp_down();
                 appListViewHolder.tv_down_num.setText("下载：" + down);
-                new DownLoadUtils(context).initDownLoad(app,appListViewHolder.tv_down);
+//                new DownLoadUtils(context).initDownLoad(app,appListViewHolder.tv_down);
                 appListViewHolder.ll_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

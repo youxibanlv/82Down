@@ -51,8 +51,8 @@
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
-        android:layout_marginTop="@dimen/wdp30"
-        android:paddingBottom="@dimen/wdp30"
+        android:layout_marginTop="@dimen/wdp10"
+        android:paddingBottom="@dimen/wdp10"
         android:scrollbars="none"
         android:smoothScrollbar="true" />
 </LinearLayout>

@@ -54,7 +54,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
-
         List<BaseFragment> fragments = initFragments();
         mAdapter = new TabAdapter(fragments, getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);

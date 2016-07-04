@@ -16,7 +16,6 @@ import com.a82down.app.base.MyBaseAdapter;
 import com.a82down.app.db.table.App;
 import com.a82down.app.images.ImgConfig;
 import com.a82down.app.utils.Constance;
-import com.a82down.app.utils.DownLoadUtils;
 import com.a82down.app.view.DownloadBtn;
 
 import org.xutils.view.annotation.ViewInject;
@@ -60,7 +59,7 @@ public class AppLIstAdapter extends MyBaseAdapter<App> {
             }
             String down = app.getApp_down() == null ? "0" : app.getApp_down();
             holder.tv_down_num.setText("下载：" + down);
-            new DownLoadUtils(context).initDownLoad(app,holder.tv_down);
+//            new DownLoadUtils(context).initDownLoad(app,holder.tv_down);
             holder.ll_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
