@@ -40,8 +40,8 @@
 
         <ImageView
             android:id="@+id/iv_app_icon"
-            android:layout_width="@dimen/wdp150"
-            android:layout_height="@dimen/wdp150"
+            android:layout_width="@dimen/wdp120"
+            android:layout_height="@dimen/wdp120"
             android:scaleType="fitCenter" />
 
         <LinearLayout
@@ -169,11 +169,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/wdp4"
                 android:layout_marginRight="@dimen/wdp20"
                 android:layout_marginLeft="@dimen/wdp20"
                 android:background="@color/light_black"
-                android:padding="@dimen/wdp2"
+                android:padding="@dimen/wdp4"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -181,6 +180,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:background="@color/white"
                     android:orientation="horizontal" />
             </com.a82down.app.view.MyHorizontalScrollView>
 

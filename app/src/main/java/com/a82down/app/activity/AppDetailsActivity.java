@@ -93,16 +93,6 @@ public class AppDetailsActivity extends BaseActivity {
         });
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        String appId = getIntent().getStringExtra(Constance.APP_ID);
-//        if (appId != null){
-//            getAppDetails(appId);
-//            showProgressDialogCloseDelay(getString(R.string.loading),HttpConstance.DEFAULT_TIMEOUT);
-//        }
-//    }
-
     @Event(value = {R.id.iv_back})
     private void getEvent(View view){
         switch (view.getId()){

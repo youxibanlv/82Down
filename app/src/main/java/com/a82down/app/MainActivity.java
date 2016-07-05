@@ -91,17 +91,17 @@ public class MainActivity extends BaseActivity {
 
         BaseFragment game = new GameFragment();
         game.setTitle("游戏");
-        game.setIconId(R.drawable.recommend_icon_selector);
+        game.setIconId(R.drawable.game_icon_selector);
         fragments.add(game);
 
         BaseFragment app = new AppFragment();
         app.setTitle("应用");
-        app.setIconId(R.drawable.recommend_icon_selector);
+        app.setIconId(R.drawable.app_icon_selector);
         fragments.add(app);
 
         BaseFragment article = new ArticleFragment();
-        article.setTitle("软文");
-        article.setIconId(R.drawable.recommend_icon_selector);
+        article.setTitle("资讯");
+        article.setIconId(R.drawable.info_icon_selector);
         fragments.add(article);
 
         return fragments;

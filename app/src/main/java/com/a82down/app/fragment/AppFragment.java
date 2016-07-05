@@ -1,70 +1,156 @@
 package com.a82down.app.fragment;
 
+import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.a82down.app.R;
 import com.a82down.app.adapter.AppLIstAdapter;
+import com.a82down.app.adapter.CategoryAdapter;
 import com.a82down.app.base.BaseFragment;
 import com.a82down.app.db.table.App;
 import com.a82down.app.http.BaseResponse;
 import com.a82down.app.http.HttpConstance;
 import com.a82down.app.http.NormalCallBack;
-import com.a82down.app.http.request.GetAppByKeywordReq;
+import com.a82down.app.http.entity.Category;
+import com.a82down.app.http.request.GetAppByCateIdReq;
+import com.a82down.app.http.request.GetCategoryReq;
 import com.a82down.app.http.response.GetAppListRsp;
-import com.a82down.app.utils.Constance;
+import com.a82down.app.http.response.GetCategoryRsp;
 import com.a82down.app.utils.PullToRefreshUtils;
 import com.a82down.app.utils.UiUtils;
 import com.a82down.app.view.library.PullToRefreshBase;
 import com.a82down.app.view.library.PullToRefreshListView;
 
-import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by strike on 16/6/5.
  */
-@ContentView(R.layout.fragment_recommend)
+@ContentView(R.layout.frament_app)
 public class AppFragment extends BaseFragment {
+
+    private final int type_hot = 1;
+    private final int type_new = 0;
+
+    private final int app = 1;
+
+    @ViewInject(R.id.rg_nav)
+    private RadioGroup rg_nav;
 
     @ViewInject(R.id.pull_to_refresh)
     private PullToRefreshListView pull_to_refresh;
 
-    private String keyword;
-    private View view;
-    private int pageNo = 0,pageSize = 5,total;
+    @ViewInject(R.id.app_class)
+    private RadioButton app_class;
+
     private AppLIstAdapter adapter;
+    private int pageNo = 0,pageSize = 6,total = 0;
+    private int currrentCateId= -1;//当前分类id
+
+    private PopupWindow popupWindow;
+    private CategoryAdapter categoryAdapter;
+    private List<Category> categoryList = new ArrayList<>();
+    private View view;
+    private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = super.onCreateView(inflater,container,savedInstanceState);
+        view = super.onCreateView(inflater, container, savedInstanceState);
+        context = getActivity();
+        rg_nav.check(R.id.app_hot);
         pull_to_refresh.setMode(PullToRefreshBase.Mode.BOTH);
         PullToRefreshUtils.initRefresh(pull_to_refresh);
-        adapter = new AppLIstAdapter(getActivity());
+        adapter = new AppLIstAdapter(getContext());
         pull_to_refresh.setAdapter(adapter);
+        rg_nav.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.app_class:
+                        if (categoryList!= null && categoryList.size()>0 && popupWindow != null){
+                            popupWindow.showAsDropDown(app_class);
+                        } else {
+                            getCategory();
+                        }
+                        break;
+                    case R.id.app_hot:
+                        getContent(app,type_hot,true);//按下载最多排序查询游戏列表
+                        break;
+                    case R.id.app_new:
+                        getContent(app,type_new,true);//按最新更新排序获取游戏列表
+                        break;
+                }
+            }
+        });
         pull_to_refresh.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 pageNo = 0;
-//                searchAppByKey(true,keyword);
+                switch (rg_nav.getCheckedRadioButtonId()){
+                    case R.id.app_class:
+                        if (currrentCateId == -1){
+                            return;
+                        }
+                        getContent(currrentCateId,type_hot,true);
+                        break;
+                    case R.id.app_hot:
+                        getContent(app,type_hot,true);//按下载最多排序查询游戏列表
+                        break;
+                    case R.id.app_new:
+                        getContent(app,type_new,true);//按最新更新排序获取游戏列表
+                        break;
+
+                }
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                if ( ++pageNo<= total){
-//                    searchAppByKey(false,keyword);
-                }else {
+                if (pageNo < total){
+                    pageNo ++;
+                }else{
                     UiUtils.showTipToast(false,getString(R.string.this_is_last));
                     UiUtils.stopRefresh(pull_to_refresh);
+                    return;
                 }
-
+                switch (rg_nav.getCheckedRadioButtonId()){
+                    case R.id.app_class:
+                        if (currrentCateId == -1){
+                            return;
+                        }
+                        getContent(currrentCateId,type_hot,false);
+                        break;
+                    case R.id.app_hot:
+                        getContent(app,type_hot,false);//按下载最多排序查询游戏列表
+                        break;
+                    case R.id.app_new:
+                        getContent(app,type_new,false);//按最新更新排序获取游戏列表
+                        break;
+                }
+            }
+        });
+        app_class.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (categoryList!= null && categoryList.size()>0 && popupWindow != null){
+                    popupWindow.showAsDropDown(app_class);
+                }else{
+                    getCategory();
+                }
             }
         });
         return view;
@@ -73,38 +159,26 @@ public class AppFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            keyword = this.getArguments().getString(Constance.KEYWORD);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-//        searchAppByKey(true,keyword);
+        getContent(app,type_hot,true);
     }
 
-    public void refreshKey(String key){
-        this.keyword = key;
-        pageNo = 0;
-        searchAppByKey(true,key);
-    }
-    private void searchAppByKey(final boolean isRefresh, String key){
-        GetAppByKeywordReq req = new GetAppByKeywordReq(key,pageNo,pageSize);
+    private void getContent(int cate_id, int orederType, final boolean isRefresh){
+        GetAppByCateIdReq req = new GetAppByCateIdReq(cate_id,orederType,pageNo+"",pageSize+"");
         req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
                 if (!TextUtils.isEmpty(result)){
                     GetAppListRsp rsp = (GetAppListRsp) BaseResponse.getRsp(result,GetAppListRsp.class);
-                    if (rsp!= null && rsp.result == HttpConstance.HTTP_SUCCESS){
+                    if (rsp != null && rsp.result == HttpConstance.HTTP_SUCCESS){
+                        List<App> list = rsp.getAppList();
                         if (pageNo == 0){
                             total = rsp.getTotalPage();
                         }
-                        List<App> list = rsp.getAppList();
                         if (isRefresh){
                             adapter.refresh(list);
-                        }else{
-                           adapter.getList().addAll(list);
-                            adapter.notifyDataSetChanged();
+                        }else {
+                            adapter.addData(list);
                         }
-
                     }
                 }
             }
@@ -112,8 +186,73 @@ public class AppFragment extends BaseFragment {
             @Override
             public void onFinished() {
                 pull_to_refresh.onRefreshComplete();
-                LogUtil.e("pageNo = "+pageNo+",totalPage = "+total);
             }
         });
+    }
+
+    private void getCategory(){
+        GetCategoryReq req = new GetCategoryReq(app);
+        req.sendRequest(new NormalCallBack() {
+            @Override
+            public void onSuccess(String result) {
+                if (!TextUtils.isEmpty(result)){
+                    GetCategoryRsp rsp = (GetCategoryRsp) BaseResponse.getRsp(result,GetCategoryRsp.class);
+                    if (rsp != null && rsp.result == HttpConstance.HTTP_SUCCESS){
+                        categoryList= rsp.getResultList();
+                        if (categoryList.size()>0){
+                            showPopuWindow(categoryList);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    //显示关键词列表
+    private void showPopuWindow(final List<Category> categoryList) {
+        if (popupWindow == null) {
+            int width = app_class.getWidth();
+            View viewContent = LayoutInflater.from(getContext()).inflate(R.layout.pop_keyword, null);
+            popupWindow = new PopupWindow(viewContent, width, LinearLayout.LayoutParams.WRAP_CONTENT);
+            popupWindow.setContentView(viewContent);
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setBackgroundDrawable(new BitmapDrawable());
+            ListView listView = (ListView) viewContent.findViewById(R.id.lv_key);
+            categoryAdapter = new CategoryAdapter(getContext(), categoryList);
+            listView.setAdapter(categoryAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    for (int i=0;i<categoryList.size();i++){
+                        if (i == position){
+                            categoryList.get(i).setChecked(true);
+                            currrentCateId = categoryList.get(i).getCate_id();//设置当前选中的分类
+                        }else {
+                            categoryList.get(i).setChecked(false);
+                        }
+                    }
+                    categoryAdapter.notifyDataSetChanged();
+                    if (popupWindow != null && popupWindow.isShowing()) {
+                        popupWindow.dismiss();
+                    }
+                    getContent(currrentCateId,type_hot,true);
+                }
+            });
+        }
+        popupWindow.showAsDropDown(app_class);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (rg_nav.getCheckedRadioButtonId() == -1){
+            rg_nav.check(R.id.app_hot);
+        }
     }
 }
