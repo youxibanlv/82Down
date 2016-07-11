@@ -15,8 +15,8 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@color/tab_text_selector</item>
         <item name="android:textSize">12sp</item>
-        <item name="iconWidth">25dp</item>
-        <item name="iconHeight">25dp</item>
+        <item name="iconWidth">28dp</item>
+        <item name="iconHeight">28dp</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
         <item name="android:drawablePadding">2dp</item>
@@ -28,14 +28,19 @@
     </style>
     <!-- 黄色星星评分 -->
     <style name="RatingBar.Grey" parent="@android:style/Widget.RatingBar">
-        <item name="android:maxHeight">@dimen/wdp19</item>
+        <item name="android:maxHeight">@dimen/wdp18</item>
         <item name="android:progressDrawable">@mipmap/ratingbat_gray</item>
-        <item name="android:minHeight">@dimen/wdp19</item>
+        <item name="android:minHeight">@dimen/wdp21</item>
     </style>
     <!-- 灰色星星评分 -->
     <style name="RatingBar.white" parent="@android:style/Widget.RatingBar">
-        <item name="android:maxHeight">@dimen/wdp19</item>
+        <item name="android:maxHeight">@dimen/wdp18</item>
         <item name="android:progressDrawable">@mipmap/ratingbar_white</item>
-        <item name="android:minHeight">@dimen/wdp19</item>
+        <item name="android:minHeight">@dimen/wdp21</item>
+    </style>
+    <!--popupWindow 动画样式-->
+    <style name="mypopwindow_anim_style">
+        <item name="android:windowEnterAnimation">@anim/popushow_anim</item>
+        <item name="android:windowExitAnimation">@anim/popuhidden_anim</item>
     </style>
 </resources>

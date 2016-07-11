@@ -22,6 +22,9 @@ public class AppConfig {
         return BASE_PATH;
     }
 //    public static final String BASE_PATH = Environment.getExternalStorageDirectory() + File.separator + "82down";
+
+    // 得到照片路经
+    public static final String cameraPath = getBasePath() + "/DCIM/Camera";
     /**
      * 日志的存储路径
      */

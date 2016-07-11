@@ -3,6 +3,7 @@ package com.a82down.app.base;
 import android.app.Application;
 
 import com.a82down.app.db.DbConfig;
+import com.a82down.app.utils.CrashHandler;
 
 import org.xutils.DbManager;
 import org.xutils.x;
@@ -21,6 +22,8 @@ public class MyApplication extends Application {
         AppContext.setContext(this);
         x.Ext.init(this);
         x.Ext.setDebug(true);
+        CrashHandler catchHandler = CrashHandler.getInstance();
+        catchHandler.init(getApplicationContext());
     }
 
     public static DbManager getAppDb() {

@@ -1,6 +1,7 @@
 package com.a82down.app.db.table;
 
 import com.a82down.app.http.UrlConfig;
+import com.a82down.app.utils.VerifyUtils;
 
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
@@ -189,7 +190,7 @@ public class App {
         if (app_logo == null){
             return null;
         }
-        if (app_logo.contains("http://")){
+        if (VerifyUtils.isUrl(app_logo)){
             return app_logo;
         }else {
             return UrlConfig.BASE_URL+app_logo;
@@ -201,7 +202,7 @@ public class App {
         }
         for (int i = 0;i<resource.size();i++){
             String url = resource.get(i);
-            if (!url.contains("http://")){
+            if (!VerifyUtils.isUrl(url)){
                 url = UrlConfig.BASE_URL+resource.get(i);
             }
             resource.set(i,url);

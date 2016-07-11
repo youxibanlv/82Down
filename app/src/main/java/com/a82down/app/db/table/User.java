@@ -1,5 +1,8 @@
 package com.a82down.app.db.table;
 
+import com.a82down.app.http.UrlConfig;
+import com.a82down.app.utils.VerifyUtils;
+
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
@@ -24,7 +27,7 @@ public class User {
     private String token;//令牌
 
     @Column(name = "phone")
-    private int phone;//电话号码
+    private String phone;//电话号码
 
     @Column(name = "nickname")
     private String nickname;//昵称
@@ -78,11 +81,11 @@ public class User {
         this.token = token;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -95,6 +98,9 @@ public class User {
     }
 
     public String getIcon() {
+        if (icon != null && !VerifyUtils.isEmail(icon)){
+            icon = UrlConfig.BASE_URL+icon;
+        }
         return icon;
     }
 
@@ -116,5 +122,41 @@ public class User {
 
     public void setPoint(int point) {
         this.point = point;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (phone != user.phone) return false;
+        if (point != user.point) return false;
+        if (!uid.equals(user.uid)) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null)
+            return false;
+        if (password != null ? !password.equals(user.password) : user.password != null)
+            return false;
+        if (token != null ? !token.equals(user.token) : user.token != null) return false;
+        if (nickname != null ? !nickname.equals(user.nickname) : user.nickname != null)
+            return false;
+        if (icon != null ? !icon.equals(user.icon) : user.icon != null) return false;
+        return alipay != null ? alipay.equals(user.alipay) : user.alipay == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uid.hashCode();
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (token != null ? token.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
+        result = 31 * result + (icon != null ? icon.hashCode() : 0);
+        result = 31 * result + (alipay != null ? alipay.hashCode() : 0);
+        result = 31 * result + point;
+        return result;
     }
 }

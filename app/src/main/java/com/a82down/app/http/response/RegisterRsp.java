@@ -12,7 +12,7 @@ public class RegisterRsp extends BaseResponse {
         String username;
         String password;
         String token;
-        int phone;
+        String phone;
         String nickname;
         String icon;
         String alipay;
