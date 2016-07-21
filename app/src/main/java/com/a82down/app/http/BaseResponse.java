@@ -2,8 +2,9 @@ package com.a82down.app.http;
 
 import android.text.TextUtils;
 
-import com.a82down.app.utils.LogFactory;
 import com.a82down.app.utils.UiUtils;
+
+import org.xutils.common.util.LogUtil;
 
 import gson.Gson;
 
@@ -39,7 +40,7 @@ public class BaseResponse {
                         UiUtils.showTipToast(false,rsp.failReason);
                     }
                 }
-                LogFactory.e("response :"+ result);
+                LogUtil.e(result);
             }
         }
         return rsp;

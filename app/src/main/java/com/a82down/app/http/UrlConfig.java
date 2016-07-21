@@ -21,11 +21,14 @@ public class UrlConfig {
     public static String USER_SERVICE = BASE_URL+"/app/userService.php";
     //应用香港
     public static String APP_SERVICE = BASE_URL+"/app/appService.php";
+    //上传文件
+    public static String UPLOAD_SERVICE = BASE_URL+"/app/upload_file.php";
 
 
     static {
         URL_MAP.put("userService",USER_SERVICE);
         URL_MAP.put("appService",APP_SERVICE);
+        URL_MAP.put("upload",UPLOAD_SERVICE);
     }
 
 

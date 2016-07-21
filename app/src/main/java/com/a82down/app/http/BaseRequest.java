@@ -2,14 +2,15 @@ package com.a82down.app.http;
 
 import com.a82down.app.base.AppConfig;
 import com.a82down.app.db.dao.UserDao;
-import com.a82down.app.utils.LogFactory;
 
 import org.xutils.common.Callback;
+import org.xutils.common.util.LogUtil;
 import org.xutils.http.HttpMethod;
 import org.xutils.http.RequestParams;
 import org.xutils.http.body.StringBody;
 import org.xutils.x;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 import gson.Gson;
@@ -46,8 +47,7 @@ public class BaseRequest {
     }
 
     public void sendRequest(Callback.CommonCallback<String> callback){
-        final Callback.CommonCallback<String> callback1 = callback;
-        LogFactory.e("url:"+UrlConfig.getUrl(cmdType));
+        LogUtil.e("url:"+UrlConfig.getUrl(cmdType));
         this.postRequest(UrlConfig.getUrl(cmdType),this.getRequestData(),callback);
     }
 
@@ -56,11 +56,27 @@ public class BaseRequest {
             StringBody sb = new StringBody(requestData, AppConfig.DEFAULT_CHARSET);
             rp = new RequestParams(url,null,null,null);
             rp.setRequestBody(sb);
-            LogFactory.e("request:"+requestData);
+            LogUtil.e(requestData);
             x.http().request(HttpMethod.POST,rp,callback);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public void upLoadFile(String path,Callback.CommonCallback<String> callback){
+        try {
+            rp = new RequestParams(UrlConfig.getUrl(cmdType),null,null,null);
+            rp.setMultipart(true);
+            rp.addBodyParameter("methodName",methodName);
+            rp.addBodyParameter("cmdType",cmdType);
+            rp.addBodyParameter("openId",openId);
+            rp.addBodyParameter("token",token);
+            rp.addBodyParameter("file",new File(path));
+            rp.addBodyParameter("user",UserDao.getUser().getUsername());
+            x.http().request(HttpMethod.POST,rp,callback);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -32,6 +32,7 @@ import com.a82down.app.utils.VerifyUtils;
 import com.a82down.app.view.ChoiceBean;
 import com.a82down.app.view.CustomPopupWindow;
 
+import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -106,7 +107,7 @@ public class UserInfoActivity extends BaseActivity {
         user = UserDao.getUser();
         if (user != null) {
             if (user.getIcon() != null) {
-                x.image().bind(iv_user_icon, user.getIcon(), ImgConfig.getImgOption());
+                x.image().bind(iv_user_icon, user.getIcon(), ImgConfig.getImgOptionNoCache());
             }
             if (user.getUsername() != null) {
                 tv_account.setText(user.getUsername());
@@ -192,7 +193,7 @@ public class UserInfoActivity extends BaseActivity {
                 ChoiceBean bean2 = new ChoiceBean(R.mipmap.camera, "拍照");
                 List<ChoiceBean> list = new ArrayList<>();
                 list.add(bean);
-                list.add(bean2);
+//                list.add(bean2);
                 popupWindow.refresh(list);
                 if (!popupWindow.isShowing()) {
                     popupWindow.showAtLocation(findViewById(R.id.rl_show),
@@ -227,6 +228,12 @@ public class UserInfoActivity extends BaseActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT,
                 Uri.fromFile(new File(photoPath)));
         startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogUtil.e("界面被回收");
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

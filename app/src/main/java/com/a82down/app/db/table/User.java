@@ -98,7 +98,7 @@ public class User {
     }
 
     public String getIcon() {
-        if (icon != null && !VerifyUtils.isEmail(icon)){
+        if (icon != null && !VerifyUtils.isUrl(icon)){
             icon = UrlConfig.BASE_URL+icon;
         }
         return icon;
