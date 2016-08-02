@@ -11,12 +11,14 @@ import java.util.List;
 public class GetAppListRsp extends BaseResponse {
     public ResultData resultData = null;
 
-    public List<App> getAppList(){
+    public List<App> getAppList() {
         return resultData.appList;
     }
-    public int getTotalPage(){
+
+    public int getTotalPage() {
         return resultData.totalPage;
     }
+
     class ResultData {
         List<App> appList = null;
         int totalPage;

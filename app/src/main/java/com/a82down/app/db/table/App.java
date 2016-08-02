@@ -187,14 +187,10 @@ public class App {
     }
 
     public String getApp_logo() {
-        if (app_logo == null){
-            return null;
+        if (!VerifyUtils.isUrl(app_logo)){
+            app_logo = UrlConfig.BASE_URL+app_logo;
         }
-        if (VerifyUtils.isUrl(app_logo)){
-            return app_logo;
-        }else {
-            return UrlConfig.BASE_URL+app_logo;
-        }
+        return app_logo;
     }
     public List<String> getResource() {
         if (resource == null){

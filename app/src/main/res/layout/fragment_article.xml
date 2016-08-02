@@ -11,7 +11,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
         <RadioButton
-            android:id="@+id/app_class"
+            android:id="@+id/subject"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -22,7 +22,7 @@
             android:textSize="@dimen/wdp26"
             android:layout_weight="1"/>
         <RadioButton
-            android:id="@+id/app_hot"
+            android:id="@+id/info"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:button="@null"
@@ -42,6 +42,7 @@
         android:headerDividersEnabled="false"
         android:layout_marginTop="@dimen/wdp10"
         android:paddingBottom="@dimen/wdp10"
+        android:divider="@color/white"
         android:scrollbars="none"
         android:smoothScrollbar="true" />
 </LinearLayout>
