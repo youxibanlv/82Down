@@ -164,6 +164,7 @@ public class AppFragment extends BaseFragment {
 
     private void getContent(int cate_id, int orederType, final boolean isRefresh){
         GetAppByCateIdReq req = new GetAppByCateIdReq(cate_id,orederType,pageNo+"",pageSize+"");
+        showProgressDialogCloseDelay(getString(R.string.loading), HttpConstance.DEFAULT_TIMEOUT);
         req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
@@ -186,12 +187,14 @@ public class AppFragment extends BaseFragment {
             @Override
             public void onFinished() {
                 pull_to_refresh.onRefreshComplete();
+                dismissProgressDialog();
             }
         });
     }
 
     private void getCategory(){
         GetCategoryReq req = new GetCategoryReq(app);
+        showProgressDialogCloseDelay(getString(R.string.loading),HttpConstance.DEFAULT_TIMEOUT);
         req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
@@ -208,7 +211,7 @@ public class AppFragment extends BaseFragment {
 
             @Override
             public void onFinished() {
-
+                dismissProgressDialog();
             }
         });
     }
