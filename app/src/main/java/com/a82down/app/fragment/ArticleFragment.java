@@ -38,7 +38,7 @@ public class ArticleFragment extends BaseFragment {
     @ViewInject(R.id.pull_to_refresh)
     private PullToRefreshListView pull_to_refresh;
 
-    private int pageNo = 0,pageSize = 6,total = 0;
+    private int pageNo = 0,pageSize = 9,total = 0;
     private int sNo = 0,sSize = 4,sTotal = 0;
 
     private SubjectAdapter subjectAdapter;
