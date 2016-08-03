@@ -3,10 +3,12 @@ package com.a82down.app.http.entity;
 import com.a82down.app.http.UrlConfig;
 import com.a82down.app.utils.VerifyUtils;
 
+import java.io.Serializable;
+
 /**
  * Created by strike on 16/8/2.
  */
-public class Subject {
+public class Subject implements Serializable{
     private String area_id;
     private String title;
     private String area_type;

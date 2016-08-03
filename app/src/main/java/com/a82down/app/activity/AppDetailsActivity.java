@@ -77,9 +77,18 @@ public class AppDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         downloadUtils = new DownLoadUtils(this);
         String appId = getIntent().getStringExtra(Constance.APP_ID);
-        if (appId != null){
-            getAppDetails(appId);
-            showProgressDialogCloseDelay(getString(R.string.loading),HttpConstance.DEFAULT_TIMEOUT);
+        try {
+            app = (App) getIntent().getExtras().getSerializable(Constance.APP);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (app != null) {
+            initView();
+        } else {
+            if (appId != null) {
+                getAppDetails(appId);
+                showProgressDialogCloseDelay(getString(R.string.loading), HttpConstance.DEFAULT_TIMEOUT);
+            }
         }
         imgList.setOnItemClickListener(new MyHorizontalScrollView.OnItemClickListener() {
             @Override
@@ -94,27 +103,27 @@ public class AppDetailsActivity extends BaseActivity {
     }
 
     @Event(value = {R.id.iv_back})
-    private void getEvent(View view){
-        switch (view.getId()){
+    private void getEvent(View view) {
+        switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
         }
     }
 
-    private void getAppDetails(String app_id){
+    private void getAppDetails(String app_id) {
 
         AppDetailsReq req = new AppDetailsReq(app_id);
         req.sendRequest(new NormalCallBack() {
             @Override
             public void onSuccess(String result) {
-                if (!TextUtils.isEmpty(result)){
-                    AppDetailsRsp rsp = (AppDetailsRsp) BaseResponse.getRsp(result,AppDetailsRsp.class);
-                    if (rsp != null){
-                        if (rsp.result == HttpConstance.HTTP_SUCCESS){
+                if (!TextUtils.isEmpty(result)) {
+                    AppDetailsRsp rsp = (AppDetailsRsp) BaseResponse.getRsp(result, AppDetailsRsp.class);
+                    if (rsp != null) {
+                        if (rsp.result == HttpConstance.HTTP_SUCCESS) {
                             app = rsp.getApp();
-                            if (app!= null)
-                            initView();
+                            if (app != null)
+                                initView();
                         }
                     }
                 }
@@ -129,29 +138,29 @@ public class AppDetailsActivity extends BaseActivity {
     }
 
     private void initView() {
-        downloadUtils.initDownLoad(app,tv_down);
-        if (app.getApp_logo()!= null){
-            x.image().bind(iv_app_icon,app.getApp_logo(), ImgConfig.getImgOption());
+        downloadUtils.initDownLoad(app, tv_down);
+        if (app.getApp_logo() != null) {
+            x.image().bind(iv_app_icon, app.getApp_logo(), ImgConfig.getImgOption());
         }
-        if (app.getApp_title()!= null){
+        if (app.getApp_title() != null) {
             tv_app_title.setText(app.getApp_title());
         }
         int score = app.getApp_recomment() == null ? 0 : (int) (Float.parseFloat(app.getApp_recomment()) / 2);
         app_score.setNumStars(score);
-        if (app.getApp_size()!= null){
-            tv_size.setText("大小："+app.getApp_size());
+        if (app.getApp_size() != null) {
+            tv_size.setText("大小：" + app.getApp_size());
         }
-        if (app.getApp_version()!= null){
-            tv_version.setText("版本："+app.getApp_version());
+        if (app.getApp_version() != null) {
+            tv_version.setText("版本：" + app.getApp_version());
         }
-        if (app.getApp_down()!= null){
-            tv_down_num.setText("下载："+app.getApp_down());
+        if (app.getApp_down() != null) {
+            tv_down_num.setText("下载：" + app.getApp_down());
         }
-        if (app.getResource()!= null && app.getResource().size()>0){
-            adapter = new HorizontalScrollViewAdapter(this,app.getResource());
+        if (app.getResource() != null && app.getResource().size() > 0) {
+            adapter = new HorizontalScrollViewAdapter(this, app.getResource());
             imgList.initDatas(adapter);
         }
-        if (app.getApp_desc()!= null){
+        if (app.getApp_desc() != null) {
             tv_des.setText(Html.fromHtml(app.getApp_desc()));
         }
     }

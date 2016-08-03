@@ -6,13 +6,14 @@ import com.a82down.app.utils.VerifyUtils;
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by strike on 16/6/7.
  */
 @Table(name = "appcms_app")
-public class App {
+public class App implements Serializable{
 
     @Column(name = "id", isId = true)
     private int id;

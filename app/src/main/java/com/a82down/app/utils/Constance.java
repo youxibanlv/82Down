@@ -17,6 +17,10 @@ public interface Constance {
 
     String IMG = "img";
 
+    String SUBJECT = "subject";//专题对象
+
+    String APP = "app";
+
 
     int RECOMMEND = 0;//推荐
     int SEARCH = 1;//搜索

@@ -29,14 +29,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RegisterActivity"></activity>
-        <activity android:name=".activity.LoginActivity"></activity>
-        <activity android:name=".activity.UserInfoActivity"></activity>
-        <activity android:name=".activity.SearchActivity"></activity>
-        <activity android:name=".activity.AppDetailsActivity"></activity>
-        <activity android:name=".activity.RecommendActivity"></activity>
-        <activity android:name=".activity.ImgDetailsActivity"></activity>
-        <activity android:name=".activity.UpLoadActivity"></activity>
+        <activity android:name=".activity.RegisterActivity"/>
+        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.UserInfoActivity"/>
+        <activity android:name=".activity.SearchActivity"/>
+        <activity android:name=".activity.AppDetailsActivity"/>
+        <activity android:name=".activity.RecommendActivity"/>
+        <activity android:name=".activity.ImgDetailsActivity"/>
+        <activity android:name=".activity.UpLoadActivity"/>
+        <activity android:name=".activity.SubjectActivity"/>
     </application>
 
 </manifest>

@@ -67,7 +67,7 @@ public class ArticleFragment extends BaseFragment {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                int checkId = rg_nav.getCheckedRadioButtonId();
-                if (checkId == R.id.subject){
+                if (checkId == R.id.subject){//专题
                     sNo = 0;
                     getSubject(true);
                 }else{
@@ -78,7 +78,7 @@ public class ArticleFragment extends BaseFragment {
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
                 int checkId = rg_nav.getCheckedRadioButtonId();
-                if (checkId == R.id.subject){
+                if (checkId == R.id.subject){//专题
                     if (sNo < sTotal){
                         sNo ++;
                     }else{
