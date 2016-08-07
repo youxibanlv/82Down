@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,9 @@ import android.view.ViewGroup;
 import com.a82down.app.utils.UiUtils;
 
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by strike on 16/6/5.
@@ -22,6 +27,9 @@ public class BaseFragment extends Fragment {
 
     private int iconId;
 
+    protected List<BaseFragment> fragments;
+
+    protected FragmentManager fm;
 
     protected ProgressDialog progressDialog;
 
@@ -59,10 +67,32 @@ public class BaseFragment extends Fragment {
         if (!injected) {
             x.view().inject(this, this.getView());
         }
+        fm = getActivity().getSupportFragmentManager();
+        fragments = new ArrayList<>();
+    }
+
+    protected void addFragment(int viewId,BaseFragment fragment){
+        FragmentTransaction transaction = fm.beginTransaction();
+        fragments.add(fragment);
+        transaction.add(viewId,fragment);
+        transaction.commit();
+    }
+
+    protected void showFragment(BaseFragment fragment){
+        FragmentTransaction transaction = fm.beginTransaction();
+        if (fragments.size()>0){
+            for (BaseFragment f : fragments){
+                if (f != null){
+                    transaction.hide(f);
+                }
+            }
+        }
+        transaction.show(fragment);
+        transaction.commit();
     }
 
     public void showTipToast(boolean isSuccess, String msg) {
-        UiUtils.showTipToast(true,msg);
+        UiUtils.showTipToast(isSuccess,msg);
     }
 
     public void freshView() {
@@ -83,6 +113,22 @@ public class BaseFragment extends Fragment {
 
     }
 
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if (this.getView()!= null){
+//            this.getView().setVisibility(isVisibleToUser?View.VISIBLE:View.GONE);
+//        }
+//    }
+
+        @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        //消除重影
+        if (this.getView() != null) {
+            this.getView().setVisibility(menuVisible?View.VISIBLE:View.GONE);
+        }
+    }
     // 取消进度条
     public void dismissProgressDialog() {
         if (dialogHandler != null) {

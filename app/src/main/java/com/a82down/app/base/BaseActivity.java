@@ -5,8 +5,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import org.xutils.x;
@@ -74,15 +72,6 @@ public class BaseActivity extends AppCompatActivity {
             return progressDialog.isShowing();
         }
         return false;
-    }
-
-    // 设置默认的fragment
-    protected void setFragment(int containerViewId, BaseFragment fragment) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        transaction.replace(containerViewId, fragment);
-        transaction.commit();
     }
 
     public class CloseProgressRunnable implements Runnable {

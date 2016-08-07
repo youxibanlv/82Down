@@ -22,27 +22,42 @@
             android:textSize="@dimen/wdp26"
             android:layout_weight="1"/>
         <RadioButton
-            android:id="@+id/info"
+            android:id="@+id/original"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:button="@null"
-            android:text="资讯"
+            android:text="原创"
+            android:gravity="center"
+            android:drawableBottom="@drawable/radio_button_bg"
+            android:textColor="@drawable/radio_button_text_color"
+            android:textSize="@dimen/wdp26"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/review"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:button="@null"
+            android:text="评测"
+            android:gravity="center"
+            android:drawableBottom="@drawable/radio_button_bg"
+            android:textColor="@drawable/radio_button_text_color"
+            android:textSize="@dimen/wdp26"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/news"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:button="@null"
+            android:text="行业新闻"
             android:gravity="center"
             android:drawableBottom="@drawable/radio_button_bg"
             android:textColor="@drawable/radio_button_text_color"
             android:textSize="@dimen/wdp26"
             android:layout_weight="1"/>
     </RadioGroup>
-    <com.a82down.app.view.library.PullToRefreshListView
-        android:id="@+id/pull_to_refresh"
+    <FrameLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fastScrollEnabled="false"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:layout_marginTop="@dimen/wdp10"
-        android:paddingBottom="@dimen/wdp10"
-        android:divider="@color/white"
-        android:scrollbars="none"
-        android:smoothScrollbar="true" />
+        android:layout_height="match_parent">
+    </FrameLayout>
 </LinearLayout>
