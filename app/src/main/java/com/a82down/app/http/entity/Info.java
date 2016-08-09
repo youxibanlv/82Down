@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by strike on 16/8/4.
  */
 public class Info implements Serializable{
-    private int info_Id;
+    private int info_id;
     private int parent_id;
     private int last_cate_id;
     private String info_title;
@@ -17,12 +17,12 @@ public class Info implements Serializable{
     private String info_body;
     private int info_visitors;
 
-    public int getInfo_Id() {
-        return info_Id;
+    public int getInfo_id() {
+        return info_id;
     }
 
-    public void setInfo_Id(int info_Id) {
-        this.info_Id = info_Id;
+    public void setInfo_id(int info_id) {
+        this.info_id = info_id;
     }
 
     public int getParent_id() {

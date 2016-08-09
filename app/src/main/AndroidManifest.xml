@@ -38,6 +38,8 @@
         <activity android:name=".activity.ImgDetailsActivity"/>
         <activity android:name=".activity.UpLoadActivity"/>
         <activity android:name=".activity.SubjectActivity"/>
+        <activity android:name=".activity.InfoActivity"/>
+        <activity android:name=".activity.CommonWebviewActivity"/>
     </application>
 
 </manifest>

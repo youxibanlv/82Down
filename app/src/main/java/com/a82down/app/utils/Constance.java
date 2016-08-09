@@ -21,6 +21,8 @@ public interface Constance {
 
     String APP = "app";
 
+    String INFO = "info";
+
     String INFO_TYPE = "infoType";
 
 

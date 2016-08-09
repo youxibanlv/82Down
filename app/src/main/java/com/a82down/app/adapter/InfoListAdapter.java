@@ -1,12 +1,16 @@
 package com.a82down.app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.a82down.app.R;
+import com.a82down.app.activity.CommonWebviewActivity;
 import com.a82down.app.base.MyBaseAdapter;
 import com.a82down.app.http.entity.Info;
 import com.a82down.app.images.ImgConfig;
@@ -32,15 +36,39 @@ public class InfoListAdapter extends MyBaseAdapter<Info> {
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        Info info = getItem(position);
+        final Info info = getItem(position);
         x.image().bind(viewHolder.icon,info.getInfo_img(), ImgConfig.getImgOption());
         viewHolder.title.setText(info.getInfo_title());
         viewHolder.body.setText(info.getInfo_body());
         viewHolder.visitors.setText("阅读量："+info.getInfo_visitors());
+//        viewHolder.ll_info.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, InfoActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable(Constance.INFO,info);
+//                intent.putExtras(bundle);
+//                context.startActivity(intent);
+//            }
+//        });
+        viewHolder.ll_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CommonWebviewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(CommonWebviewActivity.INFO_ID,info.getInfo_id());
+                bundle.putString(CommonWebviewActivity.WEB_TITLE,info.getInfo_title());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
 
     class ViewHolder{
+
+        @ViewInject(R.id.ll_info)
+        private LinearLayout ll_info;
 
         @ViewInject(R.id.icon)
         ImageView icon;
