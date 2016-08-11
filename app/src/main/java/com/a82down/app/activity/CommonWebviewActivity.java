@@ -54,11 +54,13 @@ public class CommonWebviewActivity extends BaseActivity {
         id = intent.getIntExtra(INFO_ID,-1);
         webUrl = UrlConfig.BASE_URL+"/app/index.php?tpl=app_content_info&id="+id;
         if (webview != null) {
+            webview.setInitialScale(5);
             WebSettings webSettings = webview.getSettings();
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
             webSettings.setJavaScriptEnabled(true);
             webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
             webSettings.setSupportZoom(true);
+            webSettings.setBuiltInZoomControls(true);
             webSettings.setUseWideViewPort(true);
             webSettings.setDomStorageEnabled(true);
             //启动缓存
