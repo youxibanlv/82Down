@@ -116,6 +116,9 @@ import java.lang.ref.WeakReference;
     @Override
     public void onError(Throwable ex, boolean isOnCallback) {
         synchronized (DownloadCallback.class) {
+            if (downloadInfo == null){
+                switchViewHolder(viewHolderRef.get());
+            }
             downloadInfo.setState(DownloadState.ERROR);
             downloadManager.updateDownloadInfo(downloadInfo);
             DownloadBtn viewHolder = this.getViewHolder();
